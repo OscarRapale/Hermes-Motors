@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M0 in progress (plan approved 2026-11-10; order: scaffold → CI → tokens → clock → header/footer → car package). **Next:** CI + test skeleton.
+**Now:** M0 in progress (plan approved 2026-11-10; order: scaffold → CI → tokens → clock → header/footer → car package). **Next:** tokens + fonts.
 
 ## Milestones
 
@@ -10,7 +10,8 @@
 - [ ] Header (nav, menu dialog under 900 px, theme preview button, Test drive) + footer with credits
 - [ ] `lib/clock`, `content/launch.ts`, inline phase script, `/api/now`, preview toggle (ARCH §4)
 - [ ] Car package: vendor/hermes-hm27 → components/hermes, tools/render, public/models, livery, track; vendor/assets → public/images (AVIF + WebP), public/press (docs/design/assets.md)
-- [ ] Vitest + Playwright skeleton, GitHub Actions, Vercel preview, `.env.example`
+- [x] Vitest + Playwright skeleton, GitHub Actions, `.env.example`
+  - [ ] Vercel project + preview per PR, `main` protected with the `ci` check (Oscar)
 
 ### M1 Landing hero
 - [ ] Before Dawn: still, countdown, LEDs, sealed rows, CTAs, `.ics`
@@ -58,9 +59,11 @@ Placeholders are in the code until he answers. Never present them as final.
 | D8 | Press office / partners contact | buttons, no target | mailto address or a form |
 | D9 | Jump start | +5 s penalty | proposal |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
+| D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
 
 ## Log
 
+- 2026-11-10 · CI + tests (PR #2): vitest 5.1.0, @playwright/test + playwright-core 1.63.0 (pinned together so axe shares the types), @axe-core/playwright 4.14.0; projects desktop / Pixel 7 / iPhone 14 landscape; workflow `ci` (typecheck, lint, unit, build, e2e).
 - 2026-11-10 · M0 scaffold (PR #1): next 16.4.5 (cacheComponents on), react/react-dom 19.3.1, typescript 5.9.3 (not 7.x: the car package was tested on 5), eslint 9.39.5, eslint-config-next 16.4.5, @types/react(-dom) 19.3.0, @types/node 22.20.5; Node 22 in `.nvmrc`/engines (Oscar's machine runs 24; npm only warns). Fixed game.md §6 → §7.
 - 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); board 25 shows the renders; stills in `vendor/assets/images/drivers`.
 - 2026-11-07 · Handoff: design boards 01–30 (canvas "Hermes Motors — Visual Directions"), car package v2, First Light film, docs.
