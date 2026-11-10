@@ -53,7 +53,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D2 | Proving Ground time zone | America/Puerto_Rico | UTC−4, no daylight saving |
 | D3 | Preview unlocks the drive before Day One | Yes, with a "Preview" banner | Otherwise recruiters can't play until Day One |
 | D4 | Drivers | Lena Brandt #9 (GER), Mateo Ríos #19 (PUR) | Fictional; helmets only, no faces. Numbers are drawn at runtime, but the helmet stills show 9 and 19: re-render them if the numbers change |
-| D5 | Domain; "Made by Oscar" link | none | |
+| D5 | Domain; "Made by Oscar" link | no domain: the `*.vercel.app` production URL | Site URL = `NEXT_PUBLIC_SITE_URL` ?? `VERCEL_PROJECT_PRODUCTION_URL` ?? localhost |
 | D6 | Analytics | none | Option: Vercel Web Analytics (cookieless) |
 | D7 | Store | Lookbook, no cart | |
 | D8 | Press office / partners contact | buttons, no target | mailto address or a form |
