@@ -33,7 +33,10 @@ Where the line must appear: every page footer (combined with the car's), `/credi
 
 ## Typefaces
 
-Michroma (Vernon Adams), Geist and Geist Mono (Vercel) — all under the SIL Open Font License 1.1, self-hosted through next/font. Check each family's licence file in the font package at M0 and keep the attribution current.
+Michroma (Vernon Adams), Geist and Geist Mono (Vercel) — all under the SIL Open Font License 1.1, self-hosted through next/font. Checked at M0 (10 Nov 2026) against the licence files in google/fonts:
+
+- Michroma: Copyright 2011 The Michroma Project Authors (https://github.com/googlefonts/Michroma-font). SIL OFL 1.1.
+- Geist and Geist Mono: Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font). SIL OFL 1.1.
 
 ## Facts and data
 

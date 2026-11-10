@@ -1,0 +1,290 @@
+/*
+ * Hermes Motors design tokens. Source: docs/design/00-tokens.md; theme values from the
+ * prototypes (Landing-v2-BeforeDawn `P`, Site-Footer `themes`). This is the only file in the
+ * code base that holds raw colour values; everything else reads var(--…).
+ *
+ * Themes: <html data-theme="night"> (Before Dawn) and <html data-theme="day"> (First Light),
+ * set before first paint by the inline phase script. Night is the default until it runs.
+ * Layout breakpoint: 900 px (header nav vs menu); phone values apply below it.
+ */
+
+:root {
+  /* ── Palette ─────────────────────────────────────────────── */
+  --redline: #d5121e;
+  --redline-bright: #e8432e;
+  --redline-deep: #a30f1f;
+  --red-on-dark: #ff5a63;
+  --red-on-light: #b10f19;
+  --carbon: #0e0f11;
+  --graphite: #16171a;
+  --night: #050506;
+  --gallery-white: #f4f4f5;
+  --studio-gray: #e3e5e9;
+  --steel: #4b4f57;
+  --ink-2-light: #3d4047;
+  --ink-3-light: #5a5f68;
+  --ink-2-dark: #c9cdd3;
+  --ink-3-dark: #a9aeb6;
+  --ink-4-dark: #8e939c;
+  --timing-purple: #c9a0ff;
+  --timing-yellow: #f2c94c;
+  --timing-green: #5be58f;
+  --white: #ffffff;
+
+  /* ── Type families (next/font sets the --font-* face variables on <html>) ── */
+  --font-display: var(--font-michroma), 'Eurostile', sans-serif;
+  --font-text: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ── Type scale: desktop (phone overrides below) ─────────── */
+  --fs-display: 50px; /* landing hero H1 */
+  --lh-display: 1.1;
+  --fs-page-h1: 56px;
+  --lh-page-h1: 1.1;
+  --fs-manifesto-open: 84px;
+  --fs-manifesto-section: 48px;
+  --fs-manifesto-close: 96px;
+  --fs-h2: 40px;
+  --lh-h2: 1.12;
+  --fs-card-title: 24px;
+  --fs-wordmark: 15px;
+  --fs-nav: 14px;
+  --fs-menu-link: 28px;
+  --fs-body: 17px;
+  --lh-body: 1.6;
+  --fs-article: 18px;
+  --lh-article: 1.65;
+  --fs-small: 14px;
+  --fs-button: 15px;
+  --fs-label: 11px;
+  --fs-credit: 11.5px;
+  --fs-figure-l: 44px;
+  --fs-figure-s: 26px;
+  --fs-countdown: 84px;
+  --fs-footer-statement: 40px;
+  --fs-footer-outline: 176px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  --tracking-label: 0.18em; /* labels and eyebrows: .14–.22em */
+  --tracking-label-tight: 0.14em;
+  --tracking-label-wide: 0.22em;
+  --tracking-wordmark: 0.34em;
+
+  --measure-article: 680px;
+
+  /* ── Shape and space ─────────────────────────────────────── */
+  --frame-pad: 14px; /* frame around the page card */
+  --radius-page: 32px;
+  --radius-card: 24px; /* cards 24–28 */
+  --radius-card-l: 28px;
+  --radius-glass: 24px; /* glass panels 22–24 */
+  --radius-glass-s: 22px;
+  --radius-tile: 14px; /* small tiles 14–18 */
+  --radius-tile-l: 18px;
+  --radius-pill: 999px;
+
+  --space-section-x: 60px; /* text side padding */
+  --space-card-inset: 28px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+
+  --tap: 44px; /* minimum touch target */
+  --btn-height: 56px; /* primary 52–56 */
+  --btn-height-s: 52px;
+  --btn-knob: 44px; /* the white circle holding the arrow, 38–44 */
+  --btn-knob-s: 38px;
+
+  --header-inset: 16px;
+  --header-min-height: 64px;
+  --header-pad: 10px 10px 10px 20px;
+  --header-nav-gap: 28px;
+  --mark-width: 42px;
+  --mark-height: 28px;
+  --nav-underline: 2px;
+  --nav-underline-offset: 7px;
+
+  --footer-pad: 44px 56px;
+
+  /* ── Glass that doesn't change with the theme ────────────── */
+  --glass-blur: blur(18px) saturate(160%);
+  --panel-dark-bg: linear-gradient(180deg, rgba(34, 35, 40, 0.82), rgba(12, 13, 15, 0.9));
+  --panel-dark-blur: blur(22px) saturate(140%);
+  --panel-dark-border: rgba(255, 255, 255, 0.16);
+  --panel-dark-shadow: 0 30px 60px -28px rgba(14, 15, 17, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --panel-dark-solid: var(--graphite);
+  --glass-chip-blur: blur(12px);
+
+  /* ── Footer (always a dark card) ─────────────────────────── */
+  --footer-ink: var(--gallery-white);
+  --footer-meta: var(--ink-3-dark);
+  --footer-rule: rgba(255, 255, 255, 0.1);
+
+  /* ── Hero and section backgrounds ────────────────────────── */
+  --bg-hero-day: radial-gradient(70% 55% at 50% 34%, #ffffff 0%, #eef0f3 40%, #dadde2 76%, #cdd1d7 100%);
+  --bg-specs-day: radial-gradient(70% 55% at 62% 40%, #ffffff 0%, #eef0f3 40%, #dadde2 76%, #cdd1d7 100%);
+  --bg-hero-night:
+    radial-gradient(64% 36% at 50% 104%, rgba(213, 18, 30, 0.34) 0%, rgba(213, 18, 30, 0.08) 45%, rgba(213, 18, 30, 0) 72%),
+    radial-gradient(70% 55% at 50% 34%, #1c1d22 0%, #121317 42%, #08090b 78%, #040405 100%);
+
+  /* ── Motion: ease-out only ───────────────────────────────── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* JS: 1 - (1 - t) ** 3 */
+  --dur-wipe: 450ms; /* stripe wipe and text wipe */
+  --dur-ignite: 2600ms; /* dials sweep 42%, settle 58% */
+  --dur-count: 800ms;
+  --dur-count-delay: 150ms;
+  --dur-hover: 150ms;
+  --dur-reduced-fade: 150ms; /* reduced-motion swaps */
+
+  /* ── The 14° rule ────────────────────────────────────────── */
+  --angle: 14deg;
+
+  /* ── Focus ───────────────────────────────────────────────── */
+  --focus-ring: 2px solid var(--redline);
+  --focus-offset: 2px;
+
+  /* ── Layers ──────────────────────────────────────────────── */
+  --z-header: 50;
+  --z-dialog: 100;
+  --z-wipe: 200;
+}
+
+/* ── Phone (under 900 px) ──────────────────────────────────── */
+@media (max-width: 899.98px) {
+  :root {
+    --fs-display: 30px;
+    --lh-display: 1.14;
+    --fs-page-h1: 30px;
+    --fs-manifesto-open: 40px;
+    --fs-manifesto-section: 34px;
+    --fs-manifesto-close: 40px;
+    --fs-h2: 26px;
+    --lh-h2: 1.16;
+    --fs-card-title: 20px;
+    --fs-wordmark: 13px;
+    --fs-body: 15px;
+    --lh-body: 1.55;
+    --fs-small: 13px;
+    --fs-label: 10.5px;
+    --fs-figure-l: 30px;
+    --fs-figure-s: 22px;
+    --fs-countdown: 58px;
+    --fs-footer-statement: 26px;
+    --fs-footer-outline: 44px;
+
+    --frame-pad: 8px;
+    --radius-page: 28px;
+    --space-section-x: 20px;
+    --space-card-inset: 12px;
+
+    --header-inset: 12px;
+    --header-min-height: 60px;
+    --mark-width: 36px;
+    --mark-height: 24px;
+
+    --footer-pad: 30px 24px;
+  }
+}
+
+/* ── Theme: Before Dawn (default) ──────────────────────────── */
+:root,
+[data-theme='night'] {
+  color-scheme: dark;
+
+  --frame: var(--night);
+  --surface: var(--carbon);
+  --surface-raised: var(--graphite);
+  --ink: var(--gallery-white);
+  --muted: var(--ink-3-dark);
+  --body: var(--ink-2-dark);
+  --dim: rgba(244, 244, 245, 0.42);
+  --rule: rgba(255, 255, 255, 0.1);
+  --accent-text: var(--red-on-dark);
+
+  --glass-bg: rgba(22, 23, 27, 0.55);
+  --glass-bg-solid: var(--graphite);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* header round buttons (prototype P.chip*) */
+  --chip-bg: rgba(255, 255, 255, 0.06);
+  --chip-border: rgba(255, 255, 255, 0.14);
+  /* floating glass chips (00-tokens "Chip"; night values from P) */
+  --glass-chip-bg: rgba(255, 255, 255, 0.06);
+  --glass-chip-border: rgba(255, 255, 255, 0.14);
+  --glass-chip-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.6);
+
+  --btn-bg: rgba(255, 255, 255, 0.06);
+  --btn-border: rgba(255, 255, 255, 0.16);
+
+  --grid-stroke: var(--white);
+  --grid-opacity: 0.05;
+  --bg-hero: var(--bg-hero-night);
+
+  --footer-card: var(--graphite);
+  --footer-card-border: rgba(255, 255, 255, 0.08);
+  --footer-glow: radial-gradient(64% 60% at 50% 120%, rgba(213, 18, 30, 0.26) 0%, rgba(213, 18, 30, 0.06) 50%, rgba(213, 18, 30, 0) 76%);
+  --footer-outline-stroke: rgba(255, 255, 255, 0.12);
+  --status-dot: var(--redline);
+}
+
+/* ── Theme: First Light ────────────────────────────────────── */
+[data-theme='day'] {
+  color-scheme: light;
+
+  --frame: var(--gallery-white);
+  --surface: var(--studio-gray);
+  --surface-raised: var(--white);
+  --ink: var(--carbon);
+  --muted: var(--ink-2-light);
+  --body: var(--ink-2-light);
+  --dim: rgba(14, 15, 17, 0.42);
+  --rule: rgba(14, 15, 17, 0.1);
+  --accent-text: var(--red-on-light);
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-solid: var(--gallery-white);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 10px 30px -14px rgba(14, 15, 17, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --chip-bg: rgba(255, 255, 255, 0.7);
+  --chip-border: rgba(255, 255, 255, 0.95);
+  --glass-chip-bg: rgba(255, 255, 255, 0.62);
+  --glass-chip-border: rgba(255, 255, 255, 0.9);
+  --glass-chip-shadow: 0 8px 20px -10px rgba(14, 15, 17, 0.3);
+
+  --btn-bg: rgba(255, 255, 255, 0.55);
+  --btn-border: rgba(255, 255, 255, 0.9);
+
+  --grid-stroke: var(--carbon);
+  --grid-opacity: 0.07;
+  --bg-hero: var(--bg-hero-day);
+
+  --footer-card: var(--carbon);
+  --footer-card-border: rgba(14, 15, 17, 0.9);
+  --footer-glow: radial-gradient(60% 70% at 88% 112%, rgba(213, 18, 30, 0.16) 0%, rgba(213, 18, 30, 0) 70%);
+  --footer-outline-stroke: rgba(255, 255, 255, 0.14);
+  --status-dot: var(--timing-green);
+}
+
+/* ── No backdrop-filter: solid glass ───────────────────────── */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root,
+  [data-theme='night'],
+  [data-theme='day'] {
+    --glass-bg: var(--glass-bg-solid);
+    --glass-chip-bg: var(--glass-bg-solid);
+    --panel-dark-bg: var(--panel-dark-solid);
+  }
+}

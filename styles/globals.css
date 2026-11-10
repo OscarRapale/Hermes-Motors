@@ -1,0 +1,116 @@
+/* Global base. Every value is a token from styles/tokens.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--frame);
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--frame);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: var(--fw-regular);
+  overflow-wrap: break-word;
+}
+
+/* Michroma is uppercase by design: headlines are written in capitals in content/, never transformed. */
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+/* Anything that counts */
+.tnum {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Focus: visible on light and dark ──────────────────────── */
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* ── Theme-dependent markup is rendered for both themes and hidden by CSS (ARCHITECTURE §4.2) ── */
+:root:not([data-theme='day']) .day-only,
+[data-theme='day'] .night-only {
+  display: none !important;
+}
+
+/* ── Screen-reader only ────────────────────────────────────── */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Motion ────────────────────────────────────────────────── */
+/* Each component owns its prefers-reduced-motion path (end states; fades ≤ 200 ms or none),
+   so there is no blanket override here that would flatten the allowed 150 ms fades. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
