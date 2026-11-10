@@ -88,7 +88,8 @@ h4 {
 
 /* ── Theme-dependent markup is rendered for both themes and hidden by CSS (ARCHITECTURE §4.2) ── */
 :root:not([data-theme='day']) .day-only,
-[data-theme='day'] .night-only {
+[data-theme='day'] .night-only,
+:root:not([data-preview]) .preview-only {
   display: none !important;
 }
 

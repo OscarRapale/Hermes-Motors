@@ -101,6 +101,7 @@
   --space-14: 56px;
 
   --tap: 44px; /* minimum touch target */
+  --chip-height-s: 24px; /* small status chips (not a control) */
   --btn-height: 56px; /* primary 52–56 */
   --btn-height-s: 52px;
   --btn-knob: 44px; /* the white circle holding the arrow, 38–44 */
