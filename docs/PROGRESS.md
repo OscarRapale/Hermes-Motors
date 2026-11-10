@@ -1,11 +1,11 @@
 # Progress
 
-**Now:** handoff received, nothing built. **Next:** M0, plan first, wait for Oscar's OK.
+**Now:** M0 in progress (plan approved 2026-11-10; order: scaffold → CI → tokens → clock → header/footer → car package). **Next:** CI + test skeleton.
 
 ## Milestones
 
 ### M0 Foundation
-- [ ] Scaffold Next.js 16 (App Router, TS strict, ESLint), Node 22; pin versions (list them in the log)
+- [x] Scaffold Next.js 16 (App Router, TS strict, ESLint), Node 22; pin versions (list them in the log)
 - [ ] `styles/tokens.css` + globals from docs/design/00-tokens.md; next/font (Michroma, Geist, Geist Mono)
 - [ ] Header (nav, menu dialog under 900 px, theme preview button, Test drive) + footer with credits
 - [ ] `lib/clock`, `content/launch.ts`, inline phase script, `/api/now`, preview toggle (ARCH §4)
@@ -61,5 +61,6 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
+- 2026-11-10 · M0 scaffold (PR #1): next 16.4.5 (cacheComponents on), react/react-dom 19.3.1, typescript 5.9.3 (not 7.x: the car package was tested on 5), eslint 9.39.5, eslint-config-next 16.4.5, @types/react(-dom) 19.3.0, @types/node 22.20.5; Node 22 in `.nvmrc`/engines (Oscar's machine runs 24; npm only warns). Fixed game.md §6 → §7.
 - 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); board 25 shows the renders; stills in `vendor/assets/images/drivers`.
 - 2026-11-07 · Handoff: design boards 01–30 (canvas "Hermes Motors — Visual Directions"), car package v2, First Light film, docs.

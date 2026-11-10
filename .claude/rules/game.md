@@ -9,7 +9,7 @@ paths:
 
 # Test drive rules ("Beat the messenger")
 
-Behaviour is in ARCHITECTURE §6 and the screens in `docs/design/04-test-drive.md`. The prototype `docs/design/prototypes/TestDrive-Lap.dc.html` holds the circuit map (`PTS`, 120 points) and the messenger's speeds (`SPD`, 120 values) that the game is built from.
+Behaviour is in ARCHITECTURE §7 and the screens in `docs/design/04-test-drive.md`. The prototype `docs/design/prototypes/TestDrive-Lap.dc.html` holds the circuit map (`PTS`, 120 points) and the messenger's speeds (`SPD`, 120 values) that the game is built from.
 
 ## Simulation
 
