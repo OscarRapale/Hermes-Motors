@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hermes Motors — Landing v2, specs storyboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.sb-mono{font-family:'Geist Mono',ui-monospace,monospace}
+.sb-col{display:flex;flex-direction:column;gap:11px;min-width:0}
+.sb-col>div:nth-child(3) .sb-t,.sb-col>div:nth-child(5) .sb-t{min-height:56px}
+.sb-head{display:flex;justify-content:space-between;align-items:baseline;font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;color:#4B4F57}
+.sb-head b{font-weight:500;color:#0E0F11}
+.sb-head b span{color:#B10F19}
+.sb-thumb{position:relative;height:158px;border-radius:14px;overflow:hidden;background:radial-gradient(80% 75% at 55% 38%,#FFFFFF 0%,#EEF0F3 52%,#D8DBE0 100%);border:1px solid rgba(14,15,17,.07)}
+.sb-car{position:absolute;left:30%;top:16%;width:68%;height:62%;object-fit:contain;display:block}
+.sb-mini{position:absolute;left:7%;top:22%;margin:0;font-family:'Michroma','Eurostile',sans-serif;font-size:7.5px;line-height:1.3;letter-spacing:.02em;color:#0E0F11}
+.sb-mini span{display:block}
+.sb-mini span:nth-child(2){color:rgba(14,15,17,.42)}
+.sb-fig{position:absolute;left:7%;top:58%;width:22%;height:15%;border-radius:5px;background:linear-gradient(180deg,#26272C,#0E0F11)}
+.sb-fig::before,.sb-fig::after{content:'';position:absolute;top:32%;height:3px;width:30%;border-radius:2px;background:rgba(255,255,255,.75)}
+.sb-fig::before{left:12%}
+.sb-fig::after{left:56%}
+.sb-rail{position:absolute;left:7%;right:7%;bottom:9%;height:2px;background:rgba(14,15,17,.14)}
+.sb-rail i{position:absolute;left:0;top:0;height:2px;background:#D5121E}
+.sb-rail b{position:absolute;top:-2px;width:6px;height:6px;border-radius:50%;margin-left:-3px;background:#FFFFFF;box-shadow:inset 0 0 0 1px rgba(14,15,17,.3)}
+.sb-rail b.on{background:#D5121E;box-shadow:none}
+.sb-k{margin:0 0 4px;font-family:'Geist Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.18em;color:#4B4F57}
+.sb-t{margin:0;font-size:12.5px;line-height:1.5;color:#2E3137}
+.sb-h{margin:0;font-family:'Michroma','Eurostile',sans-serif;font-size:12.5px;line-height:1.4;letter-spacing:.02em;color:#0E0F11}
+.sb-h span{display:block}
+.sb-h span:nth-child(2){color:rgba(14,15,17,.42)}
+.sb-card{border-radius:20px;background:#FFFFFF;border:1px solid rgba(14,15,17,.07);padding:18px 20px 20px;box-sizing:border-box;display:flex;flex-direction:column;gap:11px;min-width:0}
+.sb-card h2{margin:0;font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;font-weight:500;letter-spacing:.2em;color:#0E0F11}
+.sb-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+.sb-list li{display:flex;gap:9px;font-size:12.5px;line-height:1.45;color:#2E3137}
+.sb-list li::before{content:'';flex:none;width:10px;height:2px;margin-top:8.5px;background:#D5121E;transform:skewX(-14deg)}
+.sb-code{font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;background:#F1F2F4;border-radius:5px;padding:1px 5px;color:#0E0F11}
+</style>
+</helmet>
+<div style="position: relative; width: 1440px; height: 1000px; overflow: hidden; box-sizing: border-box; padding: 52px 58px 0; background: #F4F4F5; color: #0E0F11; font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif">
+
+<header style="display: grid; grid-template-columns: minmax(0, 1fr) 560px; gap: 40px; align-items: end">
+<div>
+<p class="sb-mono" style="margin: 0 0 14px; font-size: 11px; letter-spacing: 0.22em; color: #B10F19">LANDING V2 · SECTION 2 · SPECS</p>
+<h1 style="margin: 0; font-family: 'Michroma', 'Eurostile', sans-serif; font-weight: 400; font-size: 34px; line-height: 1.15; letter-spacing: 0.01em">THE CAR COMES APART</h1>
+</div>
+<p style="margin: 0; font-size: 14.5px; line-height: 1.55; color: #3D4047">The section pins for five screens, one chapter per screen. Each chapter's parts move in the first 60% of its screen, then hold while you read. The last chapter snaps the car back together as the power figures count up.</p>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; margin-top: 24px">
+
+<section class="sb-col" aria-label="Chapter 1, the car">
+<div class="sb-head"><b><span>01</span> · THE CAR</b><span>SCREEN 1</span></div>
+<div class="sb-thumb"><img class="sb-car" src="../../../vendor/assets/images/specs/hm27-specs-00.webp" alt="The HM-27 in one piece"><p class="sb-mini" aria-hidden="true"><span>EVERY PART</span><span>CARRIES THE</span><span>MESSAGE.</span></p><div class="sb-fig" aria-hidden="true"></div><div class="sb-rail" aria-hidden="true"><i style="width: 0%"></i><b class="on" style="left: 0%"></b><b style="left: 25%"></b><b style="left: 50%"></b><b style="left: 75%"></b><b style="left: 100%"></b></div></div>
+<div><p class="sb-k">MOVES</p><p class="sb-t">Nothing yet. The car arrives from the hero in one piece; the camera rises a little.</p></div>
+<div><p class="sb-k">SAYS</p><p class="sb-h"><span>EVERY PART</span><span>CARRIES THE</span><span>MESSAGE.</span></p></div>
+<div><p class="sb-k">FIGURES</p><p class="sb-t">768 kg minimum mass<br>3,400 mm wheelbase</p></div>
+<div><p class="sb-k">ON THE CAR</p><p class="sb-t">Wheelbase line on the ground</p></div>
+</section>
+
+<section class="sb-col" aria-label="Chapter 2, active aero">
+<div class="sb-head"><b><span>02</span> · ACTIVE AERO</b><span>SCREEN 2</span></div>
+<div class="sb-thumb"><img class="sb-car" src="../../../vendor/assets/images/specs/hm27-specs-06.webp" alt="The HM-27 with its wings pulled away"><p class="sb-mini" aria-hidden="true"><span>AIR THAT</span><span>CHANGES</span><span>SHAPE.</span></p><div class="sb-fig" aria-hidden="true"></div><div class="sb-rail" aria-hidden="true"><i style="width: 25%"></i><b class="on" style="left: 0%"></b><b class="on" style="left: 25%"></b><b style="left: 50%"></b><b style="left: 75%"></b><b style="left: 100%"></b></div></div>
+<div><p class="sb-k">MOVES</p><p class="sb-t">Front wing 1.05 m forward. Rear wing 1.0 m back and 0.68 m up. The camera does most of its pull-back here, 9.5 m to about 12.</p></div>
+<div><p class="sb-k">SAYS</p><p class="sb-h"><span>AIR THAT</span><span>CHANGES</span><span>SHAPE.</span></p></div>
+<div><p class="sb-k">FIGURES</p><p class="sb-t">2 modes, straight and corner<br>5 moving elements, 2 front and 3 rear</p></div>
+<div><p class="sb-k">ON THE CAR</p><p class="sb-t">Front wing · 2 moving elements<br>Rear wing · 3 moving elements</p></div>
+</section>
+
+<section class="sb-col" aria-label="Chapter 3, halo">
+<div class="sb-head"><b><span>03</span> · HALO</b><span>SCREEN 3</span></div>
+<div class="sb-thumb"><img class="sb-car" src="../../../vendor/assets/images/specs/hm27-specs-12.webp" alt="The halo lifted clear of the cockpit"><p class="sb-mini" aria-hidden="true"><span>A RING OF</span><span>GRADE 5</span><span>TITANIUM.</span></p><div class="sb-fig" aria-hidden="true"></div><div class="sb-rail" aria-hidden="true"><i style="width: 50%"></i><b class="on" style="left: 0%"></b><b class="on" style="left: 25%"></b><b class="on" style="left: 50%"></b><b style="left: 75%"></b><b style="left: 100%"></b></div></div>
+<div><p class="sb-k">MOVES</p><p class="sb-t">The halo lifts 1.0 m clear of the cockpit. Nothing else moves.</p></div>
+<div><p class="sb-k">SAYS</p><p class="sb-h"><span>A RING OF</span><span>GRADE 5</span><span>TITANIUM.</span></p></div>
+<div><p class="sb-k">FIGURES</p><p class="sb-t">125 kN tested load, from above and the side<br>5 s held from above</p></div>
+<div><p class="sb-k">ON THE CAR</p><p class="sb-t">Halo · grade 5 titanium</p></div>
+</section>
+
+<section class="sb-col" aria-label="Chapter 4, floor and wheels">
+<div class="sb-head"><b><span>04</span> · FLOOR &amp; WHEELS</b><span>SCREEN 4</span></div>
+<div class="sb-thumb"><img class="sb-car" src="../../../vendor/assets/images/specs/hm27-specs-18.webp" alt="Body and wheels lifted off the floor, every part apart"><p class="sb-mini" aria-hidden="true"><span>WHERE IT</span><span>MEETS THE</span><span>TRACK.</span></p><div class="sb-fig" aria-hidden="true"></div><div class="sb-rail" aria-hidden="true"><i style="width: 75%"></i><b class="on" style="left: 0%"></b><b class="on" style="left: 25%"></b><b class="on" style="left: 50%"></b><b class="on" style="left: 75%"></b><b style="left: 100%"></b></div></div>
+<div><p class="sb-k">MOVES</p><p class="sb-t">Body and suspension rise 0.38 m off the floor. The wheels slide 0.75 m out.</p></div>
+<div><p class="sb-k">SAYS</p><p class="sb-h"><span>WHERE IT</span><span>MEETS THE</span><span>TRACK.</span></p></div>
+<div><p class="sb-k">FIGURES</p><p class="sb-t">18 in rims<br>30 mm narrower rear tyres, 25 mm front</p></div>
+<div><p class="sb-k">ON THE CAR</p><p class="sb-t">18-inch rims<br>Flat floor</p></div>
+</section>
+
+<section class="sb-col" aria-label="Chapter 5, power">
+<div class="sb-head"><b><span>05</span> · POWER</b><span>SCREEN 5</span></div>
+<div class="sb-thumb"><img class="sb-car" src="../../../vendor/assets/images/specs/hm27-specs-00.webp" alt="The HM-27 back in one piece"><p class="sb-mini" aria-hidden="true"><span>1,006 HP.</span><span>HALF OF IT</span><span>ELECTRIC.</span></p><div class="sb-fig" aria-hidden="true" style="height: 19%; top: 55%"></div><div class="sb-rail" aria-hidden="true"><i style="width: 100%"></i><b class="on" style="left: 0%"></b><b class="on" style="left: 25%"></b><b class="on" style="left: 50%"></b><b class="on" style="left: 75%"></b><b class="on" style="left: 100%"></b></div></div>
+<div><p class="sb-k">MOVES</p><p class="sb-t">Everything snaps back together in 0.6 s, then the power figures count up.</p></div>
+<div><p class="sb-k">SAYS</p><p class="sb-h"><span>1,006 HP.</span><span>HALF OF IT</span><span>ELECTRIC.</span></p></div>
+<div><p class="sb-k">FIGURES</p><p class="sb-t">750 kW: 400 V6 turbo, 350 electric<br>8.5 MJ recovered per lap<br>100% sustainable fuel</p></div>
+<div><p class="sb-k">ON THE CAR</p><p class="sb-t">Power unit · 750 kW<br>Then: Take it for a test drive</p></div>
+</section>
+
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px">
+
+<section class="sb-card" aria-label="Motion">
+<h2>MOTION</h2>
+<ul class="sb-list">
+<li>Pinned for five screens (500 vh), one chapter per screen.</li>
+<li>Parts ease out in the first 60% of their screen, then hold for reading.</li>
+<li>Text comes in behind the Slipstream: a red edge at 14°, 450 ms. Figures count up in 800 ms.</li>
+<li>The rail fills as you scroll; tapping a chapter scrolls to it.</li>
+<li>Reduced motion: no parts move and nothing wipes. Each chapter cuts in with its final figures.</li>
+</ul>
+</section>
+
+<section class="sb-card" aria-label="Build notes">
+<h2>BUILD</h2>
+<ul class="sb-list">
+<li>Keep the hero's canvas and car sticky into this section, so nothing new downloads.</li>
+<li><span><span class="sb-code">stagger={HERMES_SPEC_STAGGER}</span> on the car moves each chapter's parts in its own third of the explode.</span></li>
+<li>Scroll writes a ref (ScrollTrigger scrub or a passive listener), so React doesn't re-render every frame.</li>
+<li>The hero's Active aero, Halo and Power unit hotspots jump to chapters 2, 3 and 5.</li>
+<li>Phones: the game model, no effects, and the text as cards over the pinned car.</li>
+</ul>
+</section>
+
+<section class="sb-card" aria-label="Before 06:00" style="flex-direction: row; gap: 18px; align-items: flex-start">
+<div style="flex: none; width: 168px; height: 118px; border-radius: 14px; overflow: hidden; position: relative; background: radial-gradient(70% 70% at 50% 100%, rgba(213,18,30,.32) 0%, rgba(213,18,30,0) 70%), radial-gradient(80% 80% at 50% 35%, #1C1D22 0%, #08090B 100%)">
+<img src="../../../vendor/assets/images/hero-night.webp" alt="The HM-27 assembled in the dark, before dawn" style="position: absolute; left: 6px; top: 22px; width: 156px; height: 74px; object-fit: contain; display: block">
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<h2>BEFORE 06:00</h2>
+<p class="sb-t">Sealed until first light. The car stays in one piece in the dark, the figures are redacted and the rail is locked.</p>
+<p class="sb-t">At 06:00 the Slipstream opens this section with the rest of the site, and the first scroll takes the wings off.</p>
+</div>
+</section>
+
+</div>
+
+<p style="position: absolute; left: 58px; bottom: 26px; margin: 0; font-size: 11.5px; color: #4B4F57">Model: “2026 F1 CAR” by Abu Saif, CC BY 4.0, modified for Hermes Motors. Rule figures: FIA 2026 technical regulations, as reported by Honda Racing, Motorsport Magazine, The Race and the FIA.</p>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

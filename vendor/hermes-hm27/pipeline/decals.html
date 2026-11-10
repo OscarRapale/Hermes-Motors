@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#888">
+<script type="module">
+// Renders the livery decals as white-on-transparent masks (tinted by the material at runtime).
+const font = new FontFace('Michroma', 'url(./node_modules/@fontsource/michroma/files/michroma-latin-400-normal.woff2)');
+await font.load(); document.fonts.add(font);
+const out = {};
+const H = 'M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z';
+const F = 'M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z';
+const SLIP = 'M650,84 L652,92 L813.7,133.6 L820,126.5 Z M653.5,98 L655.5,106 L772.2,136.35 L778.5,129.25 Z M657,112 L659,120 L730.7,139.1 L737,132 Z';
+// path decal: viewBox [x,y,w,h] -> canvas W wide, pad in viewBox units
+function pathDecal(name, d, vb, W) {
+  const s = W / vb[2]; const c = document.createElement('canvas'); c.width = W; c.height = Math.round(vb[3] * s);
+  const g = c.getContext('2d'); g.setTransform(s, 0, 0, s, -vb[0] * s, -vb[1] * s);
+  g.fillStyle = '#fff'; g.fill(new Path2D(d)); out[name] = { url: c.toDataURL('image/png'), w: c.width, h: c.height, aspect: c.width / c.height };
+}
+// mark: both layers share one frame so they register exactly
+const MARK_VB = [2, 4, 110, 72];
+pathDecal('mark-h', H, MARK_VB, 1024);
+pathDecal('mark-feathers', F, MARK_VB, 1024);
+pathDecal('mark', H + ' ' + F, MARK_VB, 1024);
+pathDecal('slipstream', SLIP, [646, 80, 178, 63], 2048);
+// text decals: Michroma with the board's tracking
+// Laid out glyph by glyph so tracking is exact and the ink bounds are measured, not guessed.
+function textDecal(name, text, tracking, W, pad = 0.12) {
+  const size = 200; const m = document.createElement('canvas').getContext('2d');
+  m.font = `400 ${size}px Michroma`;
+  let x = 0, left = Infinity, right = -Infinity, asc = 0, desc = 0; const xs = [];
+  for (const ch of text) {
+    const mt = m.measureText(ch); xs.push(x);
+    left = Math.min(left, x - mt.actualBoundingBoxLeft); right = Math.max(right, x + mt.actualBoundingBoxRight);
+    asc = Math.max(asc, mt.actualBoundingBoxAscent); desc = Math.max(desc, mt.actualBoundingBoxDescent);
+    x += mt.width + tracking * size;
+  }
+  const th = asc + desc, padPx = th * pad;
+  const sw = right - left + padPx * 2, sh = th + padPx * 2; const s = W / sw;
+  const c = document.createElement('canvas'); c.width = W; c.height = Math.round(sh * s);
+  const g = c.getContext('2d'); g.scale(s, s); g.font = `400 ${size}px Michroma`; g.fillStyle = '#fff'; g.textBaseline = 'alphabetic';
+  [...text].forEach((ch, i) => g.fillText(ch, padPx - left + xs[i], padPx + asc));
+  out[name] = { url: c.toDataURL('image/png'), w: c.width, h: c.height, aspect: c.width / c.height };
+}
+textDecal('hm27', 'HM-27', 0.18, 1024);
+textDecal('hermes', 'HERMES', 0.32, 2048);
+window.__decals = out; window.__done = Object.fromEntries(Object.entries(out).map(([k, v]) => [k, [v.w, v.h, +v.aspect.toFixed(4)]]));
+</script></body></html>

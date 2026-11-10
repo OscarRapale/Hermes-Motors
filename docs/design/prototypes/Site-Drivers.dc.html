@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hermes Motors — Drivers</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.dr-mono{font-family:'Geist Mono',ui-monospace,monospace}
+.dr-mich{font-family:'Michroma','Eurostile',sans-serif;font-weight:400}
+.dr-nav a{text-decoration:none}
+.dr-card{position:relative;overflow:hidden;border-radius:28px;box-sizing:border-box;display:flex;flex-direction:column}
+.dr-stat{display:flex;flex-direction:column;gap:6px;min-width:0}
+.dr-stat b{font-family:'Geist Mono',ui-monospace,monospace;font-weight:500;font-size:26px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dr-stat span{font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.14em}
+.dr-redact{display:inline-block;height:.78em;border-radius:6px;vertical-align:baseline}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; width: 1440px; box-sizing: border-box; padding: 14px; background: {{frame}}; color: {{ink}}; font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif">
+<div style="position: relative; border-radius: 32px; overflow: hidden; isolation: isolate; padding-bottom: 56px; background: {{pageBg}}">
+
+<header style="position: relative; z-index: 3; margin: 16px 16px 0; min-height: 64px; padding: 10px 10px 10px 20px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-radius: 999px; background: {{glassBg}}; backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); border: 1px solid {{glassBorder}}; box-shadow: {{glassShadow}}">
+<a href="#" aria-label="Hermes Motors home" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg viewBox="0 0 120 80" width="42" height="28" aria-hidden="true"><path d="M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z" style="fill: currentColor"/><path d="M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z" style="fill: var(--accent, #D5121E)"/></svg>
+<span class="dr-mich" style="font-size: 15px; letter-spacing: 0.34em">HERMES</span>
+</a>
+<nav aria-label="Primary" class="dr-nav" style="display: flex; gap: 28px; font-size: 14px; font-weight: 500">
+<a href="#">Team</a><a href="#">HM-27</a><a href="#" aria-current="page" style="text-decoration: underline; text-decoration-color: var(--accent, #D5121E); text-decoration-thickness: 2px; text-underline-offset: 7px">Drivers</a><a href="#">Season 2027</a><a href="#">Partners</a><a href="#">News</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px">
+<a href="#" aria-label="Store" style="width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: {{chipBg}}; border: 1px solid {{chipBorder}}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8Zm4 0V6.5a3 3 0 0 1 6 0V8" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round"/></svg></a>
+<a href="#" style="display: {{dayInline}}; height: 44px; padding: 0 18px 0 16px; align-items: center; gap: 10px; border-radius: 999px; background: #0E0F11; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #D5121E); box-shadow: 0 0 10px var(--accent, #D5121E)"></span>Test drive</a>
+<span aria-disabled="true" style="display: {{nightInline}}; height: 44px; padding: 0 18px 0 14px; align-items: center; gap: 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); color: #C9CDD3; font-size: 14px; font-weight: 600; white-space: nowrap"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2" style="fill: none; stroke: currentColor; stroke-width: 1.6"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" style="fill: none; stroke: currentColor; stroke-width: 1.6"/></svg>Test drive opens 06:00</span>
+</div>
+</header>
+
+<section style="position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: 48px; align-items: end; padding: 72px 60px 40px">
+<div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start">
+<p class="dr-mono" style="margin: 0; font-size: 11px; letter-spacing: 0.2em; color: {{eyebrow}}">DRIVERS · SEASON 2027</p>
+<h1 class="dr-mich" style="margin: 0; font-size: 56px; line-height: 1.1; letter-spacing: 0.01em"><span style="display: block">{{h1a}}</span><span style="display: block; color: {{dim}}">{{h1b}}</span><span style="display: block">{{h1c}}</span></h1>
+</div>
+<p style="margin: 0 0 8px; font-size: 17px; line-height: 1.6; color: {{muted}}; max-width: 460px">{{intro}}</p>
+</section>
+
+<section aria-label="Race drivers" style="position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 28px">
+<sc-for list="{{drivers}}" as="d" hint-placeholder-count="2">
+<article class="dr-card" style="height: 680px; background: {{d.bg}}; border: 1px solid {{d.border}}; color: {{d.ink}}">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: {{d.glow}}"></div>
+<div aria-hidden="true" class="dr-mich" style="position: absolute; right: 28px; top: 20px; font-size: 220px; line-height: 1; letter-spacing: 0.02em; color: transparent; -webkit-text-stroke: 1px {{d.numStroke}}">{{d.num}}</div>
+<div style="position: absolute; left: 0; right: 0; top: 18px; height: 340px; display: grid; place-items: center">
+<img src="{{d.helmetSrc}}" alt="{{d.helmetLabel}}" width="400" height="330" style="display: block; width: 400px; height: auto">
+</div>
+<div style="position: relative; margin-top: auto; padding: 0 32px 30px; display: flex; flex-direction: column; gap: 16px">
+<p class="dr-mono" style="margin: 0; font-size: 11px; letter-spacing: 0.2em; color: {{d.meta}}">{{d.seat}}</p>
+<h2 class="dr-mich" style="margin: 0; font-size: 40px; line-height: 1.12; letter-spacing: 0.01em"><span style="display: {{d.nameShow}}">{{d.first}}<br>{{d.last}}</span><span style="display: {{d.redactShow}}"><i class="dr-redact" style="width: 210px; background: {{d.bar}}"></i><br><i class="dr-redact" style="width: 290px; background: {{d.bar}}"></i></span></h2>
+<p style="margin: 0; max-width: 470px; font-size: 16px; line-height: 1.6; color: {{d.body}}">{{d.bio}}</p>
+<div style="display: flex; gap: 36px; padding-top: 18px; border-top: 1px solid {{d.rule}}">
+<div class="dr-stat"><b>{{d.s1}}</b><span style="color: {{d.meta}}">{{d.s1l}}</span></div>
+<div class="dr-stat"><b>{{d.s2}}</b><span style="color: {{d.meta}}">{{d.s2l}}</span></div>
+<div class="dr-stat"><b>{{d.s3}}</b><span style="color: {{d.meta}}">{{d.s3l}}</span></div>
+</div>
+</div>
+</article>
+</sc-for>
+</section>
+
+<section aria-label="The messenger" style="position: relative; z-index: 1; margin: 16px 28px 0; border-radius: 28px; overflow: hidden; background: #0E0F11; color: #F4F4F5; display: grid; grid-template-columns: 420px minmax(0,1fr) auto; align-items: center; gap: 40px; padding: 32px 40px; border: 1px solid rgba(255,255,255,.08)">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(50% 120% at 12% 50%, rgba(213,18,30,.22) 0%, rgba(213,18,30,0) 70%)"></div>
+<img src="{{msgrSrc}}" alt="The messenger's helmet: see-through, its edges and the three feathers glowing red" width="360" height="297" style="position: relative; display: block; width: 360px; height: auto">
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px">
+<p class="dr-mono" style="margin: 0; font-size: 11px; letter-spacing: 0.2em; color: #FF5A63">TEST DRIVER · NAME WITHHELD</p>
+<h2 class="dr-mich" style="margin: 0; font-size: 34px; line-height: 1.15">THE MESSENGER</h2>
+<p style="margin: 0; max-width: 520px; font-size: 16px; line-height: 1.6; color: #C9CDD3">{{msgr}}</p>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 14px">
+<div class="dr-stat" style="align-items: flex-end"><b style="font-size: 44px; color: #C9A0FF">1:11.906</b><span style="color: #C9CDD3">THE LAP TO BEAT · PROVING GROUND</span></div>
+<a href="#" style="display: {{dayInline}}; align-items: center; gap: 12px; height: 52px; padding: 0 6px 0 22px; border-radius: 999px; background: var(--accent, #D5121E); color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 600">Beat the messenger<span style="width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; color: var(--accent, #D5121E); display: grid; place-items: center"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" style="fill: none; stroke: currentColor; stroke-width: 1.9"/></svg></span></a>
+<span style="display: {{nightInline}}; align-items: center; gap: 9px; height: 52px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); color: #C9CDD3; font-size: 15px; font-weight: 600">Opens at 06:00</span>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"firstLight":{"editor":"boolean","default":true},"accent":{"editor":"color","default":"#D5121E","options":["#D5121E","#E8432E","#A30F1F"]},"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var day = this.props.firstLight !== false;
+    var accent = this.props.accent || '#D5121E';
+    // placeholder drivers: fictional names and numbers, shown by their helmets only (no faces); swap them in content/drivers
+    var people = [
+      { num: '9', first: 'LENA', last: 'BRANDT', seat: 'CAR 9 · GER', bio: 'Came up through junior single-seaters in Europe and two seasons as a simulator driver. Her first Grand Prix season starts at the Hermes debut.', s: ['24', 'ROUNDS'], s2: ['1st', 'F1 SEASON'], s3: ['GER', 'NATIONALITY'] },
+      { num: '19', first: 'MATEO', last: 'RÍOS', seat: 'CAR 19 · PUR', bio: 'Karting champion in Puerto Rico before a move to Europe at sixteen. He shares the debut season, and the garage, with Lena.', s: ['24', 'ROUNDS'], s2: ['1st', 'F1 SEASON'], s3: ['PUR', 'NATIONALITY'] }
+    ];
+    // the helmets are renders of the 3D helmet (HermesHelmet): driver 9 wears Gallery, driver 19 Graphite;
+    // before 06:00 both are dark with grey feathers and no number. Card 1 faces right, card 2 faces left.
+    var HELMET = {
+      day: ['vendor/assets/images/drivers/helmet-gallery-9.webp', 'vendor/assets/images/drivers/helmet-graphite-19.webp'],
+      night: ['vendor/assets/images/drivers/helmet-before-dawn-right.webp', 'vendor/assets/images/drivers/helmet-before-dawn-left.webp'],
+      messenger: 'vendor/assets/images/drivers/helmet-messenger.webp'
+    };
+    var drivers = people.map(function (p, i) {
+      var dark = i === 1;
+      return {
+        num: p.num, first: p.first, last: p.last, bio: day ? p.bio : 'Two seats, two names. They are revealed at first light, with the car.',
+        seat: day ? p.seat : 'CAR ' + (i + 1) + ' · REVEALED AT 06:00',
+        s1: day ? p.s[0] : '—', s1l: p.s[1], s2: day ? p.s2[0] : '—', s2l: p.s2[1], s3: day ? p.s3[0] : '—', s3l: p.s3[1],
+        nameShow: day ? 'inline' : 'none', redactShow: day ? 'none' : 'inline',
+        bar: dark || !day ? 'rgba(255,255,255,.14)' : 'rgba(14,15,17,.12)',
+        bg: day ? (dark ? '#0E0F11' : '#FFFFFF') : '#16171A',
+        border: day ? (dark ? 'rgba(14,15,17,.9)' : 'rgba(14,15,17,.08)') : 'rgba(255,255,255,.08)',
+        ink: day && !dark ? '#0E0F11' : '#F4F4F5',
+        body: day && !dark ? '#3D4047' : '#C9CDD3',
+        meta: day && !dark ? '#5A5F68' : '#A9AEB6',
+        rule: day && !dark ? 'rgba(14,15,17,.1)' : 'rgba(255,255,255,.1)',
+        numStroke: day && !dark ? 'rgba(14,15,17,.1)' : 'rgba(255,255,255,.1)',
+        glow: day ? (dark ? 'radial-gradient(70% 55% at 50% 38%, rgba(213,18,30,.2) 0%, rgba(213,18,30,0) 70%)' : 'radial-gradient(70% 55% at 50% 38%, #FFFFFF 0%, #EEF0F3 60%, #E3E5E9 100%)') : 'radial-gradient(70% 55% at 50% 40%, rgba(213,18,30,.16) 0%, rgba(213,18,30,0) 70%)',
+        helmetSrc: day ? HELMET.day[i] : HELMET.night[i],
+        helmetLabel: day ? (p.first + ' ' + p.last + "'s helmet: " + (dark ? 'graphite with white trim' : 'white with black trim') + ', number ' + p.num + ' on the chin, three red feathers along the side') : 'A helmet in the dark, its livery hidden until 06:00'
+      };
+    });
+    return {
+      accent: accent,
+      msgrSrc: HELMET.messenger,
+      frame: day ? '#F4F4F5' : '#050506',
+      pageBg: day ? 'radial-gradient(80% 40% at 50% 0%, #FFFFFF 0%, #EEF0F3 50%, #E3E5E9 100%)' : 'radial-gradient(80% 40% at 50% 0%, #1C1D22 0%, #101114 55%, #08090B 100%)',
+      ink: day ? '#0E0F11' : '#F4F4F5',
+      muted: day ? '#3D4047' : '#A9AEB6',
+      dim: day ? 'rgba(14,15,17,.42)' : 'rgba(244,244,245,.42)',
+      eyebrow: day ? '#B10F19' : '#FF5A63',
+      glassBg: day ? 'rgba(255,255,255,.55)' : 'rgba(22,23,27,.55)',
+      glassBorder: day ? 'rgba(255,255,255,.85)' : 'rgba(255,255,255,.12)',
+      glassShadow: day ? '0 10px 30px -14px rgba(14,15,17,.22), inset 0 1px 0 rgba(255,255,255,.9)' : '0 10px 30px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08)',
+      chipBg: day ? 'rgba(255,255,255,.7)' : 'rgba(255,255,255,.06)',
+      chipBorder: day ? 'rgba(255,255,255,.95)' : 'rgba(255,255,255,.14)',
+      dayInline: day ? 'inline-flex' : 'none', nightInline: day ? 'none' : 'inline-flex',
+      h1a: 'TWO SEATS.', h1b: day ? 'TWO NAMES.' : 'NO NAMES', h1c: day ? 'ONE MESSAGE.' : 'BEFORE 06:00.',
+      intro: day ? 'Two rookies for a rookie team, and a test driver nobody has named. You can race him right now.' : 'The drivers are revealed at first light, with the car. Until then, their helmets wait in the dark.',
+      msgr: day ? 'He set the lap at the Proving Ground before the car was revealed, and he hasn’t said a word since. His lap is the ghost in the test drive.' : 'He has already driven the HM‑27 in the dark. At 06:00 his lap becomes the ghost you race.',
+      drivers: drivers
+    };
+  }
+}
+</script>
+</body>
+</html>

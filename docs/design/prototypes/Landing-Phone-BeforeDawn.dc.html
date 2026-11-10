@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hermes Motors — Landing v2 on a phone, before dawn</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.lp-mono{font-family:'Geist Mono',ui-monospace,monospace}
+.lp-mich{font-family:'Michroma','Eurostile',sans-serif;font-weight:400}
+.lp-minor{fill:none;stroke:rgba(255,255,255,.28);stroke-width:4;stroke-dashoffset:.2;stroke-dasharray:0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 4.6 0.4 89.6}
+.lp-major{fill:none;stroke:rgba(255,255,255,.72);stroke-width:8;stroke-dashoffset:.4;stroke-dasharray:0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 26.2 0.8 89.2}
+.lp-sealed{display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;color:#8E939C}
+.lp-sealed i{display:block;height:7px;border-radius:4px;background:rgba(255,255,255,.12)}
+.lp-dial{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.lp-dial figcaption{font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;color:#C9CDD3;text-align:center}
+.lp-pulse{animation:lp-pulse 1.8s ease-out infinite}
+@keyframes lp-pulse{0%{box-shadow:0 0 0 0 rgba(213,18,30,.55)}70%{box-shadow:0 0 0 8px rgba(213,18,30,0)}100%{box-shadow:0 0 0 0 rgba(213,18,30,0)}}
+@media (prefers-reduced-motion: reduce){.lp-pulse{animation:none}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; position: relative; width: 390px; box-sizing: border-box; padding: 8px; background: {{frame}}; color: {{ink}}; font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif">
+<div style="position: relative; border-radius: 28px; overflow: hidden; isolation: isolate; padding-bottom: 14px">
+
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(100% 34% at 50% 22%, #FFFFFF 0%, #EEF0F3 45%, #DADDE2 80%, #CDD1D7 100%)"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; opacity: {{nightOn}}; background: radial-gradient(90% 18% at 50% 27%, rgba(213,18,30,.32) 0%, rgba(213,18,30,.08) 48%, rgba(213,18,30,0) 74%), radial-gradient(110% 36% at 50% 20%, #1C1D22 0%, #121317 45%, #08090B 80%, #040405 100%)"></div>
+
+<header style="position: relative; z-index: 3; margin: 12px 12px 0; height: 60px; padding: 8px 8px 8px 16px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; border-radius: 999px; background: {{glassBg}}; backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); border: 1px solid {{glassBorder}}; box-shadow: {{glassShadow}}">
+<a href="#" aria-label="Hermes Motors home" style="display: flex; align-items: center; gap: 10px; text-decoration: none">
+<svg viewBox="0 0 120 80" width="36" height="24" aria-hidden="true"><path d="M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z" style="fill: currentColor"/><path d="M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z" style="fill: var(--accent, #D5121E)"/></svg>
+<span class="lp-mich" style="font-size: 13px; letter-spacing: 0.34em">HERMES</span>
+</a>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{flip}}" aria-label="{{flipLabel}}" title="{{flipLabel}}" style="width: 44px; height: 44px; padding: 0; border-radius: 50%; display: grid; place-items: center; background: {{chipBg}}; border: 1px solid {{chipBorder}}; color: inherit; cursor: pointer">
+<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display: {{nightBlock}}"><circle cx="12" cy="12" r="4" style="fill: none; stroke: currentColor; stroke-width: 1.6"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round"/></svg>
+<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display: {{dayBlock}}"><path d="M19.5 14.6A7.5 7.5 0 0 1 9.4 4.5a7.5 7.5 0 1 0 10.1 10.1Z" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round"/></svg>
+</button>
+<button type="button" aria-label="Menu" aria-expanded="false" style="width: 44px; height: 44px; padding: 0; border-radius: 50%; display: grid; place-items: center; background: {{menuBg}}; border: 0; color: {{menuInk}}; cursor: pointer"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 8h16M4 16h16" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round"/></svg></button>
+</div>
+</header>
+
+<div style="position: relative; z-index: 1; height: 288px">
+<svg aria-hidden="true" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMin slice" style="position: absolute; left: 0; top: 150px; width: 100%; height: 200px; display: block">
+<path d="M720,0 L-1680,560 M720,0 L-1200,560 M720,0 L-720,560 M720,0 L-240,560 M720,0 L240,560 M720,0 L720,560 M720,0 L1200,560 M720,0 L1680,560 M720,0 L2160,560 M720,0 L2640,560 M720,0 L3120,560 M-400,6.9 L1840,6.9 M-400,27.7 L1840,27.7 M-400,62.2 L1840,62.2 M-400,110.6 L1840,110.6 M-400,172.8 L1840,172.8 M-400,248.9 L1840,248.9 M-400,338.8 L1840,338.8 M-400,442.5 L1840,442.5" style="fill: none; stroke: {{gridStroke}}; stroke-opacity: {{gridOpacity}}; stroke-width: 1"/>
+</svg>
+<div aria-hidden="true" class="lp-mich" style="position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 72px; line-height: 1; letter-spacing: 0.02em; color: rgba(255,255,255,.72); -webkit-text-stroke: 1px rgba(14,15,17,.09); white-space: nowrap; opacity: {{dayOn}}">HM-27</div>
+<div aria-hidden="true" class="lp-mich" style="position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 72px; line-height: 1; letter-spacing: 0.02em; color: rgba(255,255,255,.025); -webkit-text-stroke: 1px rgba(255,255,255,.16); white-space: nowrap; opacity: {{nightOn}}">06:00</div>
+<img src="../../../vendor/assets/images/hero-day.webp" alt="The HM-27 in the First Light race livery: Gallery White over carbon, red wing tips, red slipstream on the sidepod, the winged H on the engine cover" style="position: absolute; left: -4px; top: 92px; width: 382px; height: 135.6px; display: block; opacity: {{dayOn}}">
+<img src="../../../vendor/assets/images/hero-night.webp" alt="The HM-27 before dawn: a graphite car in the dark, lit from behind by a red glow" style="position: absolute; left: -4px; top: 92px; width: 382px; height: 135.6px; display: block; opacity: {{nightOn}}">
+<div style="position: absolute; left: 0; right: 0; top: 240px; display: flex; justify-content: center">
+<span class="lp-mono" style="display: {{dayInline}}; align-items: center; gap: 8px; height: 32px; padding: 0 13px; border-radius: 999px; background: rgba(255,255,255,.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.85); font-size: 10.5px; letter-spacing: 0.12em; color: #3D4047; white-space: nowrap"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4" style="fill: none; stroke: currentColor; stroke-width: 1.6"/></svg>DRAG TO ROTATE · 360°</span>
+<span class="lp-mono" style="display: {{nightInline}}; align-items: center; gap: 8px; height: 32px; padding: 0 13px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.14); font-size: 10.5px; letter-spacing: 0.12em; color: #C9CDD3; white-space: nowrap"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 6v3M5.6 9.6l2 2M18.4 9.6l-2 2" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round"/></svg>THE HM-27 WAKES AT 06:00</span>
+</div>
+</div>
+
+<section style="position: relative; z-index: 2; padding: 22px 20px 0; display: flex; flex-direction: column; align-items: stretch; gap: 16px">
+<div style="display: {{dayFlex}}; flex-direction: column; align-items: flex-start; gap: 16px">
+<span class="lp-mono" style="display: inline-flex; align-items: center; gap: 9px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.9); font-size: 10.5px; letter-spacing: 0.16em; color: #3D4047"><span class="lp-pulse" style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent, #D5121E)"></span>LIVE FROM THE PROVING GROUND</span>
+<h1 class="lp-mich" style="margin: 0; font-size: 30px; line-height: 1.14; letter-spacing: 0.01em"><span style="display: block">SPEED IS</span><span style="display: block; color: {{dim}}">THE</span><span style="display: block">MESSAGE.</span></h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: {{muted}}">Our first Grand Prix car. 1,006 horsepower, half of it electric. Built for the 2027 grid.</p>
+</div>
+<div style="display: {{nightFlex}}; flex-direction: column; align-items: flex-start; gap: 16px">
+<span class="lp-mono" style="display: inline-flex; align-items: center; gap: 9px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.14); font-size: 10.5px; letter-spacing: 0.16em; color: #C9CDD3"><svg viewBox="0 0 40 16" width="20" height="8" aria-hidden="true"><path d="M38,1.5 L36.5,8 L3,3 L0,0 Z" style="fill: var(--accent, #D5121E)"/></svg>BEFORE DAWN · DAY ONE</span>
+<h1 class="lp-mich" style="margin: 0; font-size: 30px; line-height: 1.14; letter-spacing: 0.01em"><span style="display: block">A MESSAGE</span><span style="display: block; color: {{dim}}">IS ON ITS</span><span style="display: block">WAY.</span></h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: {{muted}}">At 06:00 the HM&#8209;27 meets first light, streamed live from the Proving Ground. Until then, it waits in the dark.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 4px">
+<a href="#" style="display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 6px 0 22px; border-radius: 999px; background: var(--accent, #D5121E); color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 600; box-shadow: 0 16px 30px -14px color-mix(in srgb, var(--accent, #D5121E) 80%, transparent), inset 0 1px 0 rgba(255,255,255,.25)">{{cta1}}<span style="width: 44px; height: 44px; border-radius: 50%; background: #FFFFFF; color: var(--accent, #D5121E); display: grid; place-items: center">
+<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display: {{dayBlock}}"><path d="M5 12h13M13 6l6 6-6 6" style="fill: none; stroke: currentColor; stroke-width: 1.9"/></svg>
+<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display: {{nightBlock}}"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5" style="fill: none; stroke: currentColor; stroke-width: 1.7"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" style="fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round"/></svg>
+</span></a>
+<a href="#" style="display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 999px; background: {{btnBg}}; border: 1px solid {{btnBorder}}; text-decoration: none; font-size: 15px; font-weight: 600">{{cta2}}</a>
+</div>
+</section>
+
+<div style="display: {{nightFlex}}; position: relative; z-index: 2; margin: 22px 12px 0; flex-direction: column; gap: 16px; padding: 18px 18px 16px; border-radius: 24px; background: linear-gradient(180deg, rgba(34,35,40,.8) 0%, rgba(12,13,15,.88) 100%); backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 30px 60px -28px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.14); color: #F4F4F5">
+<div style="display: flex; align-items: center; gap: 12px">
+<span aria-hidden="true" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.18); display: grid; place-items: center; color: rgba(255,255,255,.38)"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3v8M7.1 6.6a7 7 0 1 0 9.8 0" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round"/></svg></span>
+<div aria-hidden="true" style="display: flex; gap: 4px">
+<sc-for list="{{leds}}" as="led" hint-placeholder-count="15"><span style="width: 11px; height: 5px; border-radius: 3px; background: {{led.bg}}; opacity: {{led.op}}; box-shadow: {{led.glow}}"></span></sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="lp-mono" style="font-size: 10.5px; letter-spacing: 0.22em; color: #FF5A63">UNTIL FIRST LIGHT</span>
+<div role="timer" aria-label="Time until first light at 06:00" class="lp-mono" style="font-size: 58px; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #FFFFFF; white-space: nowrap">{{hh}}<span style="color: rgba(255,255,255,.28)">:</span>{{mm}}<span style="color: rgba(255,255,255,.28)">:</span>{{ss}}</div>
+<span style="font-size: 13px; color: #A9AEB6">06:00 at the Proving Ground · streamed live</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 9px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.08)">
+<span class="lp-mono" style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.16em; color: #C9CDD3"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2" style="fill: none; stroke: currentColor; stroke-width: 1.7"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" style="fill: none; stroke: currentColor; stroke-width: 1.7"/></svg>SEALED UNTIL 06:00</span>
+<div class="lp-sealed"><span>0–100 KM/H</span><i style="width: 46px"></i></div>
+<div class="lp-sealed"><span>TOP SPEED</span><i style="width: 56px"></i></div>
+<div class="lp-sealed"><span>SYSTEM POWER</span><i style="width: 70px"></i></div>
+<div class="lp-sealed"><span>MIN. MASS</span><i style="width: 52px"></i></div>
+<div class="lp-sealed"><span>ELECTRIC · MGU-K</span><i style="width: 52px"></i></div>
+</div>
+<span style="display: inline-flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08); font-size: 13px; color: #A9AEB6"><svg viewBox="0 0 40 16" width="24" height="10" aria-hidden="true"><path d="M38,1.5 L36.5,8 L3,3 L0,0 Z" style="fill: var(--accent, #D5121E)"/></svg>One feather tonight. The rest at first light.</span>
+</div>
+
+<div style="display: {{dayFlex}}; position: relative; z-index: 2; margin: 22px 12px 0; flex-direction: column; gap: 14px; padding: 16px 18px 20px; border-radius: 24px; background: linear-gradient(180deg, rgba(34,35,40,.8) 0%, rgba(12,13,15,.88) 100%); backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 30px 60px -28px rgba(14,15,17,.6), inset 0 1px 0 rgba(255,255,255,.14); color: #F4F4F5">
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" onClick="{{ignite}}" aria-label="Start engine and replay the ignition sequence" style="width: 48px; height: 48px; flex: none; border-radius: 50%; border: 1.5px solid var(--accent, #D5121E); background: rgba(255,255,255,.06); color: #FFFFFF; display: grid; place-items: center; cursor: pointer; box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent, #D5121E) 16%, transparent)"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3v8M7.1 6.6a7 7 0 1 0 9.8 0" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round"/></svg></button>
+<div aria-hidden="true" style="display: flex; gap: 4px">
+<sc-for list="{{leds}}" as="led" hint-placeholder-count="15"><span style="width: 11px; height: 5px; border-radius: 3px; background: {{led.bg}}; opacity: {{led.op}}; box-shadow: {{led.glow}}"></span></sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 12px">
+<figure class="lp-dial">
+<svg viewBox="0 0 200 200" style="width: 176px; height: 176px" role="img" aria-label="System power 1,006 horsepower, 750 kilowatts">
+<circle cx="100" cy="100" r="95" style="fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,.2); stroke-width: 1"/>
+<circle class="lp-minor" cx="100" cy="100" r="88" pathLength="360" transform="rotate(135 100 100)"/>
+<circle class="lp-major" cx="100" cy="100" r="88" pathLength="360" transform="rotate(135 100 100)"/>
+<circle cx="100" cy="100" r="81" pathLength="360" transform="rotate(135 100 100)" style="fill: none; stroke: var(--accent, #D5121E); stroke-width: 3; stroke-dasharray: 0 243 27 90"/>
+<circle cx="100" cy="100" r="72" pathLength="360" transform="rotate(135 100 100)" style="fill: none; stroke: rgba(255,255,255,.1); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 270 360"/>
+<circle cx="100" cy="100" r="72" pathLength="360" transform="rotate(135 100 100)" style="fill: none; stroke: var(--accent, #D5121E); stroke-width: 7; stroke-linecap: round; stroke-dasharray: {{d3.arc}} 360"/>
+<g transform="rotate({{d3.deg}} 100 100)"><path d="M98,97.8 L170,99.5 L170,100.5 L98,102.2 Z" style="fill: #FFFFFF"/></g>
+<circle cx="100" cy="100" r="5" style="fill: #16171A; stroke: #FFFFFF; stroke-width: 2"/>
+<text x="100" y="142" style="text-anchor: middle; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 31px; font-weight: 500; fill: #FFFFFF">{{d3.val}}</text>
+<text x="100" y="162" style="text-anchor: middle; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.22em; fill: #C9CDD3">{{powerUnit}}</text>
+<text x="100" y="182" style="text-anchor: middle; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: 0.16em; fill: #E4E6EA">{{powerSub}}</text>
+</svg>
+<figcaption style="color: #FFFFFF">SYSTEM POWER</figcaption>
+</figure>
+<div role="group" aria-label="Power units" style="display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14)">
+<button type="button" onClick="{{setHp}}" aria-pressed="{{hpPressed}}" class="lp-mono" style="min-width: 60px; height: 44px; border: 0; border-radius: 999px; background: {{hpBg}}; color: {{hpFg}}; font-size: 12px; letter-spacing: 0.12em; cursor: pointer">HP</button>
+<button type="button" onClick="{{setKw}}" aria-pressed="{{kwPressed}}" class="lp-mono" style="min-width: 60px; height: 44px; border: 0; border-radius: 999px; background: {{kwBg}}; color: {{kwFg}}; font-size: 12px; letter-spacing: 0.12em; cursor: pointer">kW</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px 10px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.08)">
+<sc-for list="{{small}}" as="dl" hint-placeholder-count="4">
+<figure class="lp-dial">
+<svg viewBox="0 0 200 200" style="width: 108px; height: 108px" role="img" aria-label="{{dl.aria}}">
+<circle cx="100" cy="100" r="95" style="fill: rgba(255,255,255,.04); stroke: rgba(255,255,255,.12); stroke-width: 1"/>
+<circle class="lp-minor" cx="100" cy="100" r="88" pathLength="360" transform="rotate(135 100 100)"/>
+<circle class="lp-major" cx="100" cy="100" r="88" pathLength="360" transform="rotate(135 100 100)"/>
+<circle cx="100" cy="100" r="74" pathLength="360" transform="rotate(135 100 100)" style="fill: none; stroke: rgba(255,255,255,.1); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 270 360"/>
+<circle cx="100" cy="100" r="74" pathLength="360" transform="rotate(135 100 100)" style="fill: none; stroke: var(--accent, #D5121E); stroke-width: 6; stroke-linecap: round; stroke-dasharray: {{dl.arc}} 360"/>
+<g transform="rotate({{dl.deg}} 100 100)"><path d="M98,97.6 L172,99.4 L172,100.6 L98,102.4 Z" style="fill: #FFFFFF"/></g>
+<circle cx="100" cy="100" r="6" style="fill: #16171A; stroke: #FFFFFF; stroke-width: 2"/>
+<text x="100" y="150" style="text-anchor: middle; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 32px; font-weight: 500; fill: #FFFFFF">{{dl.val}}</text>
+<text x="100" y="174" style="text-anchor: middle; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: 0.2em; fill: #C9CDD3">{{dl.unit}}</text>
+</svg>
+<figcaption>{{dl.cap}}</figcaption>
+</figure>
+</sc-for>
+</div>
+</div>
+
+<div aria-hidden="true" style="position: absolute; z-index: 25; left: 0; right: 0; top: 836px; border-top: 1px dashed {{foldInk}}; pointer-events: none"><span class="lp-mono" style="position: absolute; right: 8px; top: -10px; padding: 2px 7px; border-radius: 6px; background: {{frame}}; font-size: 9px; letter-spacing: 0.16em; color: {{foldInk}}">844 · FIRST SCREEN</span></div>
+
+<div aria-hidden="true" style="position: absolute; inset: 0; z-index: 20; pointer-events: none; overflow: hidden; display: {{wipeShow}}">
+<div style="position: absolute; top: -12%; height: 124%; left: 0; width: 1000px; display: flex; transform: translateX({{wipeX}}px) skewX(-14deg)">
+<span style="flex: 1; background: {{stripeA}}"></span><span style="flex: 1; background: {{stripeB}}"></span><span style="flex: 1; background: {{stripeC}}"></span>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"firstLight":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#D5121E","options":["#D5121E","#E8432E","#A30F1F","#0E0F11"]},"$preview":{"width":390,"height":1218}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var day = !!props.firstLight;
+    this.state = { day: day, t: day ? 0 : 1, unit: 'hp', w: -1, toDay: true, now: Date.now() };
+    this.raf = 0;
+    this.wraf = 0;
+    this.timer = 0;
+  }
+  componentDidMount() {
+    var self = this;
+    this.timer = setInterval(function () { self.setState({ now: Date.now() }); }, 1000);
+    if (this.state.day) this.ignite();
+  }
+  componentDidUpdate(prev) {
+    if (!!this.props.firstLight !== !!prev.firstLight) this.wipe(!!this.props.firstLight);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    cancelAnimationFrame(this.raf);
+    cancelAnimationFrame(this.wraf);
+  }
+  calm() {
+    return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+  ignite() {
+    cancelAnimationFrame(this.raf);
+    if (this.calm()) { this.setState({ t: 1 }); return; }
+    var self = this;
+    var t0 = performance.now();
+    var dur = 2600;
+    var step = function (now) {
+      var t = Math.min(1, (now - t0) / dur);
+      self.setState({ t: t });
+      if (t < 1) self.raf = requestAnimationFrame(step);
+    };
+    this.setState({ t: 0 });
+    this.raf = requestAnimationFrame(step);
+  }
+  wipe(toDay) {
+    if (this.state.w >= 0 || toDay === this.state.day) return;
+    if (this.calm()) { this.setState({ day: toDay, t: 1 }); return; }
+    cancelAnimationFrame(this.wraf);
+    var self = this;
+    var t0 = performance.now();
+    var dur = 450;
+    var switched = false;
+    var step = function (now) {
+      var w = Math.min(1, (now - t0) / dur);
+      var e = 1 - Math.pow(1 - w, 3);
+      var patch = { w: w };
+      if (!switched && e >= 0.49) {
+        switched = true;
+        patch.day = toDay;
+        if (toDay) patch.t = 0;
+      }
+      self.setState(patch);
+      if (w < 1) {
+        self.wraf = requestAnimationFrame(step);
+      } else {
+        self.setState({ w: -1 });
+        if (toDay) self.ignite();
+      }
+    };
+    this.setState({ w: 0, toDay: toDay });
+    this.wraf = requestAnimationFrame(step);
+  }
+  renderVals() {
+    var self = this;
+    var accent = this.props.accent || '#D5121E';
+    var day = this.state.day;
+    var t = this.state.t;
+    var ease = function (x) { return 1 - Math.pow(1 - x, 3); };
+    var sweep = t < 0.42 ? ease(t / 0.42) : 1;
+    var settle = t < 0.42 ? 0 : ease((t - 0.42) / 0.58);
+    var dial = function (frac, value, fmt) {
+      var f = t < 0.42 ? sweep : 1 + (frac - 1) * settle;
+      return { arc: (270 * f).toFixed(1), deg: (135 + 270 * f).toFixed(1), val: fmt(value * settle) };
+    };
+    var int = function (v) { return Math.round(v).toLocaleString('en-US'); };
+    var one = function (v) { return v.toFixed(1); };
+    var kw = this.state.unit === 'kw';
+
+    // prototype countdown: to the next 06:00 on this device. The site counts to one fixed instant (see the handoff).
+    var nowMs = this.state.now;
+    var target = new Date(nowMs);
+    target.setHours(6, 0, 0, 0);
+    if (target.getTime() <= nowMs) target.setDate(target.getDate() + 1);
+    var ms = target.getTime() - nowMs;
+    var sec = Math.max(0, Math.floor(ms / 1000));
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var nightFrac = Math.max(0, Math.min(1, 1 - ms / (6 * 3600 * 1000)));
+
+    var lit = day ? (t < 0.42 ? Math.round(15 * sweep) : Math.round(15 * (1 - settle))) : Math.round(15 * nightFrac);
+    var leds = [];
+    for (var i = 0; i < 15; i++) {
+      var col = i < 5 ? '#FFFFFF' : accent;
+      var on = i < lit;
+      leds.push({ bg: col, op: on ? (day ? 1 : 0.9) : 0.18, glow: on ? '0 0 10px ' + col : 'none' });
+    }
+    var small = [
+      Object.assign(dial(2.6 / 5, 2.6, one), { unit: 'SEC', cap: '0–100 KM/H', aria: '0 to 100 kilometres per hour in 2.6 seconds' }),
+      Object.assign(dial(352 / 400, 352, int), { unit: 'KM/H', cap: 'TOP SPEED', aria: 'Top speed 352 kilometres per hour' }),
+      Object.assign(dial(768 / 1000, 768, int), { unit: 'KG', cap: 'MIN. MASS', aria: 'Minimum mass 768 kilograms' }),
+      Object.assign(dial(350 / 400, 350, int), { unit: 'KW', cap: 'ELECTRIC · MGU-K', aria: 'Electric motor 350 kilowatts' })
+    ];
+
+    var w = this.state.w;
+    var e = w < 0 ? 0 : 1 - Math.pow(1 - w, 3);
+    var toDay = this.state.toDay;
+
+    var P = day ? {
+      frame: '#F4F4F5', ink: '#0E0F11', muted: '#3D4047', dim: 'rgba(14,15,17,.42)',
+      glassBg: 'rgba(255,255,255,.55)', glassBorder: 'rgba(255,255,255,.85)', glassShadow: '0 10px 30px -14px rgba(14,15,17,.22), inset 0 1px 0 rgba(255,255,255,.9)',
+      chipBg: 'rgba(255,255,255,.7)', chipBorder: 'rgba(255,255,255,.95)', menuBg: '#0E0F11', menuInk: '#FFFFFF',
+      btnBg: 'rgba(255,255,255,.55)', btnBorder: 'rgba(255,255,255,.9)',
+      gridStroke: '#0E0F11', gridOpacity: '0.07', foldInk: 'rgba(213,18,30,.55)'
+    } : {
+      frame: '#050506', ink: '#F4F4F5', muted: '#A9AEB6', dim: 'rgba(244,244,245,.42)',
+      glassBg: 'rgba(22,23,27,.55)', glassBorder: 'rgba(255,255,255,.12)', glassShadow: '0 10px 30px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.08)',
+      chipBg: 'rgba(255,255,255,.06)', chipBorder: 'rgba(255,255,255,.14)', menuBg: '#F4F4F5', menuInk: '#0E0F11',
+      btnBg: 'rgba(255,255,255,.06)', btnBorder: 'rgba(255,255,255,.16)',
+      gridStroke: '#FFFFFF', gridOpacity: '0.05', foldInk: 'rgba(255,90,99,.6)'
+    };
+
+    return {
+      accent: accent,
+      frame: P.frame, ink: P.ink, muted: P.muted, dim: P.dim,
+      glassBg: P.glassBg, glassBorder: P.glassBorder, glassShadow: P.glassShadow,
+      chipBg: P.chipBg, chipBorder: P.chipBorder, menuBg: P.menuBg, menuInk: P.menuInk,
+      btnBg: P.btnBg, btnBorder: P.btnBorder, gridStroke: P.gridStroke, gridOpacity: P.gridOpacity, foldInk: P.foldInk,
+      dayOn: day ? '1' : '0', nightOn: day ? '0' : '1',
+      dayFlex: day ? 'flex' : 'none', nightFlex: day ? 'none' : 'flex',
+      dayInline: day ? 'inline-flex' : 'none', nightInline: day ? 'none' : 'inline-flex',
+      dayBlock: day ? 'block' : 'none', nightBlock: day ? 'none' : 'block',
+      flipLabel: day ? 'Preview the site before dawn' : 'Preview first light at 06:00',
+      cta1: day ? 'Beat the messenger' : 'Be here at 06:00',
+      cta2: day ? 'Explore the car' : 'Read the manifesto',
+      leds: leds,
+      d3: dial(kw ? 750 / 820 : 1006 / 1100, kw ? 750 : 1006, int),
+      small: small,
+      powerUnit: kw ? 'KW' : 'HP',
+      powerSub: kw ? '≈ 1,006 HP · 50/50' : '750 KW · 50/50',
+      hpPressed: kw ? 'false' : 'true',
+      kwPressed: kw ? 'true' : 'false',
+      hpBg: kw ? 'transparent' : '#FFFFFF',
+      hpFg: kw ? '#C9CDD3' : '#0E0F11',
+      kwBg: kw ? '#FFFFFF' : 'transparent',
+      kwFg: kw ? '#0E0F11' : '#C9CDD3',
+      hh: pad(Math.floor(sec / 3600)),
+      mm: pad(Math.floor((sec % 3600) / 60)),
+      ss: pad(sec % 60),
+      wipeShow: w < 0 ? 'none' : 'block',
+      wipeX: Math.round(-1400 + 2170 * e),
+      stripeA: toDay ? '#F4F4F5' : '#0E0F11',
+      stripeB: accent,
+      stripeC: toDay ? '#0E0F11' : '#F4F4F5',
+      ignite: function () { self.ignite(); },
+      flip: function () { self.wipe(!self.state.day); },
+      setHp: function () { self.setState({ unit: 'hp' }); },
+      setKw: function () { self.setState({ unit: 'kw' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

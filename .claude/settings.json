@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && echo '--- docs/PROGRESS.md (re-read after compaction) ---' && head -c 8000 docs/PROGRESS.md && echo && echo '--- last 5 commits ---' && (git log --oneline -5 2>/dev/null || echo 'no commits yet')"
+          }
+        ]
+      }
+    ]
+  }
+}

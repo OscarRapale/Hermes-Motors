@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hermes Motors — Landing v2, specs: the car comes apart</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+.sp-mono{font-family:'Geist Mono',ui-monospace,monospace}
+.sp-frames img{position:absolute;left:0;top:0;width:100%;height:100%;display:block;mix-blend-mode:plus-lighter}
+.sp-call{position:absolute;display:flex;flex-direction:column-reverse;align-items:center;gap:2px;transform:translate(-50%,calc(-100% + 22px));transition:opacity .35s ease-out;pointer-events:none}
+.sp-call.r{align-items:flex-end;transform:translate(calc(-100% + 22px),calc(-100% + 22px))}
+.sp-call.b{flex-direction:column;transform:translate(-50%,-22px)}
+.sp-call i{width:44px;height:44px;display:grid;place-items:center}
+.sp-call i::after{content:'';width:12px;height:12px;border-radius:50%;background:#FFFFFF;box-shadow:0 0 0 3px var(--accent,#D5121E),0 0 0 9px color-mix(in srgb,var(--accent,#D5121E) 18%,transparent)}
+.sp-chip{white-space:nowrap;display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.62);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 20px -10px rgba(14,15,17,.3);font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:#0E0F11}
+.sp-glass{border-radius:22px;background:linear-gradient(180deg,rgba(34,35,40,.82) 0%,rgba(12,13,15,.9) 100%);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);border:1px solid rgba(255,255,255,.16);box-shadow:0 30px 60px -28px rgba(14,15,17,.6),inset 0 1px 0 rgba(255,255,255,.14);color:#F4F4F5;box-sizing:border-box}
+.sp-fig{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+.sp-fig b{font-family:'Geist Mono',ui-monospace,monospace;font-weight:500;font-size:40px;line-height:1;letter-spacing:-.02em;color:#FFFFFF;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sp-fig b small{font-size:12px;font-weight:400;letter-spacing:.14em;margin-left:7px;color:#C9CDD3}
+.sp-fig span{font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;line-height:1.5;letter-spacing:.14em;color:#C9CDD3}
+.sp-stop{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:9px;min-width:44px;min-height:44px;padding:0;border:0;background:transparent;cursor:pointer;font:inherit;color:inherit}
+.sp-stop i{display:block;width:14px;height:14px;box-sizing:border-box;border-radius:50%;margin-top:5px}
+.sp-stop span{font-family:'Geist Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.14em;white-space:nowrap}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; min-height: 1000px; box-sizing: border-box; padding: 14px; background: #F4F4F5; color: #0E0F11; font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif">
+<div style="position: relative; height: 972px; border-radius: 32px; overflow: hidden; isolation: isolate">
+
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(70% 55% at 62% 40%, #FFFFFF 0%, #EEF0F3 40%, #DADDE2 76%, #CDD1D7 100%)"></div>
+<svg aria-hidden="true" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMin slice" style="position: absolute; left: 0; top: 46%; width: 100%; height: 54%; display: block">
+<path d="M720,0 L-1680,560 M720,0 L-1200,560 M720,0 L-720,560 M720,0 L-240,560 M720,0 L240,560 M720,0 L720,560 M720,0 L1200,560 M720,0 L1680,560 M720,0 L2160,560 M720,0 L2640,560 M720,0 L3120,560 M-400,6.9 L1840,6.9 M-400,27.7 L1840,27.7 M-400,62.2 L1840,62.2 M-400,110.6 L1840,110.6 M-400,172.8 L1840,172.8 M-400,248.9 L1840,248.9 M-400,338.8 L1840,338.8 M-400,442.5 L1840,442.5" style="fill: none; stroke: #0E0F11; stroke-opacity: 0.07; stroke-width: 1"/>
+</svg>
+<div aria-hidden="true" style="position: absolute; right: 36px; top: 88px; font-family: 'Michroma', 'Eurostile', sans-serif; font-size: 300px; line-height: 1; letter-spacing: 0.02em; color: rgba(255,255,255,.72); -webkit-text-stroke: 1px rgba(14,15,17,.09); white-space: nowrap">{{ghost}}</div>
+
+<div class="sp-frames" role="img" aria-label="{{carLabel}}" style="position: absolute; z-index: 1; left: {{boxL}}px; top: {{boxT}}px; width: {{boxW}}px; height: {{boxH}}px; isolation: isolate; transform: scale({{zoom}}); transform-origin: {{ox}}px {{oy}}px">
+<sc-for list="{{frames}}" as="fr" hint-placeholder-count="19"><img src="{{fr.src}}" alt="" decoding="async" style="opacity: {{fr.op}}"></sc-for>
+</div>
+
+<div aria-hidden="true" style="position: absolute; z-index: 2; left: {{boxL}}px; top: {{boxT}}px; width: {{boxW}}px; height: {{boxH}}px; pointer-events: none">
+<svg viewBox="{{vb}}" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; opacity: {{c1}}; transition: opacity .35s ease-out; transform: scale({{zoom}}); transform-origin: {{ox}}px {{oy}}px">
+<line x1="{{wb.x1}}" y1="{{wb.y1}}" x2="{{wb.x2}}" y2="{{wb.y2}}" style="stroke: #0E0F11; stroke-width: 1.5; vector-effect: non-scaling-stroke"/>
+<line x1="{{wb.x1}}" y1="{{wb.t1a}}" x2="{{wb.x1}}" y2="{{wb.t1b}}" style="stroke: #0E0F11; stroke-width: 1.5; vector-effect: non-scaling-stroke"/>
+<line x1="{{wb.x2}}" y1="{{wb.t2a}}" x2="{{wb.x2}}" y2="{{wb.t2b}}" style="stroke: #0E0F11; stroke-width: 1.5; vector-effect: non-scaling-stroke"/>
+</svg>
+<span class="sp-chip" style="position: absolute; left: {{wb.mx}}%; top: {{wb.my}}%; transform: translate(-50%, 12px); opacity: {{c1}}; transition: opacity .35s ease-out">3,400 MM WHEELBASE</span>
+<span class="sp-call b" style="left: {{p.fw.x}}%; top: {{p.fw.y}}%; opacity: {{c2}}"><i></i><b class="sp-chip">FRONT WING · 2 MOVING ELEMENTS</b></span>
+<span class="sp-call r" style="left: {{p.rw.x}}%; top: {{p.rw.y}}%; opacity: {{c2}}"><i></i><b class="sp-chip">REAR WING · 3 MOVING ELEMENTS</b></span>
+<span class="sp-call" style="left: {{p.halo.x}}%; top: {{p.halo.y}}%; opacity: {{c3}}"><i></i><b class="sp-chip">HALO · GRADE 5 TITANIUM</b></span>
+<span class="sp-call" style="left: {{p.wheel.x}}%; top: {{p.wheel.y}}%; opacity: {{c4}}"><i></i><b class="sp-chip">18-INCH RIMS</b></span>
+<span class="sp-call" style="left: {{p.floor.x}}%; top: {{p.floor.y}}%; opacity: {{c4}}"><i></i><b class="sp-chip">FLAT FLOOR</b></span>
+<span class="sp-call" style="left: {{p.power.x}}%; top: {{p.power.y}}%; opacity: {{c5}}"><i></i><b class="sp-chip">750 kW · V6 + ELECTRIC</b></span>
+</div>
+
+<header style="position: relative; z-index: 4; margin: 16px 16px 0; min-height: 64px; padding: 10px 10px 10px 20px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-radius: 999px; background: rgba(255,255,255,.55); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); border: 1px solid rgba(255,255,255,.85); box-shadow: 0 10px 30px -14px rgba(14,15,17,.22), inset 0 1px 0 rgba(255,255,255,.9)">
+<a href="#" aria-label="Hermes Motors home" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<svg viewBox="0 0 120 80" width="42" height="28" aria-hidden="true"><path d="M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z" style="fill: currentColor"/><path d="M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z" style="fill: var(--accent, #D5121E)"/></svg>
+<span style="font-family: 'Michroma', 'Eurostile', sans-serif; font-size: 15px; letter-spacing: 0.34em">HERMES</span>
+</a>
+<nav aria-label="Primary" style="display: flex; gap: 28px; font-size: 14px; font-weight: 500">
+<a href="#" style="text-decoration: none">Team</a>
+<a href="#" aria-current="page" style="text-decoration: underline; text-decoration-color: var(--accent, #D5121E); text-decoration-thickness: 2px; text-underline-offset: 7px">HM-27</a>
+<a href="#" style="text-decoration: none">Drivers</a>
+<a href="#" style="text-decoration: none">Season 2027</a>
+<a href="#" style="text-decoration: none">Partners</a>
+<a href="#" style="text-decoration: none">News</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px">
+<a href="#" aria-label="Store" style="width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.95)"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8Zm4 0V6.5a3 3 0 0 1 6 0V8" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round"/></svg></a>
+<a href="#" style="display: inline-flex; height: 44px; padding: 0 18px 0 16px; align-items: center; gap: 10px; border-radius: 999px; background: #0E0F11; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent, #D5121E); box-shadow: 0 0 10px var(--accent, #D5121E)"></span>Test drive</a>
+</div>
+</header>
+
+<section aria-label="HM-27 specification" style="position: absolute; z-index: 3; left: 44px; top: 128px; width: 400px; display: flex; flex-direction: column; gap: 28px">
+<div style="position: relative">
+<div style="clip-path: {{clip}}; display: flex; flex-direction: column; align-items: flex-start; gap: 18px">
+<p class="sp-mono" style="margin: 0; font-size: 11px; letter-spacing: 0.2em; color: #3D4047"><span style="color: var(--accent, #D5121E)">{{num}} / 05</span> · {{label}}</p>
+<h2 style="margin: 0; font-family: 'Michroma', 'Eurostile', sans-serif; font-weight: 400; font-size: 40px; line-height: 1.12; letter-spacing: 0.01em; white-space: nowrap"><span style="display: block">{{l1}}</span><span style="display: block; color: rgba(14,15,17,.42)">{{l2}}</span><span style="display: block">{{l3}}</span></h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; color: #3D4047; max-width: 400px">{{para}}</p>
+<a href="#" style="display: {{ctaShow}}; height: 52px; padding: 0 7px 0 22px; align-items: center; gap: 14px; border-radius: 999px; background: #0E0F11; color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 600">Take it for a test drive<span style="width: 38px; height: 38px; border-radius: 50%; background: var(--accent, #D5121E); display: grid; place-items: center"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" style="fill: none; stroke: #FFFFFF; stroke-width: 1.9"/></svg></span></a>
+</div>
+<span aria-hidden="true" style="position: absolute; top: -24px; bottom: -24px; left: {{edgeX}}px; width: 3px; background: var(--accent, #D5121E); transform: skewX(-14deg); opacity: {{edgeOp}}"></span>
+</div>
+
+<div class="sp-glass" style="display: {{figShow}}; align-items: stretch; padding: 20px 22px">
+<div class="sp-fig"><b>{{f1v}}<small>{{f1u}}</small></b><span>{{f1l}}</span></div>
+<div aria-hidden="true" style="flex: none; width: 1px; margin: 0 20px; background: rgba(255,255,255,.12)"></div>
+<div class="sp-fig"><b>{{f2v}}<small>{{f2u}}</small></b><span>{{f2l}}</span></div>
+</div>
+
+<div class="sp-glass" style="display: {{powShow}}; flex-direction: column; gap: 13px; padding: 18px 22px 18px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+<span class="sp-mono" style="font-size: 10.5px; letter-spacing: 0.16em; color: #C9CDD3; padding-bottom: 4px">SYSTEM POWER</span>
+<div class="sp-fig" style="flex: none; align-items: flex-end"><b>{{pw}}<small>kW</small></b></div>
+</div>
+<div aria-hidden="true" style="display: flex; gap: 3px; height: 10px; border-radius: 5px; background: rgba(255,255,255,.08)">
+<i style="display: block; width: {{barA}}%; border-radius: 5px; background: #F4F4F5"></i>
+<i style="display: block; width: {{barB}}%; border-radius: 5px; background: var(--accent, #D5121E)"></i>
+</div>
+<div class="sp-mono" style="display: flex; justify-content: space-between; gap: 12px; font-size: 10.5px; letter-spacing: 0.14em; color: #C9CDD3"><span>V6 TURBO · 400 kW</span><span style="color: #FF5A63">ELECTRIC · 350 kW</span></div>
+<div style="display: flex; gap: 20px; padding-top: 13px; border-top: 1px solid rgba(255,255,255,.1)">
+<div class="sp-fig"><b style="font-size: 28px">{{mj}}<small>MJ</small></b><span>RECOVERED PER LAP</span></div>
+<div class="sp-fig"><b style="font-size: 28px">{{fuel}}<small>%</small></b><span>SUSTAINABLE FUEL</span></div>
+</div>
+</div>
+</section>
+
+<nav aria-label="Spec chapters" style="position: absolute; z-index: 3; left: 44px; right: 24px; bottom: 26px; display: flex; align-items: flex-start; gap: 24px">
+<div style="position: relative; flex: 1; height: 64px">
+<span aria-hidden="true" style="position: absolute; left: 60px; right: 60px; top: 11px; height: 2px; border-radius: 1px; background: rgba(14,15,17,.12)"></span>
+<span aria-hidden="true" style="position: absolute; left: 60px; top: 11px; height: 2px; border-radius: 1px; width: calc((100% - 120px) * {{railFrac}}); background: var(--accent, #D5121E)"></span>
+<button type="button" class="sp-stop" onClick="{{go1}}" aria-current="{{s1.cur}}" style="left: 60px; color: {{s1.ink}}"><i style="background: {{s1.dot}}; border: 1.5px solid {{s1.ring}}; box-shadow: {{s1.halo}}"></i><span>01 THE CAR</span></button>
+<button type="button" class="sp-stop" onClick="{{go2}}" aria-current="{{s2.cur}}" style="left: calc(60px + (100% - 120px) * 0.25); color: {{s2.ink}}"><i style="background: {{s2.dot}}; border: 1.5px solid {{s2.ring}}; box-shadow: {{s2.halo}}"></i><span>02 ACTIVE AERO</span></button>
+<button type="button" class="sp-stop" onClick="{{go3}}" aria-current="{{s3.cur}}" style="left: calc(60px + (100% - 120px) * 0.5); color: {{s3.ink}}"><i style="background: {{s3.dot}}; border: 1.5px solid {{s3.ring}}; box-shadow: {{s3.halo}}"></i><span>03 HALO</span></button>
+<button type="button" class="sp-stop" onClick="{{go4}}" aria-current="{{s4.cur}}" style="left: calc(60px + (100% - 120px) * 0.75); color: {{s4.ink}}"><i style="background: {{s4.dot}}; border: 1.5px solid {{s4.ring}}; box-shadow: {{s4.halo}}"></i><span>04 FLOOR &amp; WHEELS</span></button>
+<button type="button" class="sp-stop" onClick="{{go5}}" aria-current="{{s5.cur}}" style="left: calc(100% - 60px); color: {{s5.ink}}"><i style="background: {{s5.dot}}; border: 1.5px solid {{s5.ring}}; box-shadow: {{s5.halo}}"></i><span>05 POWER</span></button>
+</div>
+<button type="button" onClick="{{play}}" aria-pressed="{{playPressed}}" style="flex: none; height: 44px; padding: 0 18px 0 14px; display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; background: rgba(255,255,255,.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 10px 24px -14px rgba(14,15,17,.3); color: #0E0F11; font: 600 14px 'Geist', 'Helvetica Neue', Arial, sans-serif; cursor: pointer">
+<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="display: {{playIcon}}"><path d="M7 4.5v15l12-7.5Z" style="fill: var(--accent, #D5121E)"/></svg>
+<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="display: {{pauseIcon}}"><path d="M7 5h3.5v14H7ZM13.5 5H17v14h-3.5Z" style="fill: var(--accent, #D5121E)"/></svg>
+{{playLabel}}
+</button>
+</nav>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"chapter":{"editor":"range","min":1,"max":5,"step":1,"default":4},"accent":{"editor":"color","default":"#D5121E","options":["#D5121E","#E8432E","#A30F1F","#0E0F11"]},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.SRC = ['../../../vendor/assets/images/specs/hm27-specs-00.webp', '../../../vendor/assets/images/specs/hm27-specs-01.webp', '../../../vendor/assets/images/specs/hm27-specs-02.webp', '../../../vendor/assets/images/specs/hm27-specs-03.webp', '../../../vendor/assets/images/specs/hm27-specs-04.webp', '../../../vendor/assets/images/specs/hm27-specs-05.webp', '../../../vendor/assets/images/specs/hm27-specs-06.webp', '../../../vendor/assets/images/specs/hm27-specs-07.webp', '../../../vendor/assets/images/specs/hm27-specs-08.webp', '../../../vendor/assets/images/specs/hm27-specs-09.webp', '../../../vendor/assets/images/specs/hm27-specs-10.webp', '../../../vendor/assets/images/specs/hm27-specs-11.webp', '../../../vendor/assets/images/specs/hm27-specs-12.webp', '../../../vendor/assets/images/specs/hm27-specs-13.webp', '../../../vendor/assets/images/specs/hm27-specs-14.webp', '../../../vendor/assets/images/specs/hm27-specs-15.webp', '../../../vendor/assets/images/specs/hm27-specs-16.webp', '../../../vendor/assets/images/specs/hm27-specs-17.webp', '../../../vendor/assets/images/specs/hm27-specs-18.webp'];
+    // where the frames sit on the board (frame size, zoom at chapter 1, zoom pivot in frame pixels)
+    this.BOX = { x: 412, y: 250, w: 980, h: 491, iw: 1500, ih: 751, zoom: 1.28, ox: 790, oy: 408.5 };
+    // callout anchors in frame pixels, projected from the 3D parts at each chapter's frame
+    this.A = { wb: [[825.9, 590.0], [1312.4, 421.4]], fw: [350.6, 594.8], rw: [1380.7, 51.4], halo: [813.4, 20.8], wheel: [951.1, 540.9], floor: [1161.8, 344.2], power: [1008.7, 205.3] };
+    this.CHF = [0, 6, 12, 18, 0];
+    this.D = [
+      { n: '01', label: 'THE CAR', l: ['EVERY PART', 'CARRIES THE', 'MESSAGE.'], p: 'Shorter, narrower and lighter than the cars before it, built to the 2026 rules. Keep scrolling and it comes apart.', f: [[768, 'KG', 'MINIMUM MASS'], [3400, 'MM', 'WHEELBASE']], car: 'The HM-27 in one piece, its 3,400 mm wheelbase marked on the ground' },
+      { n: '02', label: 'ACTIVE AERO', l: ['AIR THAT', 'CHANGES', 'SHAPE.'], p: 'Both wings move. Straight mode opens them to cut drag; corner mode closes them for grip. No DRS, and no waiting for a gap.', f: [[2, 'MODES', 'STRAIGHT AND CORNER'], [5, 'ELEMENTS', '2 FRONT, 3 REAR']], car: 'The HM-27 with its front wing pulled forward and its rear wing lifted back' },
+      { n: '03', label: 'HALO', l: ['A RING OF', 'GRADE 5', 'TITANIUM.'], p: "It sits over the driver's head and has to hold 125 kN, about 12 tonnes, pressed from above or from the side.", f: [[125, 'kN', 'TESTED LOAD, ABOVE AND SIDE'], [5, 'S', 'HELD FROM ABOVE']], car: 'The halo lifted clear of the cockpit' },
+      { n: '04', label: 'FLOOR & WHEELS', l: ['WHERE IT', 'MEETS THE', 'TRACK.'], p: 'A flat floor replaces the venturi tunnels of the last generation. The tyres are narrower, 25 mm at the front and 30 mm at the rear, still on 18-inch rims.', f: [[18, 'IN', 'RIMS'], [30, 'MM', 'NARROWER REAR TYRES']], car: 'Body and wheels lifted off the floor, every part apart' },
+      { n: '05', label: 'POWER', l: ['1,006 HP.', 'HALF OF IT', 'ELECTRIC.'], p: 'A 1.6-litre V6 turbo makes 400 kW and the electric motor 350 kW, on 100% sustainable fuel. Every lap it recovers 8.5 MJ to spend again.', f: [], car: 'The HM-27 back in one piece' }
+    ];
+    var c = this.clampCh(props.chapter);
+    this.state = { f: this.CHF[c], ch: c, rail: c, textT: 1, numT: 1, moving: false, playing: false };
+    this.raf = 0;
+    this.timer = 0;
+  }
+  clampCh(v) {
+    var n = Math.round(Number(v));
+    if (!(n >= 1)) n = 4;
+    return Math.min(5, n) - 1;
+  }
+  componentDidUpdate(prev) {
+    if (this.props.chapter !== prev.chapter) {
+      this.stopPlay();
+      this.toChapter(this.clampCh(this.props.chapter));
+    }
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    clearTimeout(this.timer);
+  }
+  calm() {
+    return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+  toChapter(c) {
+    var s = this.state;
+    if (c === s.ch && !s.moving && s.textT >= 1) return;
+    cancelAnimationFrame(this.raf);
+    var f0 = s.f, f1 = this.CHF[c], r0 = s.rail;
+    if (this.calm()) {
+      this.setState({ f: f1, ch: c, rail: c, textT: 1, numT: 1, moving: false });
+      return;
+    }
+    var self = this;
+    var dur = c === 4 && f0 > 0 ? 600 : Math.min(1500, 380 + 120 * Math.abs(f1 - f0));
+    var t0 = performance.now();
+    this.setState({ ch: c, textT: 0, numT: 0, moving: true });
+    var step = function (now) {
+      var t = now - t0;
+      var u = Math.min(1, t / dur);
+      var e = 1 - Math.pow(1 - u, 3);
+      var patch = { f: f0 + (f1 - f0) * e, rail: r0 + (c - r0) * e, textT: Math.min(1, t / 450), numT: Math.max(0, Math.min(1, (t - 150) / 800)) };
+      if (u >= 1) patch.moving = false;
+      self.setState(patch);
+      if (u < 1 || patch.textT < 1 || patch.numT < 1) self.raf = requestAnimationFrame(step);
+    };
+    this.raf = requestAnimationFrame(step);
+  }
+  stopPlay() {
+    clearTimeout(this.timer);
+    if (this.state.playing) this.setState({ playing: false });
+  }
+  play() {
+    if (this.state.playing) { this.stopPlay(); return; }
+    var self = this;
+    var k = 0;
+    this.setState({ playing: true });
+    var done = function () { self.setState({ playing: false }); };
+    var next = function () {
+      if (!self.state.playing) return;
+      self.toChapter(k);
+      k += 1;
+      self.timer = setTimeout(k < 5 ? next : done, 2700);
+    };
+    next();
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent || '#D5121E';
+    var d = this.D[s.ch];
+    var B = this.BOX, A = this.A;
+    var ease = function (x) { return 1 - Math.pow(1 - x, 3); };
+    var frames = [];
+    for (var i = 0; i < this.SRC.length; i++) frames.push({ src: this.SRC[i], op: Math.max(0, 1 - Math.abs(s.f - i)).toFixed(3) });
+    // the frames share one camera; the pull-back is a zoom that eases out as the car opens
+    var Z = 1 + (B.zoom - 1) * Math.pow(1 - s.f / 18, 3);
+    var sc = B.w / B.iw, ox = B.ox * sc, oy = B.oy * sc;
+    var pct = function (pt) {
+      var x = (pt[0] * sc - ox) * Z + ox, y = (pt[1] * sc - oy) * Z + oy;
+      return { x: (100 * x / B.w).toFixed(2), y: (100 * y / B.h).toFixed(2) };
+    };
+    var on = function (c) { return !s.moving && s.ch === c ? '1' : '0'; };
+    var n = ease(s.numT);
+    var num = function (v, dec) { return dec ? (v * n).toFixed(dec) : Math.round(v * n).toLocaleString('en-US'); };
+    var K = 96, W = 400, X = -K + (W + 2 * K) * ease(s.textT);
+    var clip = s.textT >= 1 ? 'none' : 'polygon(-24px -24px, ' + (X + K / 2).toFixed(1) + 'px -24px, ' + (X - K / 2).toFixed(1) + 'px calc(100% + 24px), -24px calc(100% + 24px))';
+    var f1 = d.f[0] || [0, '', ''], f2 = d.f[1] || [0, '', ''];
+    var stop = function (i) {
+      var done = s.rail >= i - 0.001;
+      return {
+        dot: done ? accent : '#FFFFFF',
+        ring: done ? accent : 'rgba(14,15,17,.3)',
+        halo: i === s.ch ? '0 0 0 5px color-mix(in srgb, ' + accent + ' 18%, transparent)' : 'none',
+        ink: i === s.ch ? '#0E0F11' : '#5A5F68',
+        cur: i === s.ch ? 'step' : 'false'
+      };
+    };
+    var go = function (i) { return function () { self.stopPlay(); self.toChapter(i); }; };
+    var mid = pct([(A.wb[0][0] + A.wb[1][0]) / 2, (A.wb[0][1] + A.wb[1][1]) / 2]);
+    return {
+      accent: accent,
+      ghost: d.n,
+      carLabel: d.car,
+      frames: frames,
+      boxL: B.x, boxT: B.y, boxW: B.w, boxH: B.h,
+      zoom: Z.toFixed(4), ox: ox.toFixed(1), oy: oy.toFixed(1),
+      vb: '0 0 ' + B.iw + ' ' + B.ih,
+      wb: { x1: A.wb[0][0], y1: A.wb[0][1], x2: A.wb[1][0], y2: A.wb[1][1], t1a: A.wb[0][1] - 9, t1b: A.wb[0][1] + 9, t2a: A.wb[1][1] - 9, t2b: A.wb[1][1] + 9, mx: mid.x, my: mid.y },
+      p: { fw: pct(A.fw), rw: pct(A.rw), halo: pct(A.halo), wheel: pct(A.wheel), floor: pct(A.floor), power: pct(A.power) },
+      c1: on(0), c2: on(1), c3: on(2), c4: on(3), c5: on(4),
+      num: d.n, label: d.label, l1: d.l[0], l2: d.l[1], l3: d.l[2], para: d.p,
+      ctaShow: s.ch === 4 ? 'inline-flex' : 'none',
+      clip: clip,
+      edgeX: X.toFixed(1),
+      edgeOp: s.textT > 0 && s.textT < 1 ? '1' : '0',
+      figShow: s.ch === 4 ? 'none' : 'flex',
+      powShow: s.ch === 4 ? 'flex' : 'none',
+      f1v: num(f1[0]), f1u: f1[1], f1l: f1[2],
+      f2v: num(f2[0]), f2u: f2[1], f2l: f2[2],
+      pw: num(750), barA: (53.3 * n).toFixed(1), barB: (46.7 * n).toFixed(1), mj: num(8.5, 1), fuel: num(100),
+      railFrac: (s.rail / 4).toFixed(4),
+      s1: stop(0), s2: stop(1), s3: stop(2), s4: stop(3), s5: stop(4),
+      go1: go(0), go2: go(1), go3: go(2), go4: go(3), go5: go(4),
+      play: function () { self.play(); },
+      playPressed: s.playing ? 'true' : 'false',
+      playLabel: s.playing ? 'Pause' : 'Play the scroll',
+      playIcon: s.playing ? 'none' : 'block',
+      pauseIcon: s.playing ? 'block' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

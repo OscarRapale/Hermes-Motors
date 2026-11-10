@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hermes Motors — Day One rollout calendar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.dc-mono{font-family:'Geist Mono',ui-monospace,monospace}
+.dc-lane{position:absolute;left:64px;right:64px;height:1px;background:rgba(255,255,255,.1)}
+.dc-ev{position:absolute;display:flex;align-items:center;gap:8px;white-space:nowrap;transform:translateX(-6px)}
+.dc-ev i{flex:none;width:12px;height:12px;border-radius:50%;box-sizing:border-box}
+.dc-ev span{font-size:12.5px;line-height:1.2}
+.dc-bar{position:absolute;height:24px;border-radius:999px;display:flex;align-items:center;padding:0 10px;box-sizing:border-box;font-size:11.5px;white-space:nowrap;overflow:hidden}
+</style>
+</helmet>
+<div style="position: relative; width: 1800px; height: 1000px; overflow: hidden; background: radial-gradient(40% 50% at 64% 100%, rgba(213,18,30,.22) 0%, rgba(213,18,30,0) 70%), radial-gradient(70% 60% at 85% 0%, #1E1F23 0%, #0E0F11 60%); color: #F4F4F5; font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif">
+
+<header style="position: absolute; left: 64px; right: 64px; top: 44px; display: flex; justify-content: space-between; align-items: center; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.12)">
+<div style="display: flex; align-items: center; gap: 14px">
+<svg viewBox="0 0 120 80" width="36" height="24" aria-hidden="true"><path d="M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z" style="fill: #FFFFFF"/><path d="M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z" style="fill: #D5121E"/></svg>
+<span class="dc-mono" style="font-size: 11px; letter-spacing: 0.22em; color: #C9CDD3">HERMES MOTORS · DAY ONE ROLLOUT</span>
+</div>
+<span class="dc-mono" style="font-size: 11px; letter-spacing: 0.22em; color: #C9CDD3">D0 = FIRST LIGHT · TIMES ARE PROVING GROUND TIME</span>
+</header>
+
+<section style="position: absolute; left: 64px; top: 112px; width: 1672px; display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 56px; align-items: end">
+<h1 style="margin: 0; font-family: 'Michroma', 'Eurostile', sans-serif; font-weight: 400; font-size: 58px; line-height: 1.04; letter-spacing: 0.01em">SIXTY DAYS<br><span style="color: rgba(244,244,245,.45)">IN THE DARK.</span></h1>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{phases}}" as="ph" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 16px; background: {{ph.bg}}; border: 1px solid {{ph.border}}">
+<span class="dc-mono" style="font-size: 10.5px; letter-spacing: 0.16em; color: {{ph.kicker}}">{{ph.when}}</span>
+<span style="font-family: 'Michroma', 'Eurostile', sans-serif; font-size: 15px; letter-spacing: 0.06em; color: {{ph.ink}}">{{ph.name}}</span>
+<span style="font-size: 13px; line-height: 1.45; color: {{ph.sub}}">{{ph.text}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<div aria-hidden="true" style="position: absolute; left: 214px; top: 312px; width: {{bandA}}px; height: 30px; border-radius: 999px 0 0 999px; background: linear-gradient(90deg, #1B1C20, #26282D); border: 1px solid rgba(255,255,255,.14); box-sizing: border-box; display: flex; align-items: center; padding-left: 14px"><span class="dc-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: #C9CDD3">BEFORE DAWN</span></div>
+<div aria-hidden="true" style="position: absolute; left: {{bandBx}}px; top: 312px; width: {{bandB}}px; height: 30px; background: #D5121E; box-sizing: border-box; display: flex; align-items: center; padding-left: 12px"><span class="dc-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: #FFFFFF">FIRST LIGHT</span></div>
+<div aria-hidden="true" style="position: absolute; left: {{bandCx}}px; top: 312px; width: {{bandC}}px; height: 30px; border-radius: 0 999px 999px 0; background: #F4F4F5; box-sizing: border-box; display: flex; align-items: center; padding-left: 12px"><span class="dc-mono" style="font-size: 10.5px; letter-spacing: 0.18em; color: #0E0F11">DAY ONE</span></div>
+
+<sc-for list="{{lanes}}" as="ln" hint-placeholder-count="5">
+<div style="position: absolute; left: 64px; top: {{ln.y}}px; width: 140px; display: flex; flex-direction: column; gap: 4px">
+<span class="dc-mono" style="font-size: 11px; letter-spacing: 0.18em; color: #F4F4F5">{{ln.name}}</span>
+<span style="font-size: 11.5px; line-height: 1.35; color: #8E939C">{{ln.note}}</span>
+</div>
+<div class="dc-lane" style="top: {{ln.rule}}px"></div>
+</sc-for>
+
+<div aria-hidden="true" style="position: absolute; left: {{six}}px; top: 300px; width: 2px; height: 590px; background: linear-gradient(180deg, rgba(255,90,99,0), #FF5A63 12%, #FF5A63 88%, rgba(255,90,99,0)); box-shadow: 0 0 16px rgba(255,90,99,.7)"></div>
+
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="8">
+<div class="dc-bar" style="left: {{b.x}}px; top: {{b.y}}px; width: {{b.w}}px; background: {{b.bg}}; border: 1px solid {{b.border}}; color: {{b.ink}}">{{b.label}}</div>
+</sc-for>
+
+<sc-for list="{{events}}" as="e" hint-placeholder-count="24">
+<div class="dc-ev" style="left: {{e.x}}px; top: {{e.y}}px; flex-direction: {{e.dir}}; transform: {{e.tf}}"><i style="background: {{e.dot}}; border: 2px solid {{e.ring}}; box-shadow: {{e.glow}}"></i><span style="color: {{e.ink}}">{{e.label}}</span></div>
+</sc-for>
+
+<div aria-hidden="true" style="position: absolute; left: 64px; right: 64px; top: 900px; height: 1px; background: rgba(255,255,255,.2)"></div>
+<sc-for list="{{ticks}}" as="t" hint-placeholder-count="14">
+<div class="dc-mono" style="position: absolute; left: {{t.x}}px; top: 900px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 10.5px; letter-spacing: 0.1em; color: {{t.ink}}"><span style="width: 1px; height: 8px; background: {{t.ink}}"></span>{{t.label}}</div>
+</sc-for>
+<span class="dc-mono" style="position: absolute; left: 1094px; top: 940px; width: 300px; text-align: center; font-size: 9.5px; letter-spacing: 0.14em; color: #FF5A63">D0, HOUR BY HOUR</span>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1800,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    // one axis, three speeds: sixty days of tease, the reveal day hour by hour, four weeks to the season opener
+    var X0 = 214, A = 880, B = 300, C = 342;
+    var x = function (d) {
+      if (d < 0) return X0 + (d + 60) * A / 60;
+      if (d < 1) return X0 + A + d * B;
+      return X0 + A + B + (d - 1) * C / 27;
+    };
+    var h = function (hours) { return hours / 24; };
+    var LANES = [
+      { name: 'SITE', note: 'Night mode, then day' },
+      { name: 'SOCIAL', note: 'One post per beat' },
+      { name: 'CREATORS', note: 'Sealed envelopes' },
+      { name: 'PRESS & PARTNERS', note: 'Embargo to 06:00' },
+      { name: 'LIVE', note: 'The Proving Ground' }
+    ];
+    var laneTop = [372, 470, 600, 698, 796];
+    var lanes = LANES.map(function (l, i) { return { name: l.name, note: l.note, y: laneTop[i] + 4, rule: laneTop[i] - 12 }; });
+    var RED = '#D5121E', REDT = '#FF5A63';
+    // [lane, day, row, label, hot, label on the left]
+    var EV = [
+      [0, -14, 0, '“Be here at 06:00” calendar invites'],
+      [0, h(6), 0, 'Flips to day: livery, specs, test drive', 1],
+      [0, 28, 0, 'New messenger lap at race pace', 1, 1],
+      [1, -60, 0, 'Lights off'],
+      [1, -42, 0, 'Feather one'],
+      [1, -28, 0, 'Feather two'],
+      [1, -14, 1, 'Feather three'],
+      [1, -7, 0, 'The mark'],
+      [1, -1, 2, 'Tomorrow, 06:00', 0, 1],
+      [1, h(6), 0, 'FIRST LIGHT. + the film', 1],
+      [1, h(8), 1, 'Specs carousel'],
+      [1, h(12), 2, 'Beat the messenger'],
+      [1, 28, 0, 'DAY ONE.', 1, 1],
+      [2, -45, 0, 'Wax-sealed envelopes ship'],
+      [2, -38, 1, 'Unboxings: no car, no names'],
+      [2, h(5.5), 0, 'At the Proving Ground for sunrise'],
+      [3, -21, 0, 'Embargoed briefing'],
+      [3, h(6), 0, 'Embargo lifts, press kit live'],
+      [3, 10, 1, 'Partner announcements'],
+      [3, 24, 0, 'Race-week media day', 0, 1],
+      [4, 28, 0, 'Season opener: lights out', 1, 1]
+    ];
+    var events = EV.map(function (e) {
+      var hot = !!e[4], left = !!e[5];
+      return {
+        x: x(e[1]).toFixed(1), y: laneTop[e[0]] + e[2] * 30,
+        dir: left ? 'row-reverse' : 'row', tf: left ? 'translateX(calc(-100% + 6px))' : 'translateX(-6px)',
+        label: e[3],
+        dot: hot ? RED : '#0E0F11', ring: hot ? REDT : 'rgba(255,255,255,.7)', glow: hot ? '0 0 12px ' + RED : 'none',
+        ink: hot ? '#FFFFFF' : '#D6D9DE'
+      };
+    });
+    // [lane, from, to, rowOffset, label, style]
+    var BR = [
+      [0, -60, h(6), 52, 'Night mode, live countdown to 06:00', 'dark'],
+      [0, h(6), 28, 52, 'Beat the messenger is live', 'red'],
+      [1, 1, 27, 92, 'Fan cards: daily reshares', 'light'],
+      [2, h(9), 4, 52, 'First creator laps and cards', 'light'],
+      [4, h(5.5), h(6.5), 0, '', 'red'],
+      [4, h(5.5), h(6.5), 0, '', 'red']
+    ];
+    var styles = {
+      dark: { bg: 'linear-gradient(90deg, #1B1C20, #2A2C31)', border: 'rgba(255,255,255,.16)', ink: '#C9CDD3' },
+      red: { bg: 'linear-gradient(90deg, rgba(213,18,30,.85), rgba(213,18,30,.55))', border: 'rgba(255,90,99,.6)', ink: '#FFFFFF' },
+      light: { bg: 'rgba(244,244,245,.1)', border: 'rgba(244,244,245,.3)', ink: '#F4F4F5' }
+    };
+    var bars = BR.slice(0, 4).map(function (b) {
+      var s = styles[b[5]];
+      var x1 = x(b[1]), x2 = x(b[2]);
+      return { x: x1.toFixed(1), y: laneTop[b[0]] + b[3] - 18, w: Math.max(24, x2 - x1).toFixed(1), label: b[4], bg: s.bg, border: s.border, ink: s.ink };
+    });
+    // the sunrise stream sits on the 06:00 line, labelled to its left
+    bars.push({ x: x(h(5.5)).toFixed(1), y: laneTop[4] - 6, w: (x(h(6.5)) - x(h(5.5))).toFixed(1), label: '', bg: styles.red.bg, border: styles.red.border, ink: '#FFFFFF' });
+    events.push({ x: (x(h(5.5)) - 6).toFixed(1), y: laneTop[4] - 2, dir: 'row-reverse', tf: 'translateX(calc(-100% - 8px))', label: 'Sunrise stream, 05:30 to 06:30', dot: 'transparent', ring: 'transparent', glow: 'none', ink: '#FFFFFF' });
+    var T = [[-60, 'D−60'], [-42, 'D−42'], [-28, 'D−28'], [-14, 'D−14'], [-7, 'D−7'], [-1, 'D−1'], [h(6), '06:00'], [h(12), '12:00'], [h(18), '18:00'], [7, 'D+7'], [14, 'D+14'], [21, 'D+21'], [28, 'D+28']];
+    var ticks = T.map(function (t) { return { x: x(t[0]).toFixed(1), label: t[1], ink: t[1] === '06:00' ? REDT : '#A9AEB6' }; });
+    return {
+      phases: [
+        { when: 'D−60 → D−1 · TEASE', name: 'BEFORE DAWN', text: 'Black posts, one feather at a time. No car, no names. The site counts down in the dark.', bg: 'rgba(255,255,255,.04)', border: 'rgba(255,255,255,.12)', kicker: '#A9AEB6', ink: '#F4F4F5', sub: '#C9CDD3' },
+        { when: 'D0 · 06:00 · REVEAL', name: 'FIRST LIGHT', text: 'Sunrise stream, the film, one post. The site flips to day and the test drive opens.', bg: 'linear-gradient(180deg, rgba(213,18,30,.3), rgba(213,18,30,.1))', border: 'rgba(255,90,99,.5)', kicker: '#FFC2C6', ink: '#FFFFFF', sub: '#FFE3E5' },
+        { when: 'D+1 → D+28 · DRIVE', name: 'DAY ONE', text: 'Beat the messenger and share the card. It ends where the season starts: the first race.', bg: 'rgba(244,244,245,.08)', border: 'rgba(244,244,245,.28)', kicker: '#A9AEB6', ink: '#F4F4F5', sub: '#C9CDD3' }
+      ],
+      bandA: (x(h(6)) - X0).toFixed(1),
+      bandBx: x(h(6)).toFixed(1), bandB: (x(1) - x(h(6))).toFixed(1),
+      bandCx: x(1).toFixed(1), bandC: (x(28) - x(1) + 6).toFixed(1),
+      six: (x(h(6)) - 1).toFixed(1),
+      lanes: lanes,
+      events: events,
+      bars: bars,
+      ticks: ticks
+    };
+  }
+}
+</script>
+</body>
+</html>

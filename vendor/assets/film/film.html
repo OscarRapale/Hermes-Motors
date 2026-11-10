@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>First Light film frames</title>
+<style id="fonts"></style>
+<style>
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#050506}
+*{box-sizing:border-box}
+.layer{position:absolute;inset:0}
+.full{position:absolute;inset:0;width:1920px;height:1080px;display:block;object-fit:cover}
+.mich{font-family:'Michroma',sans-serif;font-weight:400;letter-spacing:.01em}
+.mono{font-family:'Geist Mono',monospace}
+.geist{font-family:'Geist',sans-serif}
+.wipein{position:absolute}
+.wipein .edge{position:absolute;top:-18px;bottom:-18px;width:5px;background:#D5121E;transform:skewX(-14deg)}
+#leds{position:absolute;left:50%;top:526px;transform:translateX(-50%);display:flex;gap:10px}
+#leds i{display:block;width:34px;height:12px;border-radius:6px}
+</style>
+</head>
+<body>
+<div id="bg" class="layer"></div>
+<div id="glow" class="layer"></div>
+<img id="shot" class="full" alt="">
+<img id="night" alt="" style="position:absolute;left:335px;top:628px;width:1250px;height:auto;display:none">
+<svg id="feather" viewBox="0 0 120 80" style="position:absolute;left:120px;top:150px;width:1100px;height:733px;display:none"><path d="M59,23 L57,32 L13,18 L6,10 Z" fill="#D5121E"/></svg>
+<div id="text" class="layer"></div>
+<img id="under" class="full" alt="" style="display:none">
+<div id="wipe" class="layer" style="overflow:hidden;display:none"><div id="stripes" style="position:absolute;top:-12%;height:124%;left:0;width:3440px;display:flex"><span id="sa" style="flex:1"></span><span id="sb" style="flex:1"></span><span id="sc" style="flex:1"></span></div></div>
+<script>
+const W = 1920, H = 1080
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x))
+const out = (x) => 1 - Math.pow(1 - clamp(x), 3)
+const span = (f, a, b) => out((f - a) / (b - a))
+const $ = (id) => document.getElementById(id)
+const MARK_H = 'M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z'
+const FEATHERS = ['M59,23 L57,32 L13,18 L6,10 Z', 'M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z', 'M52,53 L50,61 L29,53.5 L24,45.5 Z']
+
+// a line that wipes in from the left behind a Redline edge at 14 degrees (the brand's text reveal)
+function wipeText(html, cls, style, p) {
+  const w = 100 * (1 - p)
+  const edge = p > 0 && p < 1 ? `<i class="edge" style="left:calc(${(100 * p).toFixed(2)}% - 3px)"></i>` : ''
+  return `<div class="wipein ${cls}" style="${style}"><div style="clip-path:inset(-20px ${w.toFixed(2)}% -20px -20px)">${html}</div>${edge}</div>`
+}
+// three stripes at 14 degrees cross the frame in 14 frames; the picture underneath switches when they cover it
+function stripes(k, toDay) {
+  if (k < 0 || k > 13) { $('wipe').style.display = 'none'; return false }
+  const e = out(k / 13)
+  $('wipe').style.display = 'block'
+  $('stripes').style.transform = `translateX(${Math.round(-3867 + 6267 * e)}px) skewX(-14deg)`
+  $('sa').style.background = toDay ? '#F4F4F5' : '#0E0F11'
+  $('sb').style.background = '#D5121E'
+  $('sc').style.background = toDay ? '#0E0F11' : '#F4F4F5'
+  return e < 0.49
+}
+async function setImg(el, src) {
+  if (!src) { el.style.display = 'none'; return }
+  el.style.display = 'block'
+  if (el.getAttribute('src') !== src) { el.setAttribute('src', src); await el.decode() }
+}
+function reset() {
+  $('bg').style.background = '#050506'
+  $('glow').style.background = 'none'; $('glow').style.opacity = 1
+  $('text').innerHTML = ''; $('text').style.opacity = 1
+  $('feather').style.display = 'none'; $('night').style.display = 'none'
+  $('under').style.display = 'none'; $('under').style.opacity = 1
+  $('shot').style.display = 'none'; $('shot').style.opacity = 1
+  $('wipe').style.display = 'none'
+}
+const NIGHT_GLOW = 'radial-gradient(60% 55% at 50% 112%, rgba(213,18,30,.42) 0%, rgba(213,18,30,.08) 52%, rgba(213,18,30,0) 78%)'
+
+window.render = async function (scene, f, opt) {
+  reset()
+  if (scene === 'dawn') {
+    // 120 frames: the glow rises, one feather flies in, the first line of the tease
+    $('glow').style.background = NIGHT_GLOW
+    $('glow').style.opacity = span(f, 0, 60)
+    const p = span(f, 6, 36)
+    const fe = $('feather'); fe.style.display = 'block'
+    const dx = -1100 * (1 - p)
+    fe.style.transform = `translate(${dx}px, ${dx * Math.tan(14 * Math.PI / 180)}px)`
+    fe.style.opacity = clamp((f - 6) / 6)
+    let t = `<div class="mono" style="position:absolute;left:150px;top:560px;font-size:24px;letter-spacing:.22em;color:#FF5A63;opacity:${span(f, 24, 40)}">BEFORE DAWN · DAY ONE</div>`
+    t += wipeText('<div class="mich" style="font-size:96px;line-height:1.12;color:#F4F4F5;white-space:nowrap">A MESSAGE IS<br>ON ITS WAY.</div>', '', 'left:150px;top:620px', span(f, 44, 58))
+    $('text').innerHTML = t
+    const fade = 1 - clamp((f - 104) / 15)
+    $('text').style.opacity = fade; fe.style.opacity = Math.min(Number(fe.style.opacity), fade); $('glow').style.opacity = Math.min(Number($('glow').style.opacity), 0.5 + 0.5 * fade)
+  }
+  if (scene === 'count') {
+    // 120 frames: four seconds of the countdown, the car waking in the dark, 06:00:00 on the last six frames
+    $('glow').style.background = NIGHT_GLOW
+    $('glow').style.opacity = 0.5 + 0.5 * span(f, 0, 30)
+    await setImg($('night'), opt.night)
+    $('night').style.filter = `brightness(${(0.3 + 0.4 * (f / 119)).toFixed(3)})`
+    $('night').style.opacity = span(f, 0, 18)
+    const six = f >= 114
+    const sec = six ? null : 56 + Math.floor(f / 28)
+    const tick = six ? (f - 114) / 6 : (f % 28) / 6
+    const digits = six ? '06:00:00' : '05:59:' + sec
+    const scale = 1 + 0.035 * (1 - clamp(tick))
+    const lit = six ? 15 : 11 + Math.floor(f / 28)
+    let leds = ''
+    for (let i = 0; i < 15; i++) {
+      const col = i < 5 ? '#FFFFFF' : '#D5121E', on = i < lit
+      leds += `<i style="background:${col};opacity:${on ? 0.95 : 0.16};box-shadow:${on ? '0 0 16px ' + col : 'none'}"></i>`
+    }
+    const ink = six ? '#FF5A63' : '#FFFFFF'
+    const colon = six ? 'rgba(255,90,99,.5)' : 'rgba(255,255,255,.28)'
+    $('text').innerHTML =
+      `<div class="mono" style="position:absolute;left:0;right:0;text-align:center;font-size:24px;letter-spacing:.24em;color:#FF5A63;top:190px">UNTIL FIRST LIGHT</div>` +
+      `<div class="mono" style="position:absolute;left:0;right:0;top:240px;text-align:center;font-size:230px;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:${ink};transform:scale(${scale.toFixed(4)});transform-origin:50% 50%">${digits.replace(/:/g, `<span style="color:${colon}">:</span>`)}</div>` +
+      `<div id="leds">${leds}</div>` +
+      `<div class="mono" style="position:absolute;left:0;right:0;top:566px;text-align:center;font-size:24px;letter-spacing:.1em;color:#A9AEB6">06:00 AT THE PROVING GROUND</div>`
+    $('text').style.opacity = span(f, 0, 12)
+  }
+  if (scene === 'reveal') {
+    // 180 frames over the orbit: stripes from the countdown, then FIRST LIGHT. over the car
+    const old = stripes(f, true)
+    await setImg($('shot'), opt.shots[f])
+    if (old) { await setImg($('under'), opt.under) }
+    let t = `<div class="mono" style="position:absolute;left:110px;top:110px;font-size:24px;letter-spacing:.22em;color:#B10F19;opacity:${span(f, 40, 56)}">HM-27 · 06:00 · THE PROVING GROUND</div>`
+    t += wipeText('<div class="mich" style="font-size:118px;line-height:1;color:#0E0F11;white-space:nowrap">FIRST LIGHT.</div>', '', 'left:104px;top:850px', span(f, 48, 62))
+    t += `<div class="geist" style="position:absolute;left:110px;top:990px;font-size:32px;color:#3D4047;opacity:${span(f, 66, 80)}">Speed is the message.</div>`
+    $('text').innerHTML = t
+    $('text').style.opacity = 1 - clamp((f - 160) / 19)
+  }
+  if (scene === 'apart') {
+    // 135 frames: the car opens (wings, halo, then body and wheels) and closes again
+    await setImg($('shot'), opt.shots[f])
+    // a straight cut from the reveal: a cross-fade between two camera angles reads as a double exposure
+    let t = ''
+    const a = span(f, 14, 28) * (1 - clamp((f - 60) / 10))
+    t += wipeText('<div class="mich" style="font-size:66px;line-height:1.14;color:#0E0F11;white-space:nowrap">EVERY PART<br><span style="color:rgba(14,15,17,.42)">CARRIES THE</span><br>MESSAGE.</div>', '', `left:110px;top:110px;opacity:${f > 60 ? a.toFixed(3) : 1}`, f <= 60 ? span(f, 14, 28) : 1)
+    if (f >= 72) t += wipeText('<div class="mich" style="font-size:66px;line-height:1.14;color:#0E0F11;white-space:nowrap">1,006 HP.<br><span style="color:rgba(14,15,17,.42)">HALF OF IT</span><br>ELECTRIC.</div>', '', 'left:110px;top:110px', span(f, 72, 86))
+    if (f >= 80) t += `<div class="mono" style="position:absolute;left:114px;top:372px;font-size:24px;letter-spacing:.14em;color:#3D4047;opacity:${span(f, 80, 94)}">V6 400 kW · ELECTRIC 350 kW</div>`
+    $('text').innerHTML = t
+  }
+  if (scene === 'end') {
+    // 165 frames: stripes to Gallery White, the mark builds feather by feather, the line, the credit
+    const old = stripes(f, true)
+    if (old) { await setImg($('under'), opt.under); return }
+    $('bg').style.background = 'radial-gradient(70% 70% at 50% 42%, #FFFFFF 0%, #F4F4F5 55%, #E3E5E9 100%)'
+    const body = span(f, 16, 30)
+    let marks = ''
+    FEATHERS.forEach((d, i) => {
+      const p = span(f, 24 + 6 * i, 36 + 6 * i)
+      const dx = -70 * (1 - p)
+      marks += `<path d="${d}" fill="#D5121E" opacity="${p.toFixed(3)}" transform="translate(${dx.toFixed(2)} ${(dx * Math.tan(14 * Math.PI / 180)).toFixed(2)})"/>`
+    })
+    let t = `<svg viewBox="0 0 120 80" style="position:absolute;left:810px;top:230px;width:300px;height:200px;overflow:visible"><path d="${MARK_H}" fill="#0E0F11" opacity="${body.toFixed(3)}" transform="translate(60 40) scale(${(0.96 + 0.04 * body).toFixed(4)}) translate(-60 -40)"/>${marks}</svg>`
+    t += wipeText('<div class="mich" style="font-size:76px;line-height:1;color:#0E0F11;white-space:nowrap">SPEED IS THE MESSAGE.</div>', '', 'left:50%;top:520px;transform:translateX(-50%)', span(f, 54, 68))
+    t += `<div class="mono" style="position:absolute;left:0;right:0;top:640px;text-align:center;font-size:26px;letter-spacing:.2em;color:#B10F19;opacity:${span(f, 74, 88)}">DAY ONE · 06:00 AT THE PROVING GROUND</div>`
+    t += `<div class="mono" style="position:absolute;left:0;right:0;top:980px;text-align:center;font-size:17px;letter-spacing:.04em;color:#5A5F68;opacity:${span(f, 90, 104)}">3D model based on “2026 F1 CAR” by Abu Saif, CC BY 4.0, modified. Hermes Motors is a fictional team.</div>`
+    $('text').innerHTML = t
+  }
+  await document.fonts.ready
+}
+</script>
+</body>
+</html>

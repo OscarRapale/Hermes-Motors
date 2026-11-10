@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hermes Motors — Test drive v2 on a phone, turn sideways</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.pr-mono{font-family:'Geist Mono',ui-monospace,monospace}
+.pr-step{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:#D6D9DE}
+.pr-step b{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;color:#0E0F11;background:#F4F4F5;margin-top:-1px}
+.pr-phone{transform-origin:50% 50%;animation:prTurn 3.2s cubic-bezier(.2,.8,.2,1) infinite}
+@keyframes prTurn{0%,18%{transform:rotate(0deg)}42%,78%{transform:rotate(-90deg)}100%{transform:rotate(0deg)}}
+@media (prefers-reduced-motion: reduce){.pr-phone{animation:none;transform:rotate(-90deg)}}
+</style>
+</helmet>
+<div style="--accent: {{accent}}; position: relative; width: 390px; height: 844px; overflow: hidden; border-radius: 44px; background: #0E0F11; color: #F4F4F5; font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif">
+
+<img src="../../../vendor/assets/images/drive-phone.webp" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: blur(12px) brightness(.42) saturate(.85); transform: scale(1.12)">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,15,17,.55) 0%, rgba(14,15,17,.2) 38%, rgba(14,15,17,.85) 100%)"></div>
+
+<header style="position: absolute; left: 24px; right: 24px; top: 62px; display: flex; justify-content: space-between; align-items: center">
+<div style="display: flex; align-items: center; gap: 9px">
+<svg viewBox="0 0 120 80" width="33" height="22" aria-hidden="true"><path d="M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z" style="fill: #F4F4F5"/><path d="M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z" style="fill: var(--accent, #D5121E)"/></svg>
+<span style="font-family: 'Michroma', 'Eurostile', sans-serif; font-size: 12px; letter-spacing: 0.32em">HERMES</span>
+</div>
+<a href="#" aria-label="Close the test drive" style="width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.2); color: #F4F4F5"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round"/></svg></a>
+</header>
+
+<section style="position: absolute; left: 24px; right: 24px; top: 132px; display: flex; flex-direction: column; gap: 14px">
+<p class="pr-mono" style="margin: 0; font-size: 10px; letter-spacing: 0.22em; color: #FF5A63">TEST DRIVE · PROVING GROUND</p>
+<h1 style="margin: 0; font-family: 'Michroma', 'Eurostile', sans-serif; font-weight: 400; font-size: 31px; line-height: 1.16; letter-spacing: 0.01em">BEAT THE<br>MESSENGER.</h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #C9CDD3">One flying lap against the test driver's ghost. His time is <span class="pr-mono" style="color: #F4F4F5">1:11.906</span>.</p>
+</section>
+
+<div style="position: absolute; left: 0; right: 0; top: 330px; display: flex; flex-direction: column; align-items: center; gap: 16px">
+<div style="width: 150px; height: 150px; display: grid; place-items: center">
+<svg class="pr-phone" viewBox="0 0 80 140" width="70" height="122" aria-hidden="true"><rect x="4" y="4" width="72" height="132" rx="16" style="fill: rgba(255,255,255,.06); stroke: #F4F4F5; stroke-width: 3"/><rect x="28" y="12" width="24" height="6" rx="3" style="fill: #F4F4F5"/><path d="M18,108 L62,108" style="stroke: var(--accent, #D5121E); stroke-width: 5; stroke-linecap: round"/></svg>
+</div>
+<span class="pr-mono" style="font-size: 11px; letter-spacing: 0.2em; color: #F4F4F5">TURN YOUR PHONE TO DRIVE</span>
+</div>
+
+<section aria-label="How it works" style="position: absolute; left: 24px; right: 24px; top: 548px; display: flex; flex-direction: column; gap: 12px">
+<div class="pr-step"><b>1</b><span>Five red lights. Go when they go out.</span></div>
+<div class="pr-step"><b>2</b><span>Get within one second of the messenger and Overtake unlocks.</span></div>
+<div class="pr-step"><b>3</b><span>Finish the lap, then share your card.</span></div>
+</section>
+
+<div style="position: absolute; left: 24px; right: 24px; bottom: 50px; display: flex; flex-direction: column; align-items: stretch; gap: 10px">
+<span aria-disabled="true" style="height: 54px; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: #A9AEB6; font-size: 15px; font-weight: 600">Waiting for landscape</span>
+<span class="pr-mono" style="text-align: center; font-size: 10px; letter-spacing: 0.1em; color: #8E939C">No sign-up. Works best with sound on.</span>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#D5121E","options":["#D5121E","#E8432E","#A30F1F","#0E0F11"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent || '#D5121E' };
+  }
+}
+</script>
+</body>
+</html>
