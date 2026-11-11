@@ -179,7 +179,7 @@ Article template (`/news/[slug]`): use the manifesto's typography (Michroma head
 
 | Metric | Budget (Moto G-class phone, 4G) |
 | --- | --- |
-| LCP (landing) | < 2.5 s |
+| LCP (landing) | < 2.5 s, measured with Lighthouse mobile and real (devtools) throttling (Decision D18) |
 | CLS | < 0.05 |
 | INP | < 200 ms |
 | JS on `/` before scroll, total | < 190 KB gzipped (no three.js). Next 16 + React 19 alone are ≈ 166 KB (measured at M0); this catches framework growth and anything heavy slipping in |
