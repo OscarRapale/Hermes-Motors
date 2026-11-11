@@ -1,0 +1,16 @@
+/* First paint (ARCHITECTURE §4.2): the head script has set data-phase and data-theme, so the locked page
+   is hidden at once when the drive is open (lib/drive/access.ts has the same rule). */
+:global(html[data-phase='firstLight']) .locked,
+:global(html[data-theme='day']) .locked {
+  display: none;
+}
+
+/* While driving the stage owns the screen: the header hides and the page doesn't scroll; on pause and at
+   the finish the header comes back (docs/design/01-navigation-footer.md). */
+:global(html[data-drive]) {
+  overflow: hidden;
+}
+
+:global(html[data-drive='on'] header) {
+  visibility: hidden;
+}
