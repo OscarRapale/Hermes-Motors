@@ -211,6 +211,69 @@
   --z-header: 50;
   --z-dialog: 100;
   --z-wipe: 200;
+
+  /* ── Landing hero (boards 09, 10; prototype Landing-v2-BeforeDawn) ── */
+  --hero-pad: 28px;
+  --hero-gap: 40px;
+  --hero-col-gap: 20px;
+  --hero-outline-size: 250px;
+  --hero-outline-top: 96px;
+  --hero-outline-tracking: 0.02em;
+  --hero-outline-fit: 17.4vw; /* 250 px at 1440 */
+  --hero-car-top: 160px;
+  --hero-car-width: 1180px;
+  --hero-car-max: 83.6%; /* 1180 of the 1412 px card */
+  --hero-car-shift: -1%; /* the board centres the car 14 px left of the card's centre */
+  --hero-chip-top: 90.7%; /* of the car's height: the chip overlaps its lower edge */
+  --hero-grid-top: 42%;
+  --measure-hero: 430px;
+  --chip-height-m: 32px;
+  --chip-height-l: 34px;
+
+  --cta-height: 56px;
+  --cta-pad: 0 6px 0 24px;
+  --cta-pad-plain: 0 24px;
+  --cta-gap: 14px;
+  --cta-red-shadow: 0 16px 34px -14px rgba(213, 18, 30, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+  --panel-radius: var(--radius-card-l);
+  --panel-pad: 16px 22px 18px;
+  --panel-min-height: 300px;
+  --panel-gap: 14px;
+  --panel-rule: rgba(255, 255, 255, 0.08);
+  --power-size: 52px;
+  --power-border: 1.5px;
+  --power-off-border: rgba(255, 255, 255, 0.18);
+  --power-off-ink: rgba(255, 255, 255, 0.38);
+  --led-width: 13px;
+  --led-height: 5px;
+  --led-gap: 5px;
+  --led-off: 0.18;
+  --led-on-night: 0.9;
+  --led-on-day: 1;
+  --led-white: var(--white);
+  --led-red: var(--redline);
+  --panel-chip-height: 30px;
+  --panel-chip-border: rgba(255, 255, 255, 0.14);
+  --fs-countdown-sub: 44px;
+  --tracking-countdown: -0.02em;
+  --countdown-sep: rgba(255, 255, 255, 0.28);
+  --fs-caption: 13px;
+  --sealed-width: 214px;
+  --sealed-gap: 9px;
+  --sealed-bar-height: 8px;
+  --sealed-bar: rgba(255, 255, 255, 0.12);
+  --tracking-sealed: 0.12em;
+  --tracking-chip: 0.16em;
+  --feather-width: 24px;
+  --feather-height: 10px;
+  --panel-shadow-night: 0 30px 60px -28px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --pulse-ring: 8px;
+  --pulse-from: rgba(213, 18, 30, 0.55);
+  --pulse-to: rgba(213, 18, 30, 0);
+  --feather-eyebrow-width: 22px;
+  --feather-eyebrow-height: 9px;
+  --dur-pulse: 1.8s;
 }
 
 /* ── Phone (under 900 px) ──────────────────────────────────── */
@@ -249,6 +312,8 @@
     --mark-height: 24px;
     --wordmark-gap: 10px;
 
+    --led-width: 9px;
+    --led-gap: 3px;
     --footer-pad: 30px 24px;
     --footer-pad-bottom: 72px;
     --footer-row-gap: 28px;
@@ -292,6 +357,15 @@
   --menu-bg: var(--gallery-white);
   --menu-ink: var(--carbon);
 
+  /* landing hero */
+  --hero-outline-fill: rgba(255, 255, 255, 0.025);
+  --hero-outline-stroke: rgba(255, 255, 255, 0.16);
+  --hero-chip-bg: rgba(255, 255, 255, 0.05);
+  --hero-chip-border: rgba(255, 255, 255, 0.14);
+  --hero-chip-ink: var(--ink-2-dark);
+  --hero-chip-blur: none;
+  --cta-glass-shadow: none;
+
   --grid-stroke: var(--white);
   --grid-opacity: 0.05;
   --bg-hero: var(--bg-hero-night);
@@ -333,6 +407,14 @@
 
   --menu-bg: var(--carbon);
   --menu-ink: var(--white);
+
+  --hero-outline-fill: rgba(255, 255, 255, 0.72);
+  --hero-outline-stroke: rgba(14, 15, 17, 0.09);
+  --hero-chip-bg: rgba(255, 255, 255, 0.55);
+  --hero-chip-border: rgba(255, 255, 255, 0.9);
+  --hero-chip-ink: var(--ink-2-light);
+  --hero-chip-blur: var(--glass-chip-blur);
+  --cta-glass-shadow: 0 10px 24px -14px rgba(14, 15, 17, 0.3);
 
   --grid-stroke: var(--carbon);
   --grid-opacity: 0.07;

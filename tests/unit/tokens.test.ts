@@ -11,6 +11,8 @@ const SCAN = ['app', 'components', 'lib', 'styles']
 // The car package keeps its own colour tokens in components/hermes/livery.ts (vendor copy).
 const SKIP = [join('components', 'hermes')]
 const FONT_VARS = ['--font-michroma', '--font-geist', '--font-geist-mono']
+// Component-local custom properties, set inline from the component (e.g. --local-bar).
+const LOCAL = /^--local-/
 
 function files(dir: string): string[] {
   let out: string[] = []
@@ -49,7 +51,7 @@ describe('design tokens', () => {
 
   it.each(sources.map((f) => [relative(ROOT, f), f]))('%s only uses defined tokens', (_rel, file) => {
     const used = [...readFileSync(file, 'utf8').matchAll(/var\((--[\w-]+)/g)].map((m) => m[1])
-    const missing = used.filter((v) => !defined.has(v) && !FONT_VARS.includes(v))
+    const missing = used.filter((v) => !defined.has(v) && !FONT_VARS.includes(v) && !LOCAL.test(v))
     expect([...new Set(missing)]).toEqual([])
   })
 })

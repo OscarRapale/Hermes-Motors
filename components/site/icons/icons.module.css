@@ -8,3 +8,10 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+.feather {
+  width: var(--feather-width);
+  height: var(--feather-height);
+  flex: none;
+  fill: var(--redline);
+}

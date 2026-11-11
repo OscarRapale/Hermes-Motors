@@ -1,0 +1,213 @@
+/* Landing hero, desktop (board 09/10 at 1440 × 1000). Positions follow the prototype. */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 2 * var(--frame-pad));
+  /* the hero starts at the top of the page card, under the floating header */
+  margin-top: calc(-1 * (var(--header-inset) + var(--header-min-height)));
+  overflow: clip;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg-hero);
+}
+
+.grid {
+  position: absolute;
+  left: 0;
+  top: var(--hero-grid-top);
+  width: 100%;
+  height: calc(100% - var(--hero-grid-top));
+  z-index: -1;
+  fill: none;
+  stroke: var(--grid-stroke);
+  stroke-opacity: var(--grid-opacity);
+  stroke-width: 1;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  padding-top: var(--hero-car-top);
+  /* the board lets the content's top padding overlap the stage */
+  margin-bottom: calc(-1 * var(--hero-pad));
+}
+
+.outline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--hero-outline-top);
+  z-index: -1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: min(var(--hero-outline-size), var(--hero-outline-fit));
+  line-height: 1;
+  letter-spacing: var(--hero-outline-tracking);
+  color: var(--hero-outline-fill);
+  -webkit-text-stroke: 1px var(--hero-outline-stroke);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.car {
+  position: relative;
+  width: min(var(--hero-car-width), var(--hero-car-max));
+  margin-inline: auto;
+  translate: var(--hero-car-shift) 0;
+}
+
+.carChip {
+  position: absolute;
+  left: 50%;
+  top: var(--hero-chip-top);
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--chip-height-l);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--hero-chip-bg);
+  border: 1px solid var(--hero-chip-border);
+  color: var(--hero-chip-ink);
+  letter-spacing: var(--tracking-social);
+  white-space: nowrap;
+}
+
+.chipIcon {
+  width: var(--icon-s);
+  height: var(--icon-s);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--hero-gap);
+  align-items: end;
+  padding: var(--hero-pad);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hero-col-gap);
+  padding-left: var(--space-4);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--chip-height-m);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--hero-chip-bg);
+  border: 1px solid var(--hero-chip-border);
+  color: var(--hero-chip-ink);
+  -webkit-backdrop-filter: var(--hero-chip-blur);
+  backdrop-filter: var(--hero-chip-blur);
+}
+
+.eyebrowFeather {
+  width: var(--feather-eyebrow-width);
+  height: var(--feather-eyebrow-height);
+}
+
+.pulse {
+  width: var(--dot-s);
+  height: var(--dot-s);
+  border-radius: 50%;
+  background: var(--redline);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse {
+    animation: pulse var(--dur-pulse) var(--ease-out) infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--pulse-from);
+  }
+  70% {
+    box-shadow: 0 0 0 var(--pulse-ring) var(--pulse-to);
+  }
+  100% {
+    box-shadow: 0 0 0 0 var(--pulse-to);
+  }
+}
+
+.headline {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.body {
+  max-width: var(--measure-hero);
+  color: var(--muted);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.panel {
+  min-width: 0;
+}
+
+/* Phone (boards 22/23): stacked; M1 PR 4 sets the exact stage and sizes. */
+@media (max-width: 899.98px) {
+  .stage {
+    padding-top: calc(var(--header-inset) + var(--header-min-height) + var(--space-6));
+  }
+
+  .outline {
+    top: calc(var(--header-inset) + var(--header-min-height) + var(--space-4));
+  }
+
+  .stage {
+    margin-bottom: 0;
+    padding-bottom: calc(var(--chip-height-l) + var(--space-6));
+  }
+
+  .car {
+    width: 98%;
+    translate: none;
+  }
+
+  /* below the car, not over it (board 22) */
+  .carChip {
+    top: calc(100% + var(--space-4));
+  }
+
+  .content {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-section-x) var(--space-3) var(--space-3);
+  }
+
+  .copy {
+    padding: 0 var(--space-2);
+  }
+}

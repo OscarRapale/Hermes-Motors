@@ -1,0 +1,202 @@
+/* The night panel is always dark (board 09), so its colours don't follow the theme. */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--panel-gap);
+  min-height: var(--panel-min-height);
+  padding: var(--panel-pad);
+  border-radius: var(--panel-radius);
+  background: var(--panel-dark-bg);
+  -webkit-backdrop-filter: var(--panel-dark-blur);
+  backdrop-filter: var(--panel-dark-blur);
+  border: 1px solid var(--panel-dark-border);
+  box-shadow: var(--panel-shadow-night);
+  color: var(--gallery-white);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--panel-gap);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--panel-gap);
+}
+
+.power {
+  width: var(--power-size);
+  height: var(--power-size);
+  border-radius: 50%;
+  border: var(--power-border) solid var(--power-off-border);
+  display: grid;
+  place-items: center;
+  color: var(--power-off-ink);
+}
+
+.leds {
+  display: flex;
+  gap: var(--led-gap);
+}
+
+.led {
+  width: var(--led-width);
+  height: var(--led-height);
+  border-radius: var(--radius-pill);
+  background: var(--led-red);
+  opacity: var(--led-off);
+}
+
+.led:nth-child(-n + 5) {
+  background: var(--led-white);
+}
+
+.led[data-on] {
+  opacity: var(--led-on-night);
+  box-shadow: var(--dot-glow) var(--led-red);
+}
+
+.led:nth-child(-n + 5)[data-on] {
+  box-shadow: var(--dot-glow) var(--led-white);
+}
+
+.modeChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--panel-chip-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--panel-chip-border);
+  color: var(--ink-2-dark);
+  letter-spacing: var(--tracking-chip);
+}
+
+.chipIcon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+}
+
+.body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.timerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.until {
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-countdown);
+  line-height: 1;
+  letter-spacing: var(--tracking-countdown);
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* D17: "96 DAYS" over HH:MM:SS from 100 hours; one HH:MM:SS line below that. */
+.timer[data-format='hms'] .days {
+  display: none;
+}
+
+.timer[data-format='days'] .hms {
+  font-size: var(--fs-countdown-sub);
+  margin-top: var(--space-2);
+}
+
+.sep {
+  color: var(--countdown-sep);
+}
+
+.caption {
+  font-size: var(--fs-caption);
+  color: var(--ink-3-dark);
+}
+
+.sealed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sealed-gap);
+  width: var(--sealed-width);
+  flex: none;
+}
+
+.sealedTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--ink-2-dark);
+  letter-spacing: var(--tracking-chip);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sealed-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-sealed);
+  color: var(--ink-4-dark);
+}
+
+.bar {
+  display: block;
+  width: var(--local-bar); /* set per row in NightPanel.tsx */
+  height: var(--sealed-bar-height);
+  border-radius: var(--radius-pill);
+  background: var(--sealed-bar);
+}
+
+.feather {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--panel-rule);
+  font-size: var(--fs-caption);
+  color: var(--ink-3-dark);
+}
+
+/* Phone (board 22): stacked. M1 PR 4 tunes the details. */
+@media (max-width: 899.98px) {
+  .body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sealed {
+    width: auto;
+  }
+
+  /* board 22 has no mode chip on phones */
+  .modeChip {
+    display: none;
+  }
+}
