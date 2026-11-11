@@ -12,6 +12,22 @@ export const rules = {
   minMassKg: 768,
   wheelbaseMm: 3400,
   energyPerLapMj: 8.5,
+  sustainableFuelPct: 100,
+  /** Active aero: Straight and Corner modes; moving elements front 2, rear 3 */
+  aeroModes: 2,
+  frontWingElements: 2,
+  rearWingElements: 3,
+  /** Halo: grade 5 titanium, 125 kN (about 12 tonnes) from above for 5 s, and from the side */
+  haloLoadKn: 125,
+  haloLoadTonnes: 12,
+  haloHoldS: 5,
+  haloGrade: 5,
+  /** Tyres: 25 mm narrower front, 30 mm rear; 18-inch rims */
+  rimInches: 18,
+  frontTyreNarrowerMm: 25,
+  rearTyreNarrowerMm: 30,
+  /** "1.6-litre V6 turbo" */
+  engineLitres: 1.6,
 } as const
 
 /** §B The HM-27's own figures: fictional, set by the brand; never present them as rules. */

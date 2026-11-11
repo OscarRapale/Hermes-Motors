@@ -298,7 +298,39 @@
   --space-hairline: 2px;
   --hotspot-dot: 12px;
 
-  /* Slipstream wipe (11-motion): a band 2580 px wide for a 1440 px viewport */
+  /* Specs section (board 11 at 1440 × 1000; prototype Specs-Apart) */
+  --bg-specs-night: radial-gradient(70% 55% at 62% 40%, #1c1d22 0%, #121317 42%, #08090b 78%, #040405 100%);
+  --specs-grid-top: 46%;
+  --specs-ghost-size: 300px;
+  --specs-ghost-fit: 21vw; /* 300 px at 1440 */
+  --specs-ghost-top: 88px;
+  --specs-ghost-right: 36px;
+  --specs-box-top: 25.7%; /* car box: 980 × 491 at (412, 250) in the 1412 × 972 card */
+  --specs-box-width: 69.4%;
+  --specs-box-right: 1.4%;
+  --specs-box-clear: 470px; /* the text column's right edge plus a gap */
+  --specs-box-reserve: 110px; /* room below the car for the rail */
+  --specs-text-left: 44px;
+  --specs-text-top: 128px;
+  --specs-text-width: 400px;
+  --specs-text-gap: 28px;
+  --specs-copy-gap: 18px;
+  --specs-edge-width: 3px;
+  --fs-figure: 40px;
+  --fs-figure-small: 28px;
+  --fs-figure-unit: 12px;
+  --figures-pad: 20px 22px;
+  --figures-divider: rgba(255, 255, 255, 0.12);
+  --power-bar-height: 10px;
+  --power-bar-track: rgba(255, 255, 255, 0.08);
+  --power-rule: rgba(255, 255, 255, 0.1);
+  --rail-bottom: 26px;
+  --rail-inset: 60px;
+  --rail-height: 64px;
+  --rail-dot: 14px;
+  --rail-line: 2px;
+  --dur-callout: 350ms;
+  --dur-rail: 450ms;
   --wipe-width: calc(100vw * 2580 / 1440);
   --wipe-top: -12%;
   --wipe-height: 124%;
@@ -352,6 +384,8 @@
     --hero-outline-fit: 18.5vw; /* 72 px at 390 */
     --hero-outline-top-phone: 30px;
     --hero-car-top-phone: 92px;
+    --specs-ghost-size-phone: 110px;
+    --specs-text-top-phone: 314px;
     --hero-grid-top-phone: 150px;
     --hero-grid-height-phone: 240px;
     --hero-car-bleed: 4px; /* the car is 382 px in a 374 px card */
@@ -425,6 +459,11 @@
   --grid-stroke: var(--white);
   --grid-opacity: 0.05;
   --bg-hero: var(--bg-hero-night);
+  --bg-specs: var(--bg-specs-night);
+  --rail-track: rgba(255, 255, 255, 0.14);
+  --rail-dot-off: var(--carbon);
+  --rail-ring-off: rgba(255, 255, 255, 0.3);
+  --rail-ink: var(--ink-3-dark);
 
   --footer-card: var(--graphite);
   --footer-card-border: rgba(255, 255, 255, 0.08);
@@ -475,6 +514,11 @@
   --grid-stroke: var(--carbon);
   --grid-opacity: 0.07;
   --bg-hero: var(--bg-hero-day);
+  --bg-specs: var(--bg-specs-day);
+  --rail-track: rgba(14, 15, 17, 0.12);
+  --rail-dot-off: var(--white);
+  --rail-ring-off: rgba(14, 15, 17, 0.3);
+  --rail-ink: var(--ink-3-light);
 
   --footer-card: var(--carbon);
   --footer-card-border: rgba(14, 15, 17, 0.9);

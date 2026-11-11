@@ -1,6 +1,12 @@
 import { Hero } from '@/components/landing/Hero/Hero'
+import { Specs } from '@/components/specs/Specs/Specs'
 
-// The landing page (ARCHITECTURE §5): hero now; the specs section and the drive band follow in M2.
+// The landing page (ARCHITECTURE §5–6): the hero, then the specs section; the drive band follows.
 export default function Home() {
-  return <Hero />
+  return (
+    <>
+      <Hero />
+      <Specs />
+    </>
+  )
 }
