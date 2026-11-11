@@ -1,16 +1,6 @@
 import { expect, test } from '@playwright/test'
-import { footerColumns, primaryNav } from '@/content/nav'
 import { seo } from '@/content/seo'
 import { expectNoAxeViolations } from './axe'
-
-// Routes the shell links to before their milestone builds them (M3, M5). Next prefetches them and
-// gets a 404 until then. Remove a path from this list when its page lands.
-const BUILT = new Set(['/'])
-const LINKED_NOT_YET_BUILT = new Set(
-  [...primaryNav, ...footerColumns.flatMap((c) => c.links), { href: '/store' }, { href: '/privacy' }, { href: '/credits' }]
-    .map(({ href }) => href.split('#')[0])
-    .filter((path) => path && !BUILT.has(path)),
-)
 
 test('home renders with its title and passes axe', async ({ page }) => {
   await page.goto('/')
@@ -19,18 +9,41 @@ test('home renders with its title and passes axe', async ({ page }) => {
   await expectNoAxeViolations(page)
 })
 
+// Links to routes from later milestones don't prefetch (content/nav.ts → BUILT_ROUTES), so the
+// console stays clean: no 404s, no hydration mismatches, no errors at all.
 test('home loads without console errors or hydration mismatches', async ({ page }) => {
   const errors: string[] = []
   page.on('console', (msg) => {
-    if (msg.type() !== 'error') return
-    const path = msg.location().url ? new URL(msg.location().url).pathname : ''
-    if (msg.text().includes('404') && LINKED_NOT_YET_BUILT.has(path)) return
-    errors.push(`${msg.text()} ${msg.location().url}`)
+    if (msg.type() === 'error') errors.push(`${msg.text()} ${msg.location().url}`)
   })
   page.on('pageerror', (err) => errors.push(err.message))
   const synced = page.waitForResponse('**/api/now')
   await page.goto('/')
   await synced
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)) // the footer's links too
   await page.waitForLoadState('networkidle')
   expect(errors).toEqual([])
+})
+
+test('the site icon is the mark (no favicon 404)', async ({ page, request }) => {
+  await page.goto('/')
+  const icon = page.locator('head link[rel="icon"]').first()
+  const href = await icon.getAttribute('href')
+  expect(href).toContain('/icon.svg')
+  const res = await request.get(href!)
+  expect(res.ok()).toBe(true)
+  expect(res.headers()['content-type']).toContain('image/svg+xml')
+})
+
+test('the CSS is inlined: no render-blocking stylesheet requests (D18)', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(0)
+})
+
+test('the visible hero still is preloaded at high priority from <head> (D16)', async ({ page }) => {
+  await page.goto('/')
+  const preload = page.locator('head link[rel="preload"][as="image"]')
+  await expect(preload).toHaveCount(1)
+  await expect(preload).toHaveAttribute('fetchpriority', 'high')
+  await expect(preload).toHaveAttribute('imagesrcset', /hero-night-/)
 })

@@ -7,6 +7,7 @@ import { SITE_NAME, seo } from '@/content/seo'
 import { ClockSync } from '@/lib/clock/client'
 import { themeScript } from '@/lib/clock/themeScript'
 import { fontVariables } from '@/lib/fonts'
+import { heroPreloadSnippet } from '@/lib/landing/heroPreload'
 import '@/styles/tokens.css'
 import '@/styles/globals.css'
 import styles from './layout.module.css'
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     // (ARCHITECTURE §4.2), so the server markup and the live <html> differ on purpose.
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript() }} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript(undefined, heroPreloadSnippet()) }} />
       </head>
       <body>
         <a href="#main" className={styles.skip}>

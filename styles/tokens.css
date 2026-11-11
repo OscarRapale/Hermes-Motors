@@ -238,6 +238,8 @@
 
   --panel-radius: var(--radius-card-l);
   --panel-pad: 16px 22px 18px;
+  --dashboard-pad: var(--panel-pad);
+  --ignite-size: 52px;
   --panel-min-height: 300px;
   --panel-gap: 14px;
   --panel-rule: rgba(255, 255, 255, 0.08);
@@ -339,8 +341,32 @@
     --mark-height: 24px;
     --wordmark-gap: 10px;
 
-    --led-width: 9px;
-    --led-gap: 3px;
+    /* landing hero, phone (boards 22/23, prototype Landing-Phone-BeforeDawn) */
+    --bg-hero-day:
+      radial-gradient(100% 34% at 50% 22%, #ffffff 0%, #eef0f3 45%, #dadde2 80%, #cdd1d7 100%);
+    --bg-hero-night:
+      radial-gradient(90% 18% at 50% 27%, rgba(213, 18, 30, 0.32) 0%, rgba(213, 18, 30, 0.08) 48%, rgba(213, 18, 30, 0) 74%),
+      radial-gradient(110% 36% at 50% 20%, #1c1d22 0%, #121317 45%, #08090b 80%, #040405 100%);
+    --hero-car-max-phone: 640px; /* wide phones and tablets under 900 px */
+    --hero-outline-size: 72px;
+    --hero-outline-fit: 18.5vw; /* 72 px at 390 */
+    --hero-outline-top-phone: 30px;
+    --hero-car-top-phone: 92px;
+    --hero-grid-top-phone: 150px;
+    --hero-grid-height-phone: 240px;
+    --hero-car-bleed: 4px; /* the car is 382 px in a 374 px card */
+    --hero-phone-pad: 22px;
+    --cta-pad: 0 6px 0 22px;
+    --panel-radius: var(--radius-card);
+    --panel-pad: 18px 18px 16px;
+    --dashboard-pad: 16px 18px 20px;
+    --panel-gap: 16px;
+    --power-size: 44px;
+    --ignite-size: 48px;
+    --led-width: 11px;
+    --led-gap: 4px;
+    --sealed-bar-height: 7px;
+    --units-min: 60px;
     --dial-s: 108px;
     --dial-m: 108px;
     --dial-l: 176px;

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { footerCopy, WORDMARK } from '@/content/copy/shared'
-import { footerColumns, legalLinks, socialLinks } from '@/content/nav'
+import { footerColumns, legalLinks, prefetchFor, socialLinks } from '@/content/nav'
 import { HomeLink } from '../HomeLink/HomeLink'
 import { RichText } from '../RichText/RichText'
 import { TestDriveLink } from '../TestDriveLink/TestDriveLink'
@@ -67,7 +67,7 @@ export function Footer() {
               <ul className={styles.links}>
                 {column.links.map(({ label, href }) => (
                   <li key={label}>
-                    <Link href={href} className={styles.link}>
+                    <Link href={href} className={styles.link} prefetch={prefetchFor(href)}>
                       {label}
                     </Link>
                   </li>
@@ -87,7 +87,7 @@ export function Footer() {
           <p className={`${styles.fineText} ${styles.legal}`}>
             {legalLinks.map(({ label, href }) => (
               <span key={href} className={styles.legalItem}>
-                <Link href={href} className={styles.fineLink}>
+                <Link href={href} className={styles.fineLink} prefetch={prefetchFor(href)}>
                   {label}
                 </Link>
               </span>
