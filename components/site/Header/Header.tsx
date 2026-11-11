@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { headerCopy } from '@/content/copy/shared'
-import { storeHref } from '@/content/nav'
+import { prefetchFor, storeHref } from '@/content/nav'
 import { HomeLink } from '../HomeLink/HomeLink'
 import { BagIcon } from '../icons/icons'
 import { MenuDialog } from '../MenuDialog/MenuDialog'
@@ -23,7 +23,12 @@ export function Header() {
         </ul>
       </nav>
       <div className={styles.actions}>
-        <Link href={storeHref} aria-label={headerCopy.storeLabel} className={`${styles.circle} ${styles.wide}`}>
+        <Link
+          href={storeHref}
+          aria-label={headerCopy.storeLabel}
+          className={`${styles.circle} ${styles.wide}`}
+          prefetch={prefetchFor(storeHref)}
+        >
           <BagIcon />
         </Link>
         <PreviewToggle />

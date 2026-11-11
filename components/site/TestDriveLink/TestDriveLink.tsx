@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { testDriveCopy } from '@/content/copy/shared'
-import { driveHref } from '@/content/nav'
+import { driveHref, prefetchFor } from '@/content/nav'
 import { ArrowIcon, LockIcon } from '../icons/icons'
 import styles from './TestDriveLink.module.css'
 
@@ -14,12 +14,12 @@ type Variant = 'header' | 'footer' | 'menu'
 export function TestDriveLink({ variant, className = '' }: { variant: Variant; className?: string }) {
   const open =
     variant === 'header' ? (
-      <Link href={driveHref} className={`day-only ${styles.base} ${styles.dark} ${className}`}>
+      <Link href={driveHref} prefetch={prefetchFor(driveHref)} className={`day-only ${styles.base} ${styles.dark} ${className}`}>
         <span className={styles.dot} aria-hidden="true" />
         {testDriveCopy.open}
       </Link>
     ) : (
-      <Link href={driveHref} className={`day-only ${styles.base} ${styles.red} ${styles[variant]} ${className}`}>
+      <Link href={driveHref} prefetch={prefetchFor(driveHref)} className={`day-only ${styles.base} ${styles.red} ${styles[variant]} ${className}`}>
         {testDriveCopy.open}
         <span className={styles.knob} aria-hidden="true">
           <ArrowIcon className={styles.arrow} />
@@ -30,7 +30,7 @@ export function TestDriveLink({ variant, className = '' }: { variant: Variant; c
   return (
     <>
       {open}
-      <Link href={driveHref} className={`night-only ${styles.base} ${styles.locked} ${styles[variant]} ${className}`}>
+      <Link href={driveHref} prefetch={prefetchFor(driveHref)} className={`night-only ${styles.base} ${styles.locked} ${styles[variant]} ${className}`}>
         <LockIcon className={styles.lock} />
         {testDriveCopy.locked}
       </Link>

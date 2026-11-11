@@ -184,15 +184,18 @@
   color: var(--ink-3-dark);
 }
 
-/* Phone (board 22): stacked. M1 PR 4 tunes the details. */
+/* Phone (board 22): the countdown, then the sealed rows under a rule, then the feather line. */
 @media (max-width: 899.98px) {
   .body {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--panel-gap);
   }
 
   .sealed {
     width: auto;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--panel-rule);
   }
 
   /* board 22 has no mode chip on phones */

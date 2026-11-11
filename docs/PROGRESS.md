@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M1 landing hero (plan approved 2026-11-10). **Next:** PR 4, phone layouts (boards 22, 23), last M1 item.
+**Now:** M1 done (2026-11-10). **Next:** M2 specs section, plan first. Waiting on Oscar: D18 (LCP measurement method).
 
 ## Milestones
 
@@ -17,7 +17,7 @@
 - [x] Before Dawn: still, countdown, LEDs, sealed rows, CTAs, `.ics`
 - [x] First Light: still, hotspots, dashboard, dials + ignite, HP/kW
 - [x] Stripe wipe + live flip at DAY_ONE; reduced motion
-- [ ] Phone layouts (boards 22, 23)
+- [x] Phone layouts (boards 22, 23)
 
 ### M2 Specs section
 - [ ] Pinned chapters, scroll mapping, rail, Play
@@ -64,15 +64,13 @@ Placeholders are in the code until he answers. Never present them as final.
 | D13 | Preview button semantics | label switches by theme (copy.md), no `aria-pressed`; the visible "Preview" chip shows the state | rules/frontend.md says toggles use `aria-pressed`; a pressed state on a label that flips reads badly |
 | D14 | Header/footer vs boards | 900–1199 px: mark only, tighter nav, short night status; 44 px pills and links (boards 36); phone "Preview" chip under the header; locked pill links to `/drive`; new strings: skip link, menu labels | boards are 1440/390 only; 44 px targets |
 | D15 | JS budget on `/` | **Decided 2026-11-10:** total < 190 KB gz + first-party < 40 KB gz (ARCH §10) | was < 120 KB, unreachable: Next 16 + React 19 ≈ 166 KB; M0 measured 176.6 total, ≈ 10 first-party |
-| D16 | Hero stills (ARCH §5 says next/image + priority) | **Decided:** `<picture>` with the pre-built AVIF/WebP 1x/2x, both `loading=lazy`; an inline script makes the visible one eager + high priority before layout | both themes are in the DOM (§4.2); next/image priority would fetch both stills |
+| D16 | Hero stills (ARCH §5 says next/image + priority) | **Decided:** `<picture>` with the pre-built AVIF/WebP 1x/2x, both `loading=lazy`; the head script preloads the visible one (high priority, `/` only) and an inline script makes it eager | both themes are in the DOM (§4.2); next/image priority would fetch both stills |
 | D17 | Countdown over 100 h | **Decided:** "96 DAYS" at 84 px over HH:MM:SS at 44 px; under 100 h the board's single 84 px HH:MM:SS | "D DAYS · HH:MM:SS" (§4.1) is ~900 px wide at 84 px |
+| D18 | How M6 measures LCP | Lighthouse mobile with real (devtools) throttling: `/` = 2.2 s | The default simulated mode says 3.0 s: it models hydration before the image paint, but traces show LCP = first paint (the still is in the first frame). Oscar: OK to gate on the real-throttling number? |
 
 ## Log
 
-- 2026-11-10 · Stripe wipe + live flip (PR #10): `Wipe` registered as the clock's theme transition (preview, skew correction, DAY_ONE); swap at eased 0.49; live timer in ≤ 24-day steps (setTimeout overflow), re-armed on `visibilitychange`; target still warmed at wipe start. Bug caught: the minifier writes `450ms` as `.45s` → `parseCssTime`.
-- 2026-11-10 · Day hero (PR #9): dashboard (ignite, 15 LEDs, HP/kW with `aria-pressed`, five SVG dials, `role="img"`), ignition 2600 ms once per session on first view (`hermes.ignited`), reduced motion settled; hotspots → `/#specs-2|3|5` (ids in M2); `facts.ts` §A/§B. JS on `/`: 181.5 KB gz (first-party ≈ 15 KB).
-- 2026-11-10 · Night hero (PR #8): stage (both stills via `<picture>` + inline eager switch, D16; outline word; grid), both text columns, night panel (LEDs over the last 6 h, countdown with D17 days line, sealed rows), `/day-one.ics` (static), `Cta`. Only the visible still is fetched. JS on `/`: 178.6 KB gz total (+2 KB vs M0).
-- 2026-11-10 · M1 plan approved: four PRs (night hero, day hero, stripe wipe, phone). D16, D17 decided.
+- 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
 - 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); stills in `vendor/assets/images/drivers`.
 - 2026-11-07 · Handoff: design boards 01–30, car package v2, First Light film, docs.

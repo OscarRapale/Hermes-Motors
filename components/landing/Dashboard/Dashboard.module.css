@@ -6,7 +6,7 @@
   justify-content: space-between;
   gap: var(--panel-gap);
   min-height: var(--panel-min-height);
-  padding: var(--panel-pad);
+  padding: var(--dashboard-pad);
   border-radius: var(--panel-radius);
   background: var(--panel-dark-bg);
   -webkit-backdrop-filter: var(--panel-dark-blur);
@@ -30,8 +30,9 @@
 }
 
 .ignite {
-  width: var(--power-size);
-  height: var(--power-size);
+  width: var(--ignite-size);
+  height: var(--ignite-size);
+  flex: none;
   padding: 0;
   border-radius: 50%;
   border: var(--power-border) solid var(--redline);
@@ -112,17 +113,48 @@
   }
 }
 
-/* Phone (board 23): the System Power dial first and large, the other four 2 × 2. PR 4 tunes it. */
+/*
+ * Phone (board 23): ignite + LEDs; the System Power dial, large, with HP/kW under it; a rule; the
+ * other four dials 2 × 2. The top row and the dial row dissolve (display: contents) so the panel
+ * itself places every piece: the toggle moves under the big dial without being rendered twice.
+ */
 @media (max-width: 899.98px) {
-  .dials {
+  .panel {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
+      'status status'
       'power power'
+      'units units'
+      'rule rule'
       'd1 d2'
       'd4 d5';
     justify-items: center;
-    row-gap: var(--space-6);
+    gap: var(--space-4) var(--space-3);
+  }
+
+  .panel::before {
+    content: '';
+    grid-area: rule;
+    justify-self: stretch;
+    height: 1px;
+    background: var(--panel-rule);
+  }
+
+  .top,
+  .dials {
+    display: contents;
+  }
+
+  .status {
+    grid-area: status;
+    justify-self: start;
+    gap: var(--space-3);
+  }
+
+  .units {
+    grid-area: units;
+    margin-top: calc(-1 * var(--space-1));
   }
 
   .d1 {

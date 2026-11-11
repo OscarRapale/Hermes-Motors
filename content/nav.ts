@@ -3,6 +3,14 @@
 
 export type NavLink = { label: string; href: string }
 
+/**
+ * Routes that exist today. Next prefetches links in view; links to routes from later milestones
+ * (M3, M5) skip that, so production logs no 404s. Add a route here when its page lands.
+ */
+export const BUILT_ROUTES: ReadonlySet<string> = new Set(['/'])
+export const prefetchFor = (href: string): false | undefined =>
+  BUILT_ROUTES.has(href.split('#')[0] || '/') ? undefined : false
+
 /** Header nav, in board order. HM-27 points at the specs section on the landing page. */
 export const primaryNav: readonly NavLink[] = [
   { label: 'Team', href: '/team' },

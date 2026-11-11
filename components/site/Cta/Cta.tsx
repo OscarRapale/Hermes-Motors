@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { prefetchFor } from '@/content/nav'
 import { ArrowIcon, CalendarIcon } from '../icons/icons'
 import styles from './Cta.module.css'
 
@@ -33,7 +34,7 @@ export function Cta({ href, children, variant, icon = 'arrow', download, classNa
       {content}
     </a>
   ) : (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} prefetch={prefetchFor(href)}>
       {content}
     </Link>
   )
