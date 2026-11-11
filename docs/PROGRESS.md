@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M0 in progress (plan approved 2026-11-10; order: scaffold → CI → tokens → clock → header/footer → car package). **Next:** car package + assets (last M0 item).
+**Now:** M0 done (2026-11-10). **Next:** M1 landing hero, plan first. Waiting on Oscar: D15 (JS budget).
 
 ## Milestones
 
@@ -9,7 +9,7 @@
 - [x] `styles/tokens.css` + globals from docs/design/00-tokens.md; next/font (Michroma, Geist, Geist Mono)
 - [x] Header (nav, menu dialog under 900 px, theme preview button, Test drive) + footer with credits
 - [x] `lib/clock`, `content/launch.ts`, inline phase script, `/api/now`, preview toggle (ARCH §4)
-- [ ] Car package: vendor/hermes-hm27 → components/hermes, tools/render, public/models, livery, track; vendor/assets → public/images (AVIF + WebP), public/press (docs/design/assets.md)
+- [x] Car package: vendor/hermes-hm27 → components/hermes, tools/render, public/models, livery, track; vendor/assets → public/images (AVIF + WebP), public/press (docs/design/assets.md)
 - [x] Vitest + Playwright skeleton, GitHub Actions, `.env.example`
   - [x] Vercel project (production: https://hermes-motors.vercel.app) + preview per PR; `main` protected, `ci` required
 
@@ -63,9 +63,11 @@ Placeholders are in the code until he answers. Never present them as final.
 | D12 | Token gaps (flag, not Oscar-only) | `--surface` day Studio Gray / night Carbon; `--rule` ink 10%; header round buttons `--chip-*` (P: .7/.95) vs floating `--glass-chip-*` (00-tokens: .62/.9 + blur); night frame `#050506` (footer board shows `#0E0F11`); phone values below 900 px | 00-tokens names these without values or the boards disagree |
 | D13 | Preview button semantics | label switches by theme (copy.md), no `aria-pressed`; the visible "Preview" chip shows the state | rules/frontend.md says toggles use `aria-pressed`; a pressed state on a label that flips reads badly |
 | D14 | Header/footer vs boards | 900–1199 px: mark without "HERMES", tighter nav, short night status; 44 px social pills and links (boards: 36 px); phone "Preview" chip under the header; locked Test drive pill links to `/drive`; new strings: skip link, menu labels | boards are 1440 / 390 only; the full header needs ~1,100 px; 44 px targets rule |
+| D15 | **JS budget on `/` (ARCH §10: < 120 KB gz)** | not met: 176.6 KB gz, of which Next 16 + React 19 ≈ 166 KB and our code ≈ 10 KB (three.js: none) | Unreachable on the pinned stack (turning off cacheComponents/partialPrefetching: 176.3). Oscar: raise to ~190 KB total, or budget first-party JS (e.g. ≤ 40 KB)? |
 
 ## Log
 
+- 2026-11-10 · Car package + assets (PR #6): `components/hermes` = vendor v2.2 verbatim (unit test keeps them equal); three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2/6.39.6, sharp 0.35.5 (override: stats-gl uses our three); `npm run assets`; `tools/render` with one change (sync from `components/hermes`); `react-hooks/immutability` off in 3D folders only (R3F mutates on purpose). `/` ships no three.js.
 - 2026-11-10 · Header + footer (PR #5): glass header (nav with `aria-current`, Store, preview, Test drive open/locked by theme), phone menu (modal `<dialog>`, focus sentinels for Safari), footer (boards 20/21) with both credits and the fictional line, page card + skip link; `content/nav.ts`, `copy/shared.ts`, `facts.ts` §C. E2E: targets ≥ 44 px, menu keyboard path, axe both themes.
 - 2026-11-10 · Launch clock (PR #4): `content/launch.ts` (placeholders D1/D2), `lib/clock` (phase, countdown, beats incl. "D−7", skew, preview stored as the previewed theme), inline head script, client store + `ClockSync`, `/api/now` (no-store), `PreviewToggle`. Live flip timer + stripe wipe stay in M1. Unit test fails if D2 picks a zone with DST.
 - 2026-11-10 · Tokens + fonts (PR #3): `styles/tokens.css` (palette, two themes, type scale, glass, motion, focus), `globals.css`, next/font in `lib/fonts.ts`; unit guard: no raw colours outside tokens.css, every `var(--…)` defined. Font licences checked (OFL 1.1) → credits.md.

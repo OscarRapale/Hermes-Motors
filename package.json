@@ -13,12 +13,18 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "assets": "node scripts/assets.mjs"
   },
   "dependencies": {
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "@react-three/postprocessing": "3.2.2",
     "next": "16.4.5",
+    "postprocessing": "6.39.6",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "three": "0.187.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
@@ -26,10 +32,17 @@
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@types/three": "0.187.0",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.5",
     "playwright-core": "1.63.0",
+    "sharp": "0.35.5",
     "typescript": "5.9.3",
     "vitest": "5.1.0"
+  },
+  "overrides": {
+    "stats-gl": {
+      "three": "$three"
+    }
   }
 }

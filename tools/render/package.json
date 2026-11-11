@@ -1,0 +1,30 @@
+{
+  "name": "hermes-render-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "node -e \"require('fs').cpSync(process.env.HERMES_SRC || '../../components/hermes', 'src/hermes', { recursive: true })\"",
+    "typecheck": "tsc --noEmit -p .",
+    "build": "vite build",
+    "serve": "vite preview --port 8766 --strictPort"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "@react-three/postprocessing": "3.2.2",
+    "postprocessing": "6.39.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "@fontsource/michroma": "5.3.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "^19",
+    "@types/three": "0.187.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "playwright": "1.63.0",
+    "typescript": "^5",
+    "vite": "8.3.6"
+  }
+}
