@@ -182,8 +182,8 @@ Article template (`/news/[slug]`): use the manifesto's typography (Michroma head
 | LCP (landing) | < 2.5 s, measured with Lighthouse mobile and real (devtools) throttling (Decision D18) |
 | CLS | < 0.05 |
 | INP | < 200 ms |
-| JS on `/` before scroll, total | < 190 KB gzipped (no three.js). Next 16 + React 19 alone are ≈ 166 KB (measured at M0); this catches framework growth and anything heavy slipping in |
-| JS on `/` before scroll, first-party | < 40 KB gzipped (our code: shell, clock, hero islands; ≈ 10 KB at M0) |
+| JS on `/` before scroll, total | < 206 KB gzipped (no three.js): the framework (Next 16 + React 19 ≈ 166 KB, measured at M0) plus the first-party budget; it catches framework growth (Decision D22) |
+| JS on `/` before scroll, first-party | < 40 KB gzipped (our code: shell, clock, hero, specs; ≈ 22 KB after M2 PR 1). The guard that protects the hero |
 | 3D chunk | loaded only near the specs section, on `/drive`, and on `/drivers` after the helmet stills have painted |
 | Models | game 281 KB, hero 1.17 MB (desktop only), helmet 330 KB (`/drivers`, one file for all three helmets) |
 | Helmet stills | 800 px WebP, ≤ 45 KB each (the messenger's 110 KB) |

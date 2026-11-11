@@ -36,7 +36,7 @@ export type Chapter = {
   rail: string
   headline: readonly [string, string, string]
   body: string
-  /** Night version (Decision D21, placeholder copy): chapter 5's headline and body are its sealed numbers. */
+  /** Night version (Decision D21): chapter 5's day headline and body are its sealed numbers. */
   night?: { headline: readonly [string, string, string]; body: string }
   figures: readonly SpecFigure[]
   carAlt: string

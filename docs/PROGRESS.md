@@ -1,7 +1,6 @@
 # Progress
 
-**Now:** M2 specs (plan approved 2026-11-10). **Next:** PR 2, live 3D car + night frames. Waiting on Oscar: D21, D22.
-
+**Now:** M2 specs (plan approved 2026-11-10). **Next:** PR 2, live 3D car + night frames.
 ## Milestones
 
 ### M0 Foundation
@@ -63,14 +62,14 @@ Placeholders are in the code until he answers. Never present them as final.
 | D12 | Token gaps | `--surface`, `--rule`, two chip recipes, night frame `#050506`, phone < 900 px | flagged, see PR #3 |
 | D13 | Preview / Play buttons | labels flip, no `aria-pressed` | flagged, see PR #4 |
 | D14 | Header/footer vs boards | 900–1199 px mark only; 44 px pills/links | flagged, see PR #5 |
-| D15 | JS budget on `/` | **Decided:** total < 190 KB gz, first-party < 40 KB gz | see D22 |
+| D15 | JS budget on `/` | **Decided:** first-party < 40 KB gz; total revised by D22 | |
 | D16 | Hero stills | **Decided:** `<picture>`, lazy + head preload + eager switch | PR #8, #11 |
 | D17 | Countdown over 100 h | **Decided:** "96 DAYS" over HH:MM:SS | PR #8 |
 | D18 | LCP measurement | **Decided:** Lighthouse mobile, real throttling (ARCH §10) | PR #12 |
 | D19 | Specs before Day One | **Decided:** sealed: Before Dawn livery; the hero's five figures sealed; rules facts shown | |
 | D20 | Night fallback frames | **Decided:** render them (M2 PR 2), same crop as the day set | |
-| D21 | Chapter 5 at night | placeholder (new): "THE NUMBER / ARRIVES AT / 06:00." + body without kW | its headline and body are sealed numbers |
-| D22 | D15 budgets conflict | the total 190 is hit first: framework ≈ 166 + first-party 40 = 206 | after specs PR 1: 188.3 total, ≈ 22 first-party. Raise total to ~206, or cap first-party at ~24? |
+| D21 | Chapter 5 at night | **Decided 2026-11-11:** "THE NUMBER / ARRIVES AT / 06:00." + body without kW | its day headline and body are sealed numbers |
+| D22 | Total JS on `/` | **Decided 2026-11-11:** < 206 KB gz (framework ≈ 166 + first-party 40), ARCH §10 | 190 tripped before the first-party budget |
 
 ## Log
 
