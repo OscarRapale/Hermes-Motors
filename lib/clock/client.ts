@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useSyncExternalStore } from 'react'
+import { flipDelay } from './flip'
 import { DAY_ONE_MS, isPreviewing, phase, resolveTheme, type Phase, type Theme } from './phase'
 import { readPreview, writePreview } from './preview'
 import { computeSkew } from './skew'
@@ -46,14 +47,52 @@ function applyToDocument(s: ClockState) {
   html.toggleAttribute('data-preview', s.previewing)
 }
 
+/**
+ * A visual transition for theme changes (the Slipstream wipe, components/site/Wipe). It must call
+ * `apply` exactly once, at the moment the screen is covered, or at once (reduced motion).
+ */
+export type ThemeTransition = (to: Theme, apply: () => void) => void
+let transition: ThemeTransition | null = null
+
+export function registerThemeTransition(fn: ThemeTransition | null): void {
+  transition = fn
+}
+
 function update() {
   const next = compute()
   const prev = state
   state = next
-  applyToDocument(next)
-  if (!prev || prev.phase !== next.phase || prev.theme !== next.theme || prev.previewing !== next.previewing) {
-    listeners.forEach((l) => l())
+  const commit = () => {
+    applyToDocument(next)
+    if (!prev || prev.phase !== next.phase || prev.theme !== next.theme || prev.previewing !== next.previewing) {
+      listeners.forEach((l) => l())
+    }
   }
+  // Compare with what is painted (the head script's choice before any update), not the last state.
+  const painted = document.documentElement.getAttribute('data-theme')
+  if (transition && painted && painted !== next.theme) transition(next.theme, commit)
+  else commit()
+}
+
+/**
+ * The live flip (ARCHITECTURE §4.3): one timer to DAY_ONE, in steps of at most 24 days, re-armed
+ * after the skew correction and whenever the page becomes visible again.
+ */
+let flipTimer = 0
+function armFlip() {
+  window.clearTimeout(flipTimer)
+  const delay = flipDelay(now())
+  if (delay === null) return
+  flipTimer = window.setTimeout(() => {
+    update()
+    armFlip()
+  }, delay)
+}
+
+function onVisible() {
+  if (document.visibilityState !== 'visible') return
+  update()
+  armFlip()
 }
 
 function subscribe(listener: () => void) {
@@ -75,7 +114,7 @@ function getServerSnapshot(): ClockState {
 
 /**
  * Fetch /api/now once per page load and correct the clock. If the corrected phase differs from
- * the painted one, the document updates at once (M1 adds the stripe wipe here).
+ * the painted one, the theme changes through the registered transition (the stripe wipe).
  */
 export function syncClock(): Promise<void> {
   if (!synced) {
@@ -108,10 +147,18 @@ export function useClock(): ClockState {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 }
 
-/** Mounted once in the root layout: runs the skew correction after hydration. */
+/**
+ * Mounted once in the root layout: runs the skew correction after hydration, then arms the live
+ * flip at DAY_ONE and re-checks whenever the tab comes back.
+ */
 export function ClockSync(): null {
   useEffect(() => {
-    void syncClock()
+    void syncClock().then(armFlip)
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.clearTimeout(flipTimer)
+    }
   }, [])
   return null
 }
