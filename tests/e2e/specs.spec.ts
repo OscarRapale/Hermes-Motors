@@ -24,6 +24,9 @@ const current = (page: Page) => rail(page).locator('[aria-current="step"]')
 const isPhone = (page: Page) => (page.viewportSize()?.width ?? 0) < 900
 const toChapter = (page: Page, n: number) =>
   page.evaluate((c) => document.getElementById(`specs-${c}`)?.scrollIntoView(), n)
+// the page scrolls smoothly; measuring positions needs an instant jump
+const jumpTo = (page: Page, n: number) =>
+  page.evaluate((c) => document.getElementById(`specs-${c}`)?.scrollIntoView({ behavior: 'instant' }), n)
 
 test.describe('specs section', () => {
   test('each chapter slot shows its chapter: rail, heading, frames, callouts', async ({ page }) => {
@@ -57,11 +60,13 @@ test.describe('specs section', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await open(page, 'day')
     await toChapter(page, 1)
-    await rail(page).getByRole('button', { name: specsCopy.play }).click()
+    // phones name the button "Play all chapters" (copy.md)
+    const play = isPhone(page) ? specsCopy.playPhone : specsCopy.play
+    await rail(page).getByRole('button', { name: play }).click()
     await expect(rail(page).getByRole('button', { name: specsCopy.pause })).toBeVisible()
     await expect(current(page)).toHaveAttribute('aria-label', chapters[1].rail, { timeout: 6_000 })
     await rail(page).getByRole('button', { name: specsCopy.pause }).click()
-    await expect(rail(page).getByRole('button', { name: specsCopy.play })).toBeVisible()
+    await expect(rail(page).getByRole('button', { name: play })).toBeVisible()
   })
 
   test('all five chapters are in the reading order for screen readers', async ({ page }) => {
@@ -106,5 +111,59 @@ test.describe('specs section', () => {
     })
     await expect(page.locator('#specs').getByRole('link', { name: testDriveCopy.locked })).toBeVisible()
     await expectNoAxeViolations(page)
+  })
+
+  test('chapter 5: the test drive button sits between the text and the panel (board 11), last and full width on phones (board 24)', async ({ page }) => {
+    await open(page, 'day')
+    await toChapter(page, 5)
+    const article = page.locator('[data-chapter="4"]')
+    const cta = article.getByRole('link', { name: specsCopy.cta })
+    await expect(cta).toBeVisible()
+    const [a, b, p] = await Promise.all([article.boundingBox(), cta.boundingBox(), article.getByText(/system power/i).boundingBox()])
+    if (isPhone(page)) {
+      expect(b!.y).toBeGreaterThan(p!.y)
+      expect(b!.width).toBeGreaterThan(a!.width - 2)
+    } else expect(b!.y).toBeLessThan(p!.y)
+  })
+})
+
+test.describe('specs section on phones (board 24, ARCHITECTURE §6)', () => {
+  test.beforeEach(async ({ page }) => {
+    test.skip(!isPhone(page), 'phone layout')
+  })
+
+  test('the text scrolls under the pinned car; nothing overflows; the last chapter clears the rail', async ({ page }) => {
+    await open(page, 'day')
+    await jumpTo(page, 1)
+    await expect(page.locator('[data-chapter="0"]')).toHaveAttribute('data-seen', '')
+    await jumpTo(page, 2)
+    await expect(current(page)).toHaveAttribute('aria-label', chapters[1].rail)
+    const text = page.locator('[data-chapter="1"]')
+    const car = page.getByRole('img', { name: chapters[1].carAlt })
+    const before = await Promise.all([text.boundingBox(), car.boundingBox()])
+    await page.evaluate(() => window.scrollBy({ top: 120, behavior: 'instant' }))
+    await expect.poll(async () => (await text.boundingBox())!.y).toBeLessThan(before[0]!.y - 100)
+    expect((await car.boundingBox())!.y).toBeCloseTo(before[1]!.y, 0) // the car stays put
+    // the chapter read before stays in the page as it scrolls away
+    await expect(page.locator('[data-chapter="0"]')).toHaveAttribute('data-seen', '')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBe(0)
+
+    // at the end of the section, all of chapter 5 is above the rail
+    await page.evaluate(() => {
+      const specs = document.getElementById('specs')!
+      window.scrollTo({ top: specs.getBoundingClientRect().bottom + window.scrollY - window.innerHeight - 1, behavior: 'instant' })
+    })
+    await expect(current(page)).toHaveAttribute('aria-label', chapters[4].rail)
+    const last = await page.locator('[data-chapter="4"]').boundingBox()
+    const railBox = await rail(page).boundingBox()
+    expect(last!.y + last!.height).toBeLessThanOrEqual(railBox!.y)
+  })
+
+  test('the rail is a pill of numbered dots; the zoom is gone by chapter 2', async ({ page }) => {
+    await open(page, 'day')
+    await toChapter(page, 2)
+    await expect(rail(page).getByText(chapters[0].label)).toBeHidden()
+    await expect(rail(page).getByText(chapters[0].number, { exact: true })).toBeVisible()
+    await expect(page.locator('#specs [style*="transform-origin"]')).toHaveAttribute('style', /scale\(1\);/, { timeout: 5_000 })
   })
 })
