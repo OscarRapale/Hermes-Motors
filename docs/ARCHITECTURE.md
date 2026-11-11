@@ -113,9 +113,9 @@ Specs: `docs/design/04-test-drive.md` (boards 13–17). Rules: `.claude/rules/ga
 
 ### 7.1 The circuit
 
-- Centre line = the 120 map points `PTS` in `docs/design/prototypes/TestDrive-Lap.dc.html`, closed, Catmull-Rom (centripetal). Map units × **3.98 m** → a **3,121 m** lap. (Derived so that the messenger's speeds `SPD` integrate to exactly 71.906 s; compute the factor in code from the data, don't hard-code it.)
+- Centre line = the 120 map points `PTS` in `docs/design/prototypes/TestDrive-Lap.dc.html`, closed, Catmull-Rom (centripetal). Map units × **3.975 m** → a **3,119 m** lap. (Derived so that the messenger's speeds `SPD` integrate to exactly 71.906 s; compute the factor in code from the data, don't hard-code it.)
 - Width 14 m (±7), edge lines, kerbs on apexes and exits (from curvature: |κ| above the 70th percentile), asphalt run-off to ±12 m on the outside of fast corners, walls beyond. Build it with `TrackLayout` + `trackStrip`/`trackWall` from `components/hermes/ProvingGround.tsx`.
-- Start/finish and the gantry at map point 0 (the bottom straight, heading +x on the map). Sector lines at 1/3 and 2/3 of the lap distance (1,040 m and 2,081 m), where the messenger passes 19.420 s and 45.831 s.
+- Start/finish and the gantry at map point 0 (the bottom straight, heading +x on the map). Sector lines where the messenger passes 19.420 s and 45.831 s (1,039.6 m and 2,079.6 m, about a third and two thirds round), so his ghost and the timing table agree by construction.
 
 ### 7.2 The messenger (ghost)
 

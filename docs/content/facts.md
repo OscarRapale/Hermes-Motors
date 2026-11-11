@@ -41,7 +41,7 @@ Shown on the First Light dashboard. They are plausible for the class but belong 
 | --- | --- |
 | The messenger's lap | 1:11.906 |
 | His sectors | S1 19.420 · S2 26.411 · S3 26.075 |
-| Proving Ground lap length | 3,121 m (derived from the map and his speeds; computed in code) |
+| Proving Ground lap length | 3,119 m (derived from the map and his speeds; computed in code) |
 | Example winning lap (design) | 1:11.692 (−0.214): S1 19.842 (+0.422), S2 26.323 (−0.088), S3 25.527 (−0.548) |
 | Example losing lap (design) | 1:12.058 (+0.152): S1 +0.281, S2 −0.100, S3 −0.029 |
 
