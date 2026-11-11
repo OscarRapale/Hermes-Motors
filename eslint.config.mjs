@@ -5,6 +5,21 @@ import nextTs from 'eslint-config-next/typescript'
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    // React Three Fiber mutates three.js objects on purpose (renderer settings in effects, part
+    // transforms inside useFrame): .claude/rules/three.md. The React Compiler's immutability rule
+    // reads those as React state, so it is off for the 3D folders only.
+    files: [
+      'components/hermes/**',
+      'components/specs/**',
+      'components/drive/**',
+      'components/drivers/**',
+      'app/drive/**',
+    ],
+    rules: {
+      'react-hooks/immutability': 'off',
+    },
+  },
   globalIgnores([
     // eslint-config-next defaults
     '.next/**',

@@ -2,6 +2,8 @@
 
 Everything arrives in `vendor/` and is copied into `public/` during M0 (convert stills to AVIF + WebP at 1x and 2x with sharp; keep the PNG sources out of `public/`). `vendor/assets/blob-map.json` maps the canvas image ids used in the prototypes to these files.
 
+**How:** `npm run assets` (`scripts/assets.mjs`) does all of the below from `vendor/` and checks the §10 budgets; outputs are committed. Hero stills become `hero-{day,night}-{1248,2495}.{avif,webp}` (1x/2x); helmet stills get an 800 px AVIF next to the delivered WebP; the mark SVGs (`mark`, `mark-reversed`, `mark-white`, `mark-black`) are written from the Brand-Mark paths. The wordmark and lock-up SVGs need the Michroma text outlined and come with the press kit (M5). `tests/unit/assets.test.ts` checks the result.
+
 | Asset | In the handoff | Goes to | Notes |
 | --- | --- | --- | --- |
 | Car, landing version | `vendor/hermes-hm27/public/models/hermes-hm27.glb` | `public/models/` | 1.17 MB, 279,590 triangles, meshopt-compressed |
