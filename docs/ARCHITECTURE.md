@@ -182,13 +182,14 @@ Article template (`/news/[slug]`): use the manifesto's typography (Michroma head
 | LCP (landing) | < 2.5 s |
 | CLS | < 0.05 |
 | INP | < 200 ms |
-| JS on `/` before scroll | < 120 KB gzipped (no three.js) |
+| JS on `/` before scroll, total | < 190 KB gzipped (no three.js). Next 16 + React 19 alone are ≈ 166 KB (measured at M0); this catches framework growth and anything heavy slipping in |
+| JS on `/` before scroll, first-party | < 40 KB gzipped (our code: shell, clock, hero islands; ≈ 10 KB at M0) |
 | 3D chunk | loaded only near the specs section, on `/drive`, and on `/drivers` after the helmet stills have painted |
 | Models | game 281 KB, hero 1.17 MB (desktop only), helmet 330 KB (`/drivers`, one file for all three helmets) |
 | Helmet stills | 800 px WebP, ≤ 45 KB each (the messenger's 110 KB) |
 | Specs fallback frames | ≤ 2.5 MB total, lazy |
 
-Lighthouse CI on `/`, `/drive`, `/news` in GitHub Actions; fail under 90 performance on desktop.
+Lighthouse CI on `/`, `/drive`, `/news` in GitHub Actions; fail under 90 performance on desktop. Both JS budgets on `/` are checked in CI from M6 (first-party = the chunks that aren't React, React DOM or the Next runtime).
 
 ## 11. Accessibility
 
