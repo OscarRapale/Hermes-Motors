@@ -31,10 +31,24 @@ describe('car package assets', () => {
     }
   })
 
-  it('components/hermes matches the package', () => {
+  // Verbatim, except lines marked "SITE PATCH" (deliberate fixes, logged in docs/PROGRESS.md).
+  const unpatched = (text: string) =>
+    text
+      .split('\n')
+      .filter((line) => !line.includes('SITE PATCH'))
+      .join('\n')
+
+  it('components/hermes matches the package, apart from marked site patches', () => {
     for (const name of readdirSync(join(ROOT, 'vendor', 'hermes-hm27', 'src', 'hermes'))) {
       const vendor = readFileSync(join(ROOT, 'vendor', 'hermes-hm27', 'src', 'hermes', name), 'utf8')
-      expect(readFileSync(join(ROOT, 'components', 'hermes', name), 'utf8'), name).toBe(vendor)
+      expect(unpatched(readFileSync(join(ROOT, 'components', 'hermes', name), 'utf8')), name).toBe(vendor)
+    }
+  })
+
+  it('the render harness uses the same components as the site', () => {
+    for (const name of readdirSync(join(ROOT, 'components', 'hermes'))) {
+      const site = readFileSync(join(ROOT, 'components', 'hermes', name), 'utf8')
+      expect(readFileSync(join(ROOT, 'tools', 'render', 'src', 'hermes', name), 'utf8'), name).toBe(site)
     }
   })
 })
@@ -52,11 +66,16 @@ describe('images', () => {
     expect(walk(join(PUBLIC, 'images')).filter((n) => n.endsWith('.png'))).toEqual([])
   })
 
-  it('has the 19 specs frames within 2.5 MB, and their layout', () => {
-    const frames = readdirSync(join(PUBLIC, 'images', 'specs')).filter((n) => /^hm27-specs-\d{2}\.webp$/.test(n))
+  it.each(['specs', 'specs-night'])('has the 19 %s frames within 2.5 MB, all 1500 × 751', async (dir) => {
+    const frames = readdirSync(join(PUBLIC, 'images', dir)).filter((n) => /^hm27-specs-\d{2}\.webp$/.test(n))
     expect(frames).toHaveLength(19)
-    const total = frames.reduce((sum, n) => sum + kb(join(PUBLIC, 'images', 'specs', n)), 0)
+    const total = frames.reduce((sum, n) => sum + kb(join(PUBLIC, 'images', dir, n)), 0)
     expect(total).toBeLessThanOrEqual(2.5 * 1024)
+    const { default: sharp } = await import('sharp')
+    for (const n of frames) {
+      const meta = await sharp(join(PUBLIC, 'images', dir, n)).metadata()
+      expect([meta.width, meta.height], n).toEqual([1500, 751])
+    }
     expect(existsSync(join(ROOT, 'content', 'specs-layout.json'))).toBe(true)
   })
 

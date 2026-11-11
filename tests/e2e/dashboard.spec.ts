@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test'
 import { dashboard, hotspots } from '@/content/copy/landing'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
 import { IGNITED_KEY } from '@/lib/landing/ignition'

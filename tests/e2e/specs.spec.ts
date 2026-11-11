@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test'
 import { chapters, specsCopy } from '@/content/copy/specs'
 import { testDriveCopy } from '@/content/copy/shared'
 import { hotspots } from '@/content/copy/landing'
@@ -37,7 +37,7 @@ test.describe('specs section', () => {
     }
     // chapter 2 settled: frame 06 fully shown, both wing callouts visible
     await toChapter(page, 2)
-    await expect(page.locator('img[src$="hm27-specs-06.webp"]')).toHaveCSS('opacity', '1', { timeout: 5_000 })
+    await expect(page.locator('img[src$="/images/specs/hm27-specs-06.webp"]')).toHaveCSS('opacity', '1', { timeout: 5_000 })
     const front = chapters[1].callouts[0]
     await expect(page.getByText(isPhone(page) ? front.phone : front.text, { exact: true })).toBeVisible()
   })
@@ -84,6 +84,13 @@ test.describe('specs section', () => {
     await expect(page.getByRole('heading', { name: chapters[4].headline.join(' ') })).toBeVisible()
     await expect(page.getByRole('link', { name: specsCopy.cta })).toBeVisible()
     await expectNoAxeViolations(page)
+  })
+
+  test('the frame fallback shows the theme’s set: Before Dawn at night (D20)', async ({ page }) => {
+    await open(page, 'night')
+    await toChapter(page, 2)
+    await expect(page.locator('img[src$="/images/specs-night/hm27-specs-06.webp"]')).toBeVisible()
+    await expect(page.locator('img[src$="/images/specs/hm27-specs-06.webp"]')).toBeHidden()
   })
 
   test('at night the Before Dawn figures stay sealed (D19)', async ({ page }) => {

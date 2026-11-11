@@ -71,6 +71,7 @@ export function HermesStudio({
       {shadow !== false && (
         <ContactShadows
           position={[0, 0.003, 0]}
+          near={-0.01} // SITE PATCH (M2): the blur plane sits at the world origin, 3 mm below this camera; with near 0 it was clipped and every blur pass wrote an empty shadow
           scale={shadow.scale ?? 10}
           resolution={shadow.resolution ?? 2048}
           blur={shadow.blur ?? 3.6}

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test'
 import { beforeDawn, calendarCopy, firstLight } from '@/content/copy/landing'
 import { icsDate } from '@/lib/calendar/ics'
 import { ledsLit } from '@/lib/clock/countdown'

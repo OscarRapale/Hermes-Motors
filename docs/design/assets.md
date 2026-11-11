@@ -14,6 +14,7 @@ Everything arrives in `vendor/` and is copied into `public/` during M0 (convert 
 | Hero, First Light | `vendor/assets/images/hero-day.{png,webp}` | `public/images/hero-day.*` | 2495 × 886, transparent edges; the LCP image |
 | Hero, Before Dawn | `vendor/assets/images/hero-night.{png,webp}` | `public/images/hero-night.*` | 2495 × 886 |
 | Specs frames | `vendor/assets/images/specs/hm27-specs-00…18.webp` | `public/images/specs/` | 1500 × 751, one fixed camera, uniform in displacement; fallback only |
+| Specs frames, night | rendered at M2 (`tools/render`, `livery=beforeDawn&mode=night`) | `public/images/specs-night/` | same camera and the day set's crop `291,362,3023,1730` (`specs_post.py … 1500 2 <box>`), so the anchors hold; Decision D20 |
 | Specs layout | `vendor/assets/images/specs/specs-layout.json` | `content/specs-layout.json` | frame size, callout anchors per frame |
 | Drive stills | `vendor/assets/images/drive.webp`, `drive-phone.webp` | `public/images/` | backgrounds for the rotate screen, finish screens, Team page, OG |
 | Helmet stills | `vendor/assets/images/drivers/helmet-*.{png,webp}` | `public/images/drivers/` | `gallery-9`, `graphite-19`, `before-dawn-right`, `before-dawn-left`, `messenger`; 1140 × 940 PNG sources (transparent), 800 × 660 WebP; poster stills under the live helmets and the Drivers OG |
@@ -24,6 +25,7 @@ Everything arrives in `vendor/` and is copied into `public/` during M0 (convert 
 
 ## How the images were made
 
+- **Specs crop (M2):** the delivered frames were cut from a 1600 × 1000 render at dpr 2 by the box `291,362,3023,1730`; it is now recorded in `content/specs-layout.json` (`crop`), and `specs_post.py` takes it as a 5th argument. Contact shadows need the `HermesStudio` site patch (`near={-0.01}`); re-render with `GPU=1` where possible.
 - **Car stills and frames:** `vendor/hermes-hm27/tools/render` (Vite + the same React Three Fiber components, screenshotted by Playwright). Specs frames: `path=specs&cam=fixed&stagger=specs&fov=24&transparent=1`, explode values 0…1 in 19 equal steps, then `scripts/specs_post.py` (shared crop, shadow smoothing, WebP, anchors). Drive still: `scene=track` in layers, then `scripts/drive_composite.py`.
 - **Helmet stills:** `tools/render` with `scene=helmet&helmet=<look>&num=<n>&hview=right|left&transparent=1&fov=15` (plus `mode=night` for `beforeDawn`) at 1440 × 1100, then `scripts/helmet_stills.py` (one shared crop so left and right mirror, an 80 px edge fade so the ground shadow never ends in a line, WebP). The live view renders the same crop (`HELMET_FRAME`).
 - **The film:** `vendor/assets/film/` holds the camera paths (`orbit.json`, `explode.json`), the frame script (`shootcam.cjs`), the type scenes (`film.html`, `film.cjs`) and `render3d.sh`. Paths inside are absolute to the machine that made them; adjust before re-running. Each scene is encoded on its own and joined with the concat demuxer.
