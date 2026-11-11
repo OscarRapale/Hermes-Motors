@@ -38,17 +38,14 @@
   white-space: nowrap;
 }
 
-/* Phone: no room beside the button, so the chip hangs just below it, outside the header pill. */
+/* Phone: no room beside the button, so the chip hangs just below the header pill, under the
+   wordmark on the left: the specs callouts sit on the right, and the hero's stage is centred.
+   (The header, sticky, is the containing block.) */
 @media (max-width: 899.98px) {
-  .wrap {
-    position: relative;
-  }
-
   .chip {
     position: absolute;
-    top: calc(100% + var(--space-3));
-    left: 50%;
-    transform: translateX(-50%);
+    top: calc(100% + var(--space-2));
+    left: var(--space-5);
   }
 }
 

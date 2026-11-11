@@ -384,8 +384,31 @@
     --hero-outline-fit: 18.5vw; /* 72 px at 390 */
     --hero-outline-top-phone: 30px;
     --hero-car-top-phone: 92px;
-    --specs-ghost-size-phone: 110px;
+    --specs-ghost-size-phone: 132px;
+    --specs-ghost-top-phone: 70px;
+    --specs-ghost-right-phone: 14px;
+    --specs-box-top-phone: 98px; /* 366 px box at (4, 98) */
+    --specs-text-gap-phone: 14px;
+    --fs-specs-h2-phone: 25px;
+    --specs-cta-height-phone: 48px;
+    --specs-rail-side-phone: 14px;
+    --specs-rail-bottom-phone: 10px;
+    --specs-rail-pad-phone: 4px 6px 4px 4px;
+    --specs-rail-inset-phone: 22px;
+    --fs-figure: 30px;
+    --figures-pad: 16px 18px;
+    --fs-figure-small: 22px;
     --specs-text-top-phone: 314px;
+    --specs-band-phone: 304px; /* the car band the text scrolls under: to the callouts below the car */
+    --specs-band-mask: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+    --specs-slot-phone: 560px; /* one chapter of scroll: chapters 1–4 end 342 px below their text's top, and the next starts below an 844 px screen */
+    --specs-end-phone: 860px; /* chapter 5's text, then the rail */
+    --specs-slot-land: 400px;
+    --specs-end-land: 760px;
+    --specs-box-top-land: 72px;
+    --specs-box-left-land: 46%;
+    --specs-text-top-land: 118px; /* under the Preview chip */
+    --specs-text-right-land: 56%;
     --hero-grid-top-phone: 150px;
     --hero-grid-height-phone: 240px;
     --hero-car-bleed: 4px; /* the car is 382 px in a 374 px card */
@@ -424,6 +447,7 @@
   --muted: var(--ink-3-dark);
   --body: var(--ink-2-dark);
   --dim: rgba(244, 244, 245, 0.42);
+  --dim-specs-phone: var(--dim);
   --rule: rgba(255, 255, 255, 0.1);
   --accent-text: var(--red-on-dark);
 
@@ -483,6 +507,8 @@
   --muted: var(--ink-2-light);
   --body: var(--ink-2-light);
   --dim: rgba(14, 15, 17, 0.42);
+  /* phones: the specs text scrolls over the gradient's darker edge, where 0.42 is 2.7:1 (axe); 3.4:1 */
+  --dim-specs-phone: rgba(14, 15, 17, 0.5);
   --rule: rgba(14, 15, 17, 0.1);
   --accent-text: var(--red-on-light);
 

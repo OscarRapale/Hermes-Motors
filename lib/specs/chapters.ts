@@ -35,6 +35,20 @@ export function chapterAt(progress: number, current: number, hysteresis = HYSTER
   return Math.min(CHAPTERS - 1, Math.max(0, Math.floor(raw)))
 }
 
+/** Phones: a chapter starts when the top of its text has scrolled up to 72% of the screen's height. */
+export const PHONE_REVEAL = 0.72
+
+/**
+ * Phones, where the chapter text scrolls under the pinned car (ARCHITECTURE §6): the progress at
+ * which each chapter starts as its text comes into view, not when its slot reaches the top. `textTop`
+ * is where a chapter's text rests below its slot's top; `slot` is one chapter's scroll length.
+ */
+export function scrollingProgress(scrollY: number, sectionTop: number, slot: number, textTop: number, viewport: number): number {
+  if (slot <= 0) return 0
+  const raw = (scrollY - sectionTop - textTop + PHONE_REVEAL * viewport) / slot
+  return Math.min(1, Math.max(0, raw / CHAPTERS))
+}
+
 /** The scroll position of a chapter's slot (each chapter is one viewport of scroll). */
 export function chapterScrollY(chapter: number, sectionTop: number, viewport: number): number {
   return sectionTop + chapter * viewport
@@ -52,9 +66,15 @@ export function frameOpacity(f: number, i: number): number {
   return Math.max(0, 1 - Math.abs(f - i))
 }
 
-/** The pull-back: zoom 1.28 while assembled, easing to 1.0 as the car opens. */
-export function zoomAt(f: number, assembled = ZOOM_ASSEMBLED): number {
-  return 1 + (assembled - 1) * (1 - f / LAST_FRAME) ** 3
+/** Phones: the zoom is gone by frame 6 (chapter 2), so the open car never crosses the screen edge. */
+export const PHONE_ZOOM_OUT_BY = 6
+
+/**
+ * The pull-back: zoom 1.28 while assembled, easing to 1.0 as the car opens: over the whole run on
+ * desktop, by frame 6 on phones (03-specs: `Z = 1 + 0.28 × max(0, 1 − f/6)³`).
+ */
+export function zoomAt(f: number, assembled = ZOOM_ASSEMBLED, zoomOutBy = LAST_FRAME): number {
+  return 1 + (assembled - 1) * Math.max(0, 1 - f / zoomOutBy) ** 3
 }
 
 /** A frame-pixel point → % of the car box, after the zoom around the pivot. */

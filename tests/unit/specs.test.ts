@@ -3,10 +3,12 @@ import { chapters, powerPanel, wheelbase } from '@/content/copy/specs'
 import { hm27, rules } from '@/content/facts'
 import {
   CHAPTER_FRAME,
+  PHONE_ZOOM_OUT_BY,
   anchorsAt,
   chapterAt,
   frameOpacity,
   placeInBox,
+  scrollingProgress,
   sectionProgress,
   tweenMs,
   wipeClip,
@@ -28,6 +30,19 @@ describe('scroll → chapter (ARCHITECTURE §6)', () => {
     expect(chapterAt(0.195, 1)).toBe(1) // raw 0.975: within 0.1 below chapter 1's start
     expect(chapterAt(0.17, 1)).toBe(0)
   })
+
+  it('on phones, starts a chapter as its text scrolls into view, and rests inside it', () => {
+    // 390 × 844: 560 px slots, text resting 314 px below each slot's top
+    const at = (scrollY: number, current = 0) => chapterAt(scrollingProgress(scrollY, 1000, 560, 314, 844), current)
+    for (let c = 0; c < 5; c++) expect(at(1000 + c * 560, c)).toBe(c) // each slot top is its chapter
+    // chapter 2 starts when its text's top reaches 72% of the screen (y = 608)
+    const start = 1000 + 560 + 314 - 0.72 * 844
+    expect(at(start - 100)).toBe(0)
+    expect(at(start + 100)).toBe(1)
+    // 750 × 340 landscape, 400 px slots, text at 118 px: slot tops still land in their own chapter
+    for (let c = 0; c < 5; c++) expect(chapterAt(scrollingProgress(c * 400, 0, 400, 118, 340), c === 0 ? 0 : c - 1)).toBe(c)
+    expect(scrollingProgress(0, 1000, 0, 314, 844)).toBe(0)
+  })
 })
 
 describe('the frames', () => {
@@ -45,6 +60,10 @@ describe('the frames', () => {
     expect(frameOpacity(6.25, 8)).toBe(0)
     expect(zoomAt(0)).toBeCloseTo(1.28)
     expect(zoomAt(18)).toBe(1)
+    // phones: gone by frame 6, chapter 2 (03-specs)
+    expect(zoomAt(3, undefined, PHONE_ZOOM_OUT_BY)).toBeCloseTo(1 + 0.28 / 8)
+    expect(zoomAt(6, undefined, PHONE_ZOOM_OUT_BY)).toBe(1)
+    expect(zoomAt(12, undefined, PHONE_ZOOM_OUT_BY)).toBe(1)
   })
 
   it('place anchors in the box around the zoom pivot', () => {

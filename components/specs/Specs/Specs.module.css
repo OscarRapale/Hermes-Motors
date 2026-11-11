@@ -1,9 +1,11 @@
 /* The specs section (board 11 at 1440 × 1000; docs/design/03-specs.md). */
 
 .specs {
+  /* one chapter's scroll: a viewport (phones may need more, see the phone blocks) */
+  --local-slot: 100svh;
   position: relative;
-  /* five chapters, one viewport of scroll each; the stage stays pinned */
-  height: calc(5 * 100svh);
+  /* five chapters, one slot of scroll each; the stage stays pinned */
+  height: calc(5 * var(--local-slot));
 }
 
 /* Scroll targets: #specs-1 … #specs-5 (hero hotspots, the HM-27 link, the rail) */
@@ -11,7 +13,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  height: 100svh;
+  height: var(--local-slot);
   pointer-events: none;
 }
 
@@ -19,24 +21,38 @@
   top: 0;
 }
 .slot:nth-of-type(2) {
-  top: 100svh;
+  top: calc(1 * var(--local-slot));
 }
 .slot:nth-of-type(3) {
-  top: 200svh;
+  top: calc(2 * var(--local-slot));
 }
 .slot:nth-of-type(4) {
-  top: 300svh;
+  top: calc(3 * var(--local-slot));
 }
 .slot:nth-of-type(5) {
-  top: 400svh;
+  top: calc(4 * var(--local-slot));
 }
 
+/* Three pinned layers, one over the other: the stage (background, grid), the text, and the front
+   (ghost numeral, car, callouts, rail). On desktop the text could sit anywhere in that order; on
+   phones it scrolls between the stage and the front (see the phone block). */
 .stage {
   position: sticky;
   top: 0;
   height: 100svh;
   overflow: clip;
   isolation: isolate;
+}
+
+.front {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  height: 100svh;
+  margin-top: -100svh;
+  overflow: clip;
+  isolation: isolate;
+  pointer-events: none;
 }
 
 .bg {
@@ -207,8 +223,16 @@
 /* ── Text column ──────────────────────────────────────────── */
 
 .text {
-  position: absolute;
+  position: sticky;
   z-index: 3;
+  top: 0;
+  height: 100svh;
+  margin-top: -100svh;
+  pointer-events: none;
+}
+
+.column {
+  position: absolute;
   left: var(--specs-text-left);
   top: var(--specs-text-top);
   width: var(--specs-text-width);
@@ -465,6 +489,7 @@
 .rail {
   position: absolute;
   z-index: 3;
+  pointer-events: auto;
   left: var(--specs-text-left);
   right: var(--space-6);
   bottom: var(--rail-bottom);
@@ -578,12 +603,70 @@
   .railFill {
     transition: none;
   }
+
+  /* fades stay under 200 ms (rules/frontend.md) */
+  .callouts,
+  .wheelbase,
+  .live {
+    transition-duration: var(--dur-reduced-fade);
+  }
 }
 
-/* ── Phone (board 24 is M2 PR 3): car on top, text under it, a pill rail ── */
+/* the phone name of the play button (shown to screen readers on phones only, below) */
+.playTextPhone {
+  display: none;
+}
+
+/* ── Phone (board 24, prototype Specs-Phone at 390 px) ─────────────────────────────
+   The car sits under the header in a 366 px box; its zoom is gone by chapter 2 (JS). Each
+   chapter's text sits in its slot and scrolls up under the pinned car (ARCHITECTURE §6; at a
+   slot's top it rests where board 24 puts it), so a screen shorter than the board still reads
+   it all. A slot is as tall as the text needs, not a viewport, so the next chapter arrives while
+   the last one leaves and the screen is never empty. A chapter wipes in the first
+   time it starts, then stays as it scrolls away. The rail is a glass pill at the bottom:
+   numbered dots and a 44 px Carbon play button. */
 @media (max-width: 899.98px) {
+  .specs {
+    --local-slot: var(--specs-slot-phone);
+    height: calc(4 * var(--local-slot) + max(100svh, var(--specs-end-phone)));
+  }
+
+  .text {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    margin: 0;
+  }
+
+  .column {
+    inset: 0 var(--space-section-x);
+    width: auto;
+  }
+
+  .chapter {
+    top: calc(var(--local-i) * var(--local-slot) + var(--specs-text-top-phone));
+  }
+
+  .chapter[data-seen] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* the band the text scrolls under: the stage's own background, faded out at its lower edge */
+  .front::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    inset: 0 0 auto;
+    height: var(--specs-band-phone);
+    background: var(--bg-specs);
+    background-size: 100% 100svh;
+    -webkit-mask-image: var(--specs-band-mask);
+    mask-image: var(--specs-band-mask);
+  }
+
   .carBox {
-    top: calc(var(--header-inset) + var(--header-min-height) + var(--space-6));
+    top: var(--specs-box-top-phone);
     left: var(--space-1);
     right: var(--space-1);
     width: auto;
@@ -591,19 +674,27 @@
 
   .ghost {
     font-size: var(--specs-ghost-size-phone);
-    top: calc(var(--header-inset) + var(--header-min-height) + var(--space-4));
-    right: var(--space-5);
+    top: var(--specs-ghost-top-phone);
+    right: var(--specs-ghost-right-phone);
   }
 
-  .text {
-    left: var(--space-section-x);
-    right: var(--space-section-x);
-    top: var(--specs-text-top-phone);
-    width: auto;
+  .chapter,
+  .copy {
+    gap: var(--specs-text-gap-phone);
   }
 
   .h2 {
-    white-space: normal;
+    font-size: var(--fs-specs-h2-phone);
+    line-height: var(--lh-h2);
+  }
+
+  .dim {
+    color: var(--dim-specs-phone);
+  }
+
+  .cta,
+  .ctaLocked {
+    min-height: var(--specs-cta-height-phone);
   }
 
   .chipDesktop {
@@ -626,21 +717,23 @@
   }
 
   .rail {
-    left: var(--space-card-inset);
-    right: var(--space-card-inset);
-    bottom: var(--space-4);
+    left: var(--specs-rail-side-phone);
+    right: var(--specs-rail-side-phone);
+    bottom: var(--specs-rail-bottom-phone);
     align-items: center;
-    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    gap: var(--space-2);
+    padding: var(--specs-rail-pad-phone);
     border-radius: var(--radius-pill);
-    background: var(--glass-bg);
-    -webkit-backdrop-filter: var(--glass-blur);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    background: var(--glass-chip-bg);
+    -webkit-backdrop-filter: var(--glass-chip-blur);
+    backdrop-filter: var(--glass-chip-blur);
+    border: 1px solid var(--glass-chip-border);
+    box-shadow: var(--glass-chip-shadow);
   }
 
   .railTrack {
     height: var(--tap);
+    --rail-inset: var(--specs-rail-inset-phone);
   }
 
   .stopName {
@@ -660,8 +753,13 @@
     fill: var(--menu-ink);
   }
 
-  /* the name stays for screen readers */
+  /* phones name the button "Play all chapters" (copy.md); the name stays for screen readers */
   .playText {
+    display: none;
+  }
+
+  .playTextPhone {
+    display: inline;
     position: absolute;
     width: 1px;
     height: 1px;
@@ -696,4 +794,65 @@
 
 .live[data-live-ready] {
   opacity: 1;
+}
+
+/* Chapter 5's CTA: between the text and the panel on desktop (board 11), last on phones (board 24). */
+.copyWrap {
+  order: 0;
+}
+
+.ctaRow {
+  order: 1;
+  display: flex;
+}
+
+.figures,
+.power {
+  order: 2;
+}
+
+@media (max-width: 899.98px) {
+  .ctaRow {
+    order: 3;
+  }
+
+  .ctaRow > a {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ctaRow > .ctaLocked {
+    justify-content: center;
+  }
+}
+
+/* Phone on its side (the iPhone 14 landscape project, 750 × 340): there is no top third to pin
+   the car in, so it pins on the right and the text scrolls up beside it, as on desktop. */
+@media (max-width: 899.98px) and (orientation: landscape) {
+  .specs {
+    --local-slot: var(--specs-slot-land);
+    height: calc(4 * var(--local-slot) + max(100svh, var(--specs-end-land)));
+  }
+
+  .front::before {
+    display: none;
+  }
+
+  .carBox {
+    top: var(--specs-box-top-land);
+    left: var(--specs-box-left-land);
+    right: var(--space-2);
+  }
+
+  .ghost {
+    top: var(--specs-box-top-land);
+  }
+
+  .column {
+    right: var(--specs-text-right-land);
+  }
+
+  .chapter {
+    top: calc(var(--local-i) * var(--local-slot) + var(--specs-text-top-land));
+  }
 }

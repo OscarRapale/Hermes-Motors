@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M2 specs (plan approved 2026-11-10). **Next:** PR 3, phone layout (board 24).
+**Now:** M2 specs, PR #15 (phone layout). **Next:** D25, then plan M3.
 ## Milestones
 
 ### M0 Foundation
@@ -21,7 +21,7 @@
 ### M2 Specs section
 - [x] Pinned chapters, scroll mapping, rail, Play
 - [x] Live scene (SpecsApart) + frame fallback, callouts from anchors
-- [ ] Phone layout (board 24); reduced motion
+- [x] Phone layout (board 24); reduced motion
 
 ### M3 Test drive
 - [ ] Circuit from PTS (3,121 m), kerbs, walls, gantry
@@ -59,9 +59,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D9 | Jump start | +5 s penalty | proposal |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
-| D12 | Token gaps | `--surface`, `--rule`, two chip recipes, night frame `#050506`, phone < 900 px | flagged, see PR #3 |
-| D13 | Preview / Play buttons | labels flip, no `aria-pressed` | flagged, see PR #4 |
-| D14 | Header/footer vs boards | 900–1199 px mark only; 44 px pills/links | flagged, see PR #5 |
+| D12–14 | Token gaps; Preview/Play labels flip (no `aria-pressed`); header 900–1199 px mark only, 44 px pills | as flagged | PRs #3–#5 |
 | D15 | JS budget on `/` | **Decided:** first-party < 40 KB gz; total revised by D22 | |
 | D16 | Hero stills | **Decided:** `<picture>`, lazy + head preload + eager switch | PR #8, #11 |
 | D17 | Countdown over 100 h | **Decided:** "96 DAYS" over HH:MM:SS | PR #8 |
@@ -70,12 +68,15 @@ Placeholders are in the code until he answers. Never present them as final.
 | D20 | Night fallback frames | **Decided:** render them (M2 PR 2), same crop as the day set | |
 | D21 | Chapter 5 at night | **Decided 2026-11-11:** "THE NUMBER / ARRIVES AT / 06:00." + body without kW | its day headline and body are sealed numbers |
 | D22 | Total JS on `/` | **Decided 2026-11-11:** < 206 KB gz (framework ≈ 166 + first-party 40), ARCH §10 | 190 tripped before the first-party budget |
-| D23 | Effects in the specs scene | **None** (ARCH §6 says HermesEffects on desktop) | the frames were rendered without them; 03-specs: live and frames "must match"; also saves GPU and the postprocessing chunk |
+| D23 | Effects in the specs scene | **None** (ARCH §6 says HermesEffects on desktop) | frames rendered without them; live and frames "must match" (03-specs) |
+| D24 | Specs text on phones | **ARCH §6 wins:** text scrolls under the pinned car (the prototype swaps it in place); at a slot's top it rests as on board 24. Landscape (no board): car right, text left | PR #15. Phone day dim line 0.5 alpha for 3:1 |
+| D25 | Specs on short screens ≥ 900 px wide (1280 × 650 laptops, 932 × 430 phones on their side) | as board 11: ch 5's panel runs under the rail | proposal: use the phones' scrolling text below ~780 px tall |
 
 ## Log
 
-- 2026-11-11 · Live specs car (PR #14): `SpecsScene` (frames' camera), canvas placed from the recovered crop (`specs-layout.json` → `crop`) inside the same zoom layer; loads one viewport early, WebGL2 + no data saver; night frames rendered (D20). Fixed: R3F measured through the CSS zoom (`offsetSize`); **SITE PATCH** `HermesStudio` `near={-0.01}` (v2.1's 3 mm lift clipped drei's blur plane: no contact shadow); three.js leaked into first load via a static preload import. JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz on approach.
-- 2026-11-10 · Specs chapters (PR #13): pinned section, 5 slots (#specs-1…5), hysteresis, frame stack + zoom, callouts from anchors, text wipe, count-up, rail, Play, HM‑27 location; sealed at night (D19, D21). Fix: label-case overrides out-rank the global `.label`.
+- 2026-11-11 · Specs on phones (PR #15): board 24 (366 px car box, zoom gone by ch 2, glass rail pill, CTA last and full width); text scrolls under the car (D24), 560 px slots; landscape layout; reduced-motion fades ≤ 150 ms. Fixed: the phone Play button had no name (CSS order).
+- 2026-11-11 · Live specs car (PR #14): `SpecsScene` placed from the recovered crop in the frames' zoom layer; loads one viewport early; night frames (D20). **SITE PATCH** `HermesStudio` `near={-0.01}` (drei's blur plane was clipped: no contact shadow); three.js kept out of first load. JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz.
+- 2026-11-10 · Specs chapters (PR #13): pinned section, slots #specs-1…5, hysteresis, frame stack + zoom, callouts from anchors, text wipe, count-up, rail, Play; sealed at night (D19, D21).
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
 - 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); stills in `vendor/assets/images/drivers`.

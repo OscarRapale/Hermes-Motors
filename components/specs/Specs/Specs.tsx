@@ -23,14 +23,15 @@ import {
   TEXT_WIPE_MS,
   anchorsAt,
   chapterAt,
-  chapterScrollY,
   frameOpacity,
   placeInBox,
+  scrollingProgress,
   sectionProgress,
   tweenMs,
   wipeClip,
   wipeEdgeX,
   zoomAt,
+  PHONE_ZOOM_OUT_BY,
 } from '@/lib/specs/chapters'
 import styles from './Specs.module.css'
 
@@ -109,9 +110,9 @@ function PowerPanel() {
   )
 }
 
-function CalloutChip({ callout, frame }: { callout: Callout; frame: number }) {
+function CalloutChip({ callout, frame, zoomOutBy }: { callout: Callout; frame: number; zoomOutBy: number }) {
   const point = anchorsAt(frame)[callout.anchor]
-  const { x, y } = placeInBox(point, frame)
+  const { x, y } = placeInBox(point, frame, zoomAt(frame, undefined, zoomOutBy))
   return (
     <span
       className={`${styles.callout} ${styles[callout.place]} ${callout.placePhone ? styles[`phone-${callout.placePhone}`] : ''} ${callout.sealed ? 'day-only' : ''}`}
@@ -148,20 +149,27 @@ export function Specs() {
   const [onScreen, setOnScreen] = useState(false)
   const [liveReady, setLiveReady] = useState(false)
   const [lod, setLod] = useState<'hero' | 'game'>('hero')
+  // phones zoom out by frame 6, desktops over the whole run (03-specs)
+  const [zoomOutBy, setZoomOutBy] = useState(LAST_FRAME)
+  const zoomOutByRef = useRef<number>(LAST_FRAME)
+  // phones: the chapters already shown (a bitmask) stay in the page as they scroll away
+  const [seen, setSeen] = useState(0)
+  const seenRef = useRef(0)
   const night = useClock().theme === 'night'
   const current = useRef(0)
   const frame = useRef(0)
   const tweenFrame = useRef(0)
   const playTimer = useRef(0)
   const playingRef = useRef(false)
-  const wipeChapter = useRef<number | null>(null)
+  // the text wipe to run: which chapter, and a counter so the same chapter can wipe again
+  const [wipe, setWipe] = useState<{ i: number; n: number } | null>(null)
 
   const drawFrames = useCallback((f: number) => {
     frame.current = f
     imgs.current.forEach((img, k) => {
       if (img) img.style.opacity = String(frameOpacity(f, k % (LAST_FRAME + 1)))
     })
-    if (framesLayer.current) framesLayer.current.style.transform = `scale(${zoomAt(f)})`
+    if (framesLayer.current) framesLayer.current.style.transform = `scale(${zoomAt(f, undefined, zoomOutByRef.current)})`
   }, [])
 
   const goTo = useCallback(
@@ -176,7 +184,8 @@ export function Specs() {
         setSettled(true)
         return
       }
-      wipeChapter.current = next
+      // desktop: the chapters swap in place, so the new one wipes in (phones: see the scroll measure)
+      if (!isPhoneWidth()) setWipe((w) => ({ i: next, n: (w?.n ?? 0) + 1 }))
       setChapter(next)
       setSettled(false)
       const from = frame.current
@@ -202,7 +211,32 @@ export function Specs() {
       const el = root.current
       if (!el) return
       const rect = el.getBoundingClientRect()
-      const progress = sectionProgress(window.scrollY, rect.top + window.scrollY, rect.height, window.innerHeight)
+      const top = rect.top + window.scrollY
+      let progress: number
+      if (isPhoneWidth()) {
+        // the text scrolls: a chapter starts as its text comes into view (slots may be taller than the screen)
+        const slot = (el.firstElementChild as HTMLElement | null)?.offsetHeight ?? window.innerHeight
+        const text = el.querySelector<HTMLElement>('[data-chapter="0"]')
+        const textTop = text ? text.getBoundingClientRect().top - rect.top : 0
+        progress = scrollingProgress(window.scrollY, top, slot, textTop, window.innerHeight)
+        // a chapter's text shows from the moment it scrolls into view above the rail, wiping in the
+        // first time, and stays (so the screen is never empty between chapters)
+        const railTop = el.querySelector('nav')?.getBoundingClientRect().top ?? window.innerHeight
+        let fresh = -1
+        el.querySelectorAll<HTMLElement>('[data-chapter]').forEach((a, i) => {
+          if (seenRef.current & (1 << i)) return
+          const r = a.getBoundingClientRect()
+          if (r.top < railTop && r.bottom > 0) {
+            seenRef.current |= 1 << i
+            fresh = i
+          }
+        })
+        if (fresh >= 0) {
+          const shown = fresh
+          setSeen(seenRef.current)
+          if (!first && !reducedMotion()) setWipe((w) => ({ i: shown, n: (w?.n ?? 0) + 1 }))
+        }
+      } else progress = sectionProgress(window.scrollY, top, rect.height, window.innerHeight)
       const next = chapterAt(progress, current.current)
       if (first) {
         first = false
@@ -225,25 +259,26 @@ export function Specs() {
     }
   }, [goTo])
 
-  // The new chapter's text wipes in (450 ms, Redline edge) and its figures count up (800 ms after 150).
+  // A chapter's text wipes in (450 ms, Redline edge) and its figures count up (800 ms after 150).
   useLayoutEffect(() => {
-    const el = root.current?.querySelector<HTMLElement>(`[data-chapter="${chapter}"]`)
-    if (!el || wipeChapter.current !== chapter) return
-    wipeChapter.current = null
+    if (!wipe) return
+    const el = root.current?.querySelector<HTMLElement>(`[data-chapter="${wipe.i}"]`)
+    if (!el) return
     const copy = el.querySelector<HTMLElement>('[data-text-wipe]')
     const edge = el.querySelector<HTMLElement>('[data-edge]')
     const counts = [...el.querySelectorAll<HTMLElement>('[data-count]')]
     const bars = [...el.querySelectorAll<HTMLElement>('[data-bar]')]
     const width = copy?.offsetWidth ?? 400
+    const slant = zoomOutByRef.current === PHONE_ZOOM_OUT_BY ? 80 : 96 // the phone board's wipe is a little steeper
     let raf = 0
     const start = performance.now()
     const step = () => {
       const elapsed = performance.now() - start
       const t = Math.min(1, elapsed / TEXT_WIPE_MS)
-      if (copy) copy.style.clipPath = wipeClip(t, width)
+      if (copy) copy.style.clipPath = wipeClip(t, width, slant)
       if (edge) {
         edge.style.opacity = t > 0 && t < 1 ? '1' : '0'
-        edge.style.transform = `translateX(${wipeEdgeX(t, width)}px) skewX(calc(-1 * var(--angle)))`
+        edge.style.transform = `translateX(${wipeEdgeX(t, width, slant)}px) skewX(calc(-1 * var(--angle)))`
       }
       const n = easeOut(Math.min(1, Math.max(0, (elapsed - COUNT_DELAY_MS) / COUNT_MS)))
       for (const c of counts) c.textContent = fmt(Number(c.dataset.count) * n, Number(c.dataset.decimals ?? 0))
@@ -258,7 +293,7 @@ export function Specs() {
       for (const c of counts) c.textContent = fmt(Number(c.dataset.count), Number(c.dataset.decimals ?? 0))
       for (const b of bars) b.style.width = `${b.dataset.bar}%`
     }
-  }, [chapter])
+  }, [wipe])
 
   // Which car this device gets (client only): live 3D, or the frame stack.
   useEffect(() => {
@@ -267,6 +302,8 @@ export function Specs() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- a one-time device check after hydration
     setCar(live ? 'live' : 'frames')
     setLod(phone ? 'game' : 'hero')
+    zoomOutByRef.current = phone ? PHONE_ZOOM_OUT_BY : LAST_FRAME
+    setZoomOutBy(zoomOutByRef.current)
   }, [])
 
   // When the frame stack mounts (fallback devices), draw it at the current frame position.
@@ -312,10 +349,9 @@ export function Specs() {
   }, [])
 
   const scrollToChapter = useCallback((c: number) => {
-    const el = root.current
-    if (!el) return
-    const top = el.getBoundingClientRect().top + window.scrollY
-    window.scrollTo({ top: chapterScrollY(c, top, window.innerHeight), behavior: reducedMotion() ? 'auto' : 'smooth' })
+    const slot = document.getElementById(`specs-${c + 1}`)
+    if (!slot) return
+    window.scrollTo({ top: slot.getBoundingClientRect().top + window.scrollY, behavior: reducedMotion() ? 'auto' : 'smooth' })
   }, [])
 
   const stopPlay = useCallback(() => {
@@ -372,6 +408,93 @@ export function Specs() {
         <svg className={styles.grid} viewBox="0 0 1440 560" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
           <path d="M720,0 L-1680,560 M720,0 L-1200,560 M720,0 L-720,560 M720,0 L-240,560 M720,0 L240,560 M720,0 L720,560 M720,0 L1200,560 M720,0 L1680,560 M720,0 L2160,560 M720,0 L2640,560 M720,0 L3120,560 M-400,6.9 L1840,6.9 M-400,27.7 L1840,27.7 M-400,62.2 L1840,62.2 M-400,110.6 L1840,110.6 M-400,172.8 L1840,172.8 M-400,248.9 L1840,248.9 M-400,338.8 L1840,338.8 M-400,442.5 L1840,442.5" />
         </svg>
+      </div>
+
+      {/* desktop: pinned over the stage, the chapters swap in place (board 11); phones: in the page,
+          each chapter in its slot, scrolling under the car (ARCHITECTURE §6) */}
+      <div className={styles.text}>
+        <div className={styles.column}>
+          {chapters.map((c, i) => {
+            const active = i === chapter
+            return (
+              <article
+                key={c.number}
+                data-chapter={i}
+                data-active={active ? '' : undefined}
+                data-seen={seen & (1 << i) ? '' : undefined}
+                className={styles.chapter}
+                style={{ '--local-i': i } as CSSProperties}
+              >
+                <div className={styles.copyWrap}>
+                  <div className={styles.copy} data-text-wipe>
+                    <p className={`label ${styles.kicker}`}>
+                      <span className={styles.kickerNum}>
+                        {c.number} {specsCopy.of}
+                      </span>{' '}
+                      · {c.label}
+                    </p>
+                    <h2 className={`display ${styles.h2} ${c.night ? 'day-only' : ''}`}>
+                      <span>{c.headline[0]}</span>
+                      <span className={styles.dim}>{c.headline[1]}</span>
+                      <span>{c.headline[2]}</span>
+                    </h2>
+                    {c.night && (
+                      <h2 className={`display ${styles.h2} night-only`}>
+                        <span>{c.night.headline[0]}</span>
+                        <span className={styles.dim}>{c.night.headline[1]}</span>
+                        <span>{c.night.headline[2]}</span>
+                      </h2>
+                    )}
+                    <p className={`${styles.body} ${c.night ? 'day-only' : ''}`}>{c.body}</p>
+                    {c.night && <p className={`${styles.body} night-only`}>{c.night.body}</p>}
+                  </div>
+                  <span className={styles.edge} data-edge aria-hidden="true" />
+                </div>
+                {c.figures.length > 0 ? (
+                  <div className={`${styles.glass} ${styles.figures}`}>
+                    {c.figures.map((f, k) => (
+                      <div key={f.label} className={styles.figCell}>
+                        {k > 0 && <span className={styles.divider} aria-hidden="true" />}
+                        <Figure figure={f} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <PowerPanel />
+                )}
+                {i === CHAPTERS - 1 && (
+                  // board 11: between the text and the panel; board 24 (phone): last, full width
+                  <div className={styles.ctaRow}>
+                    <Link
+                      href={driveHref}
+                      prefetch={prefetchFor(driveHref)}
+                      className={`${styles.cta} day-only`}
+                      tabIndex={active ? 0 : -1}
+                    >
+                      {specsCopy.cta}
+                      <span className={styles.ctaKnob} aria-hidden="true">
+                        <ArrowIcon />
+                      </span>
+                    </Link>
+                    {/* at night the drive is locked, as in the header (D19) */}
+                    <Link
+                      href={driveHref}
+                      prefetch={prefetchFor(driveHref)}
+                      className={`${styles.ctaLocked} night-only`}
+                      tabIndex={active ? 0 : -1}
+                    >
+                      <LockIcon className={styles.lockIcon} />
+                      {testDriveCopy.locked}
+                    </Link>
+                  </div>
+                )}
+              </article>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className={styles.front}>
         <p className={styles.ghost} aria-hidden="true">
           {chapters[chapter].number}
         </p>
@@ -448,86 +571,9 @@ export function Specs() {
                 <span className={styles.chipPhone}>{wheelbase.phone}</span>
               </span>
             ) : (
-              chapters[chapter].callouts.map((c) => <CalloutChip key={c.anchor} callout={c} frame={settledFrame} />)
+              chapters[chapter].callouts.map((c) => <CalloutChip key={c.anchor} callout={c} frame={settledFrame} zoomOutBy={zoomOutBy} />)
             )}
           </div>
-        </div>
-
-        <div className={styles.text}>
-          {chapters.map((c, i) => {
-            const active = i === chapter
-            return (
-              <article
-                key={c.number}
-                data-chapter={i}
-                data-active={active ? '' : undefined}
-                className={styles.chapter}
-              >
-                <div className={styles.copyWrap}>
-                  <div className={styles.copy} data-text-wipe>
-                    <p className={`label ${styles.kicker}`}>
-                      <span className={styles.kickerNum}>
-                        {c.number} {specsCopy.of}
-                      </span>{' '}
-                      · {c.label}
-                    </p>
-                    <h2 className={`display ${styles.h2} ${c.night ? 'day-only' : ''}`}>
-                      <span>{c.headline[0]}</span>
-                      <span className={styles.dim}>{c.headline[1]}</span>
-                      <span>{c.headline[2]}</span>
-                    </h2>
-                    {c.night && (
-                      <h2 className={`display ${styles.h2} night-only`}>
-                        <span>{c.night.headline[0]}</span>
-                        <span className={styles.dim}>{c.night.headline[1]}</span>
-                        <span>{c.night.headline[2]}</span>
-                      </h2>
-                    )}
-                    <p className={`${styles.body} ${c.night ? 'day-only' : ''}`}>{c.body}</p>
-                    {c.night && <p className={`${styles.body} night-only`}>{c.night.body}</p>}
-                    {i === CHAPTERS - 1 && (
-                      <>
-                        <Link
-                          href={driveHref}
-                          prefetch={prefetchFor(driveHref)}
-                          className={`${styles.cta} day-only`}
-                          tabIndex={active ? 0 : -1}
-                        >
-                          {specsCopy.cta}
-                          <span className={styles.ctaKnob} aria-hidden="true">
-                            <ArrowIcon />
-                          </span>
-                        </Link>
-                        {/* at night the drive is locked, as in the header (D19) */}
-                        <Link
-                          href={driveHref}
-                          prefetch={prefetchFor(driveHref)}
-                          className={`${styles.ctaLocked} night-only`}
-                          tabIndex={active ? 0 : -1}
-                        >
-                          <LockIcon className={styles.lockIcon} />
-                          {testDriveCopy.locked}
-                        </Link>
-                      </>
-                    )}
-                  </div>
-                  <span className={styles.edge} data-edge aria-hidden="true" />
-                </div>
-                {c.figures.length > 0 ? (
-                  <div className={`${styles.glass} ${styles.figures}`}>
-                    {c.figures.map((f, k) => (
-                      <div key={f.label} className={styles.figCell}>
-                        {k > 0 && <span className={styles.divider} aria-hidden="true" />}
-                        <Figure figure={f} />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <PowerPanel />
-                )}
-              </article>
-            )
-          })}
         </div>
 
         <nav aria-label={specsCopy.railLabel} className={styles.rail}>
@@ -565,6 +611,7 @@ export function Specs() {
               {playing ? <path d="M7 5h4v14H7zM13 5h4v14h-4z" /> : <path d="M8 5.5v13l11-6.5z" />}
             </svg>
             <span className={styles.playText}>{playing ? specsCopy.pause : specsCopy.play}</span>
+            <span className={styles.playTextPhone}>{playing ? specsCopy.pause : specsCopy.playPhone}</span>
           </button>
         </nav>
       </div>
