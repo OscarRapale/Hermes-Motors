@@ -139,9 +139,17 @@ State per step: distance `s`, lateral offset `d`, heading error `ψ`, speed `v`;
 
 **Tuning target:** a clean lap by a good player lands within ±0.4 s of 71.906; the prototype's "won" lap is 1:11.692 (−0.214). Record three reference input logs in `tests/unit/game/` and keep their lap times in CI.
 
+**As tuned (M3, `tuning.ts`):**
+- Grip is the starting values × 0.58, the messenger's own envelope: about 1.2 g at 110 km/h and 1.75 g at 200.
+- Boost adds 160 kW, which reaches the HM‑27's 352 km/h. 0–100 km/h takes 2.6 s.
+- No turning standing still: the tightest turn is 7 m.
+- Off the road also costs 4 m/s², and scraping along a wall 8 m/s², so neither is ever a faster line. A slow touch slides along without a hit.
+- Harvest under braking is 150 kW; the store is game tuning, shown as a percentage. Overtake works once per lap.
+- Reference laps (`npm run laps:record`): clean 1:11.636 (a racing line at 97% of the limit), careful 1:17.006, wall 1:12.303 with two hits.
+
 ### 7.4 Flow and HUD
 
-Grid → five lights (1 s apart) → lights out after random 0.2–1.0 s → live lap → finish screen. HUD per board 13/16: speed dial, gear, RPM LEDs, ERS bar, Straight/Corner mode, Overtake ready, sector bars, live delta, the messenger tag over the ghost, map with both dots. Jump start (throttle before lights out) = +5 s, shown on the finish screen (**proposal**, Decision D9).
+Grid → five lights (1 s apart) → lights out after random 0.2–1.0 s → live lap → finish screen. The grid is 65 m behind the line, and the lap (and the messenger) start at the line: his is a flying lap (Decision D26, placeholder). HUD per board 13/16: speed dial, gear, RPM LEDs, ERS bar, Straight/Corner mode, Overtake ready, sector bars, live delta, the messenger tag over the ghost, map with both dots. Jump start (throttle before lights out) = +5 s, shown on the finish screen (**proposal**, Decision D9).
 
 ### 7.5 Finish and share
 
