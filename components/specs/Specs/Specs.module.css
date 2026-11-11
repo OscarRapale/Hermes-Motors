@@ -1,0 +1,672 @@
+/* The specs section (board 11 at 1440 × 1000; docs/design/03-specs.md). */
+
+.specs {
+  position: relative;
+  /* five chapters, one viewport of scroll each; the stage stays pinned */
+  height: calc(5 * 100svh);
+}
+
+/* Scroll targets: #specs-1 … #specs-5 (hero hotspots, the HM-27 link, the rail) */
+.slot {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100svh;
+  pointer-events: none;
+}
+
+.slot:nth-of-type(1) {
+  top: 0;
+}
+.slot:nth-of-type(2) {
+  top: 100svh;
+}
+.slot:nth-of-type(3) {
+  top: 200svh;
+}
+.slot:nth-of-type(4) {
+  top: 300svh;
+}
+.slot:nth-of-type(5) {
+  top: 400svh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  isolation: isolate;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg-specs);
+}
+
+.grid {
+  position: absolute;
+  left: 0;
+  top: var(--specs-grid-top);
+  width: 100%;
+  height: calc(100% - var(--specs-grid-top));
+  z-index: -1;
+  fill: none;
+  stroke: var(--grid-stroke);
+  stroke-opacity: var(--grid-opacity);
+  stroke-width: 1;
+}
+
+.ghost {
+  position: absolute;
+  right: var(--specs-ghost-right);
+  top: var(--specs-ghost-top);
+  z-index: -1;
+  font-family: var(--font-display);
+  font-size: min(var(--specs-ghost-size), var(--specs-ghost-fit));
+  line-height: 1;
+  letter-spacing: var(--hero-outline-tracking);
+  color: var(--hero-outline-fill);
+  -webkit-text-stroke: 1px var(--hero-outline-stroke);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── The car ──────────────────────────────────────────────── */
+
+.carBox {
+  position: absolute;
+  z-index: 1;
+  top: var(--specs-box-top);
+  right: var(--specs-box-right);
+  /* the board's 69.4%, but never under the text column, and leaving room for the rail */
+  width: min(
+    var(--specs-box-width),
+    calc(100% - var(--specs-box-clear) - var(--specs-box-right)),
+    calc((100svh - var(--specs-box-top) - var(--specs-box-reserve)) * 1500 / 751)
+  );
+  aspect-ratio: 1500 / 751;
+}
+
+.frames {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+}
+
+.frames img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: plus-lighter;
+}
+
+.wheelbase {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity var(--dur-callout) var(--ease-out);
+}
+
+.wheelbase[data-show] {
+  opacity: 1;
+}
+
+.wheelbase line {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Callouts: placed from the anchors, faded in once the chapter settles ── */
+
+.callouts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-callout) var(--ease-out);
+}
+
+.callouts[data-show] {
+  opacity: 1;
+}
+
+.callout {
+  position: absolute;
+  left: var(--local-x);
+  top: var(--local-y);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--space-hairline);
+  transform: translate(-50%, calc(-100% + var(--tap) / 2));
+}
+
+.below {
+  flex-direction: column;
+  transform: translate(-50%, calc(-1 * var(--tap) / 2));
+}
+
+.aboveRight {
+  align-items: flex-end;
+  transform: translate(calc(-100% + var(--tap) / 2), calc(-100% + var(--tap) / 2));
+}
+
+.dot {
+  width: var(--tap);
+  height: var(--tap);
+  display: grid;
+  place-items: center;
+}
+
+.dot::after {
+  content: '';
+  width: var(--hotspot-dot);
+  height: var(--hotspot-dot);
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: var(--hotspot-ring);
+}
+
+.chip:global(.label) {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--panel-chip-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--glass-chip-bg);
+  -webkit-backdrop-filter: var(--glass-chip-blur);
+  backdrop-filter: var(--glass-chip-blur);
+  border: 1px solid var(--glass-chip-border);
+  box-shadow: var(--glass-chip-shadow);
+  color: var(--ink);
+  letter-spacing: var(--tracking-social);
+  white-space: nowrap;
+  /* written in capitals in content/, except units: "750 kW" */
+  text-transform: none;
+}
+
+.chipPhone {
+  display: none;
+}
+
+.wheelbaseChip {
+  position: absolute;
+  left: var(--local-x);
+  top: var(--local-y);
+  transform: translate(-50%, var(--space-3));
+}
+
+/* ── Text column ──────────────────────────────────────────── */
+
+.text {
+  position: absolute;
+  z-index: 3;
+  left: var(--specs-text-left);
+  top: var(--specs-text-top);
+  width: var(--specs-text-width);
+}
+
+/* All five chapters stay in the DOM in reading order (screen readers read them all); only the
+   current one is shown. */
+.chapter {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--specs-text-gap);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chapter[data-active] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.copyWrap {
+  position: relative;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--specs-copy-gap);
+}
+
+.edge {
+  position: absolute;
+  top: calc(-1 * var(--space-6));
+  bottom: calc(-1 * var(--space-6));
+  left: 0;
+  width: var(--specs-edge-width);
+  background: var(--redline);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kicker {
+  color: var(--muted);
+  letter-spacing: var(--tracking-label);
+}
+
+.kickerNum {
+  color: var(--accent-text);
+}
+
+.h2 {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--tracking-display);
+  white-space: nowrap;
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.body {
+  max-width: var(--specs-text-width);
+  color: var(--muted);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cta-gap);
+  min-height: var(--btn-height-s);
+  padding: 0 var(--space-2) 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--cta-dark-bg);
+  color: var(--cta-dark-ink);
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+}
+
+.ctaLocked {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--btn-height-s);
+  padding: 0 var(--space-5) 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--locked-border);
+  color: var(--locked-ink);
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+}
+
+.lockIcon {
+  width: var(--icon-s);
+  height: var(--icon-s);
+}
+
+.ctaKnob {
+  width: var(--btn-knob-s);
+  height: var(--btn-knob-s);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--redline);
+  color: var(--white);
+}
+
+/* ── Figure panels (dark glass in both themes) ─────────────── */
+
+.glass {
+  border-radius: var(--radius-glass-s);
+  background: var(--panel-dark-bg);
+  -webkit-backdrop-filter: var(--panel-dark-blur);
+  backdrop-filter: var(--panel-dark-blur);
+  border: 1px solid var(--panel-dark-border);
+  box-shadow: var(--panel-dark-shadow);
+  color: var(--gallery-white);
+}
+
+.figures {
+  display: flex;
+  padding: var(--figures-pad);
+}
+
+.figCell {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.divider {
+  flex: none;
+  width: 1px;
+  margin: 0 var(--space-5);
+  background: var(--figures-divider);
+}
+
+.fig {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.figValue {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-figure);
+  line-height: 1;
+  letter-spacing: var(--tracking-countdown);
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+.figValue small {
+  margin-left: var(--space-2);
+  font-size: var(--fs-figure-unit);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tracking-label-tight);
+  color: var(--ink-2-dark);
+}
+
+.figSmall {
+  font-size: var(--fs-figure-small);
+}
+
+.figLabel:global(.label) {
+  line-height: 1.5;
+  letter-spacing: var(--tracking-label-tight);
+  color: var(--ink-2-dark);
+  text-transform: none;
+}
+
+.sealedValue {
+  display: flex;
+  align-items: center;
+  min-height: var(--fs-figure);
+}
+
+.sealedBar {
+  display: block;
+  width: 60%;
+  height: var(--sealed-bar-height);
+  border-radius: var(--radius-pill);
+  background: var(--sealed-bar);
+}
+
+.power {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--figures-pad);
+}
+
+.powerTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.powerBar {
+  display: flex;
+  gap: var(--space-1);
+  height: var(--power-bar-height);
+  border-radius: var(--radius-pill);
+  background: var(--power-bar-track);
+}
+
+.powerBar i {
+  display: block;
+  border-radius: var(--radius-pill);
+}
+
+.powerBar i:first-child {
+  background: var(--gallery-white);
+}
+
+.powerBar i:last-child {
+  background: var(--redline);
+}
+
+.powerSplit:global(.label) {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  letter-spacing: var(--tracking-label-tight);
+  color: var(--ink-2-dark);
+  text-transform: none;
+}
+
+.electric {
+  color: var(--red-on-dark);
+}
+
+.powerFoot {
+  display: flex;
+  gap: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--power-rule);
+}
+
+/* ── Rail ─────────────────────────────────────────────────── */
+
+.rail {
+  position: absolute;
+  z-index: 3;
+  left: var(--specs-text-left);
+  right: var(--space-6);
+  bottom: var(--rail-bottom);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.railTrack {
+  position: relative;
+  flex: 1;
+  height: var(--rail-height);
+}
+
+.railLine,
+.railFill {
+  position: absolute;
+  left: var(--rail-inset);
+  top: calc(var(--tap) / 4);
+  height: var(--rail-line);
+  border-radius: var(--radius-pill);
+}
+
+.railLine {
+  right: var(--rail-inset);
+  background: var(--rail-track);
+}
+
+.railFill {
+  width: calc((100% - 2 * var(--rail-inset)) * var(--local-progress));
+  background: var(--redline);
+  transition: width var(--dur-rail) var(--ease-out);
+}
+
+.stop {
+  position: absolute;
+  top: 0;
+  left: calc(var(--rail-inset) + (100% - 2 * var(--rail-inset)) * var(--local-i) / 4);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--rail-ink);
+}
+
+.stopDot {
+  display: block;
+  width: var(--rail-dot);
+  height: var(--rail-dot);
+  margin-top: var(--space-1);
+  border-radius: 50%;
+  background: var(--rail-dot-off);
+  border: var(--power-border) solid var(--rail-ring-off);
+}
+
+.stop[data-done] .stopDot {
+  background: var(--redline);
+  border-color: var(--redline);
+}
+
+.stop[aria-current='step'] {
+  color: var(--ink);
+}
+
+.stop[aria-current='step'] .stopDot {
+  box-shadow: var(--ignite-ring);
+}
+
+.stopLabel:global(.label) {
+  white-space: nowrap;
+  letter-spacing: var(--tracking-label-tight);
+  text-transform: none;
+}
+
+.play {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  padding: 0 var(--space-4) 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  -webkit-backdrop-filter: var(--glass-chip-blur);
+  backdrop-filter: var(--glass-chip-blur);
+  border: 1px solid var(--btn-border);
+  box-shadow: var(--cta-glass-shadow);
+  color: var(--ink);
+  font-size: var(--fs-button-s);
+  font-weight: var(--fw-semibold);
+}
+
+.playIcon {
+  width: var(--icon-s);
+  height: var(--icon-s);
+  fill: var(--redline);
+}
+
+/* ── Reduced motion: chapters swap with a short fade, nothing travels ── */
+@media (prefers-reduced-motion: reduce) {
+  .chapter {
+    transition: opacity var(--dur-reduced-fade) linear;
+  }
+
+  .railFill {
+    transition: none;
+  }
+}
+
+/* ── Phone (board 24 is M2 PR 3): car on top, text under it, a pill rail ── */
+@media (max-width: 899.98px) {
+  .carBox {
+    top: calc(var(--header-inset) + var(--header-min-height) + var(--space-6));
+    left: var(--space-1);
+    right: var(--space-1);
+    width: auto;
+  }
+
+  .ghost {
+    font-size: var(--specs-ghost-size-phone);
+    top: calc(var(--header-inset) + var(--header-min-height) + var(--space-4));
+    right: var(--space-5);
+  }
+
+  .text {
+    left: var(--space-section-x);
+    right: var(--space-section-x);
+    top: var(--specs-text-top-phone);
+    width: auto;
+  }
+
+  .h2 {
+    white-space: normal;
+  }
+
+  .chipDesktop {
+    display: none;
+  }
+
+  .chipPhone {
+    display: inline;
+  }
+
+  .phone-below {
+    flex-direction: column;
+    transform: translate(-50%, calc(-1 * var(--tap) / 2));
+  }
+
+  .phone-belowRight {
+    flex-direction: column;
+    align-items: flex-end;
+    transform: translate(calc(-100% + var(--tap) / 2), calc(-1 * var(--tap) / 2));
+  }
+
+  .rail {
+    left: var(--space-card-inset);
+    right: var(--space-card-inset);
+    bottom: var(--space-4);
+    align-items: center;
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .railTrack {
+    height: var(--tap);
+  }
+
+  .stopName {
+    display: none;
+  }
+
+  .play {
+    width: var(--tap);
+    padding: 0;
+    justify-content: center;
+    border: 0;
+    background: var(--menu-bg);
+    box-shadow: none;
+  }
+
+  .playIcon {
+    fill: var(--menu-ink);
+  }
+
+  /* the name stays for screen readers */
+  .playText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

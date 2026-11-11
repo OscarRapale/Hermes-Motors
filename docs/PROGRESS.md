@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M1 done (2026-11-10). **Next:** M2 specs section, plan first.
+**Now:** M2 specs (plan approved 2026-11-10). **Next:** PR 2, live 3D car + night frames. Waiting on Oscar: D21, D22.
 
 ## Milestones
 
@@ -20,7 +20,7 @@
 - [x] Phone layouts (boards 22, 23)
 
 ### M2 Specs section
-- [ ] Pinned chapters, scroll mapping, rail, Play
+- [x] Pinned chapters, scroll mapping, rail, Play
 - [ ] Live scene (SpecsApart) + frame fallback, callouts from anchors
 - [ ] Phone layout (board 24); reduced motion
 
@@ -60,16 +60,21 @@ Placeholders are in the code until he answers. Never present them as final.
 | D9 | Jump start | +5 s penalty | proposal |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
-| D12 | Token gaps | `--surface` Studio Gray / Carbon; `--rule` ink 10%; `--chip-*` (header buttons) vs `--glass-chip-*` (floating chips); night frame `#050506`; phone values < 900 px | 00-tokens names these without values, or boards disagree |
-| D13 | Preview button semantics | label switches by theme (copy.md), no `aria-pressed`; the visible "Preview" chip shows the state | rules/frontend.md says toggles use `aria-pressed`; a pressed state on a label that flips reads badly |
-| D14 | Header/footer vs boards | 900–1199 px: mark only, tighter nav, short night status; 44 px pills and links (boards 36); phone "Preview" chip under the header; locked pill links to `/drive`; new strings: skip link, menu labels | boards are 1440/390 only; 44 px targets |
-| D15 | JS budget on `/` | **Decided 2026-11-10:** total < 190 KB gz + first-party < 40 KB gz (ARCH §10) | was < 120 KB, unreachable: Next 16 + React 19 ≈ 166 KB; M0 measured 176.6 total, ≈ 10 first-party |
-| D16 | Hero stills (ARCH §5 says next/image + priority) | **Decided:** `<picture>` with the pre-built AVIF/WebP 1x/2x, both `loading=lazy`; the head script preloads the visible one (high priority, `/` only) and an inline script makes it eager | both themes are in the DOM (§4.2); next/image priority would fetch both stills |
-| D17 | Countdown over 100 h | **Decided:** "96 DAYS" at 84 px over HH:MM:SS at 44 px; under 100 h the board's single 84 px HH:MM:SS | "D DAYS · HH:MM:SS" (§4.1) is ~900 px wide at 84 px |
-| D18 | How M6 measures LCP | **Decided 2026-11-10:** Lighthouse mobile with real (devtools) throttling (ARCH §10); `/` = 2.2 s | The default simulated mode (3.0 s) models hydration before the image paint; traces show LCP = first paint |
+| D12 | Token gaps | `--surface`, `--rule`, two chip recipes, night frame `#050506`, phone < 900 px | flagged, see PR #3 |
+| D13 | Preview / Play buttons | labels flip, no `aria-pressed` | flagged, see PR #4 |
+| D14 | Header/footer vs boards | 900–1199 px mark only; 44 px pills/links | flagged, see PR #5 |
+| D15 | JS budget on `/` | **Decided:** total < 190 KB gz, first-party < 40 KB gz | see D22 |
+| D16 | Hero stills | **Decided:** `<picture>`, lazy + head preload + eager switch | PR #8, #11 |
+| D17 | Countdown over 100 h | **Decided:** "96 DAYS" over HH:MM:SS | PR #8 |
+| D18 | LCP measurement | **Decided:** Lighthouse mobile, real throttling (ARCH §10) | PR #12 |
+| D19 | Specs before Day One | **Decided:** sealed: Before Dawn livery; the hero's five figures sealed; rules facts shown | |
+| D20 | Night fallback frames | **Decided:** render them (M2 PR 2), same crop as the day set | |
+| D21 | Chapter 5 at night | placeholder (new): "THE NUMBER / ARRIVES AT / 06:00." + body without kW | its headline and body are sealed numbers |
+| D22 | D15 budgets conflict | the total 190 is hit first: framework ≈ 166 + first-party 40 = 206 | after specs PR 1: 188.3 total, ≈ 22 first-party. Raise total to ~206, or cap first-party at ~24? |
 
 ## Log
 
+- 2026-11-10 · Specs chapters (PR #13): pinned section, 5 slots (#specs-1…5), hysteresis, frame stack + zoom, callouts from anchors, text wipe, count-up, rail, Play, HM‑27 location; sealed at night (D19, D21). Fix: label-case overrides out-rank the global `.label`.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
 - 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); stills in `vendor/assets/images/drivers`.

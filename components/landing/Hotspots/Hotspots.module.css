@@ -42,7 +42,7 @@
   transform: scale(1.2);
 }
 
-.label {
+.label:global(.label) {
   display: inline-flex;
   align-items: center;
   min-height: var(--panel-chip-height);
