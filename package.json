@@ -13,6 +13,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "laps:record": "vitest run --mode record",
     "e2e": "playwright test",
     "assets": "node scripts/assets.mjs"
   },

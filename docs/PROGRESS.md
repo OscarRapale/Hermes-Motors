@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M3 test drive (plan approved 2026-11-11), PR 1 circuit. **Next:** PR 2 physics + timing.
+**Now:** M3, PR #18 (physics + timing). **Next:** PR 3, `/drive` scene.
 ## Milestones
 
 ### M0 Foundation
@@ -26,7 +26,7 @@
 ### M3 Test drive
 - [x] Circuit from PTS (3,119 m), kerbs, walls, gantry
 - [x] Messenger ghost from SPD (sums to 71.906 s)
-- [ ] Physics + tuning + three reference laps in tests
+- [x] Physics + tuning + three reference laps in tests
 - [ ] HUD, lights, sectors, delta, map; desktop keys; phone controls; rotate; pause; no-WebGL state
 
 ### M4 Finish and share
@@ -60,10 +60,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
 | D12–14 | Token gaps; Preview/Play labels flip (no `aria-pressed`); header 900–1199 px mark only, 44 px pills | as flagged | PRs #3–#5 |
-| D15 | JS budget on `/` | **Decided:** first-party < 40 KB gz; total revised by D22 | |
-| D16 | Hero stills | **Decided:** `<picture>`, lazy + head preload + eager switch | PR #8, #11 |
-| D17 | Countdown over 100 h | **Decided:** "96 DAYS" over HH:MM:SS | PR #8 |
-| D18 | LCP measurement | **Decided:** Lighthouse mobile, real throttling (ARCH §10) | PR #12 |
+| D15–18 | JS, hero stills, countdown, LCP | **Decided:** first-party JS < 40 KB gz; `<picture>` + head preload; "96 DAYS" over 100 h; LCP with real throttling | PRs #8–#12 |
 | D19 | Specs before Day One | **Decided:** sealed: Before Dawn livery; the hero's five figures sealed; rules facts shown | |
 | D20 | Night fallback frames | **Decided:** render them (M2 PR 2), same crop as the day set | |
 | D21 | Chapter 5 at night | **Decided 2026-11-11:** "THE NUMBER / ARRIVES AT / 06:00." + body without kW | its day headline and body are sealed numbers |
@@ -71,9 +68,11 @@ Placeholders are in the code until he answers. Never present them as final.
 | D23 | Effects in the specs scene | **None** (ARCH §6 says HermesEffects on desktop) | frames rendered without them; live and frames "must match" (03-specs) |
 | D24 | Specs text on phones | **ARCH §6 wins:** text scrolls under the pinned car (the prototype swaps it in place); at a slot's top it rests as on board 24. Landscape (no board): car right, text left | PR #15; dim headline line 0.5 alpha where text scrolls (3:1) |
 | D25 | Specs on short screens ≥ 900 px wide | **Decided 2026-11-11:** below 830 px tall (most laptops in a browser) the text scrolls beside the pinned car, fading behind the rail; board 11's swap from 830 px | ch 5 ends 717 px down; the rail starts 90 px above the bottom. PR #16 |
+| D26 | The start | grid 65 m behind the line; lap and ghost start at the line (his is a flying lap) | a standing start would cost ≈ 2.5 s against him. `tuning.ts` `gridBehindM` |
 
 ## Log
 
+- 2026-11-11 · Physics + timing (PR #18): track-relative arcade car, race flow (lights, jump start, line timing, Overtake), fixed step, input logs; grip × 0.58 so a clean lap is −0.27 s; three reference laps replayed in CI. Fixed while tuning: pinned on walls, turning on the spot, wall-riding faster than braking.
 - 2026-11-11 · Circuit and ghost (PR #17): `lib/game` circuit (centripetal spline, scale from his speeds), ghost table, corners → kerbs/run-off, layout for `<Track>`. Approved: lap 3,119 m (was 3,121, straight-line); sector lines at his exact sector times.
 - 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (hysteresis, frame stack + zoom, anchored callouts, text wipe, count-up, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz on approach.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
