@@ -3,6 +3,7 @@
 // while the LEDs drain and the numbers count up. Ease-out cubic throughout.
 
 import { hm27, rules } from '@/content/facts'
+import { easeOut } from '@/lib/motion'
 
 export const IGNITION_MS = 2600
 export const SWEEP_SHARE = 0.42
@@ -12,7 +13,7 @@ export const DAY_LEDS = 15
 /** sessionStorage: the ignition has played once this session (02-landing: once per session). */
 export const IGNITED_KEY = 'hermes.ignited'
 
-export const easeOut = (x: number) => 1 - (1 - x) ** 3
+export { easeOut }
 
 /** Progress t (0…1) → the two phases. */
 export function ignitionPhases(t: number): { sweep: number; settle: number } {

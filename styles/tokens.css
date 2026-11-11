@@ -295,6 +295,11 @@
   --fs-units: 12px;
   --space-hairline: 2px;
   --hotspot-dot: 12px;
+
+  /* Slipstream wipe (11-motion): a band 2580 px wide for a 1440 px viewport */
+  --wipe-width: calc(100vw * 2580 / 1440);
+  --wipe-top: -12%;
+  --wipe-height: 124%;
   --hotspot-ring: 0 0 0 3px var(--redline), 0 0 0 9px rgba(213, 18, 30, 0.18);
 }
 

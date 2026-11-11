@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M1 landing hero (plan approved 2026-11-10). **Next:** PR 3, the stripe wipe + live flip at DAY_ONE.
+**Now:** M1 landing hero (plan approved 2026-11-10). **Next:** PR 4, phone layouts (boards 22, 23), last M1 item.
 
 ## Milestones
 
@@ -16,7 +16,7 @@
 ### M1 Landing hero
 - [x] Before Dawn: still, countdown, LEDs, sealed rows, CTAs, `.ics`
 - [x] First Light: still, hotspots, dashboard, dials + ignite, HP/kW
-- [ ] Stripe wipe + live flip at DAY_ONE; reduced motion
+- [x] Stripe wipe + live flip at DAY_ONE; reduced motion
 - [ ] Phone layouts (boards 22, 23)
 
 ### M2 Specs section
@@ -69,6 +69,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
+- 2026-11-10 · Stripe wipe + live flip (PR #10): `Wipe` registered as the clock's theme transition (preview, skew correction, DAY_ONE); swap at eased 0.49; live timer in ≤ 24-day steps (setTimeout overflow), re-armed on `visibilitychange`; target still warmed at wipe start. Bug caught: the minifier writes `450ms` as `.45s` → `parseCssTime`.
 - 2026-11-10 · Day hero (PR #9): dashboard (ignite, 15 LEDs, HP/kW with `aria-pressed`, five SVG dials, `role="img"`), ignition 2600 ms once per session on first view (`hermes.ignited`), reduced motion settled; hotspots → `/#specs-2|3|5` (ids in M2); `facts.ts` §A/§B. JS on `/`: 181.5 KB gz (first-party ≈ 15 KB).
 - 2026-11-10 · Night hero (PR #8): stage (both stills via `<picture>` + inline eager switch, D16; outline word; grid), both text columns, night panel (LEDs over the last 6 h, countdown with D17 days line, sealed rows), `/day-one.ics` (static), `Cta`. Only the visible still is fetched. JS on `/`: 178.6 KB gz total (+2 KB vs M0).
 - 2026-11-10 · M1 plan approved: four PRs (night hero, day hero, stripe wipe, phone). D16, D17 decided.

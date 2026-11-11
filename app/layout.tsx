@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Footer } from '@/components/site/Footer/Footer'
 import { Header } from '@/components/site/Header/Header'
+import { Wipe } from '@/components/site/Wipe/Wipe'
 import { headerCopy } from '@/content/copy/shared'
 import { SITE_NAME, seo } from '@/content/seo'
 import { ClockSync } from '@/lib/clock/client'
@@ -36,6 +37,8 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           </div>
           <Footer />
         </div>
+        {/* The wipe registers first, so the clock's first correction can already play it. */}
+        <Wipe />
         <ClockSync />
       </body>
     </html>

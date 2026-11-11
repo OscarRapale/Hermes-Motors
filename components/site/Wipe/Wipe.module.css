@@ -1,0 +1,43 @@
+/* Slipstream wipe (11-motion). Hidden until a theme flip plays it. */
+
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-wipe);
+  display: none;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.wipe[data-active] {
+  display: block;
+}
+
+.band {
+  position: absolute;
+  top: var(--wipe-top);
+  left: 0;
+  height: var(--wipe-height);
+  width: var(--wipe-width);
+  display: flex;
+  will-change: transform;
+}
+
+.band span {
+  flex: 1;
+}
+
+/* Order to day: Gallery White, Redline, Carbon; to night: Carbon, Redline, Gallery White. */
+.wipe[data-to='day'] .band span:nth-child(1),
+.wipe[data-to='night'] .band span:nth-child(3) {
+  background: var(--gallery-white);
+}
+
+.band span:nth-child(2) {
+  background: var(--redline);
+}
+
+.wipe[data-to='day'] .band span:nth-child(3),
+.wipe[data-to='night'] .band span:nth-child(1) {
+  background: var(--carbon);
+}
