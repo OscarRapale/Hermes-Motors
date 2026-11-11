@@ -36,3 +36,23 @@ export const SunIcon = ({ className }: IconProps) =>
   )
 
 export const MoonIcon = ({ className }: IconProps) => svg(className, <path d="M19.5 14.6A7.5 7.5 0 0 1 9.4 4.5a7.5 7.5 0 1 0 10.1 10.1Z" />)
+
+export const CalendarIcon = ({ className }: IconProps) =>
+  svg(
+    className,
+    <>
+      <rect x="4" y="5.5" width="16" height="14.5" rx="2.5" />
+      <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" />
+    </>,
+  )
+
+export const PowerIcon = ({ className }: IconProps) => svg(className, <path d="M12 3v8M7.1 6.6a7 7 0 1 0 9.8 0" />)
+
+export const SunriseIcon = ({ className }: IconProps) => svg(className, <path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 6v3M5.6 9.6l2 2M18.4 9.6l-2 2" />)
+
+/** One Redline feather from the mark, leaning 14° (filled, not stroked). */
+export const Feather = ({ className }: IconProps) => (
+  <svg viewBox="0 0 40 16" aria-hidden="true" focusable="false" className={`${styles.feather} ${className ?? ''}`}>
+    <path d="M38,1.5 L36.5,8 L3,3 L0,0 Z" />
+  </svg>
+)

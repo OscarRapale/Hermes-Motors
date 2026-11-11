@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M0 done (2026-11-10). **Next:** M1 landing hero, plan first.
+**Now:** M1 landing hero (plan approved 2026-11-10). **Next:** PR 2, the day hero (dashboard, dials, ignition, hotspots).
 
 ## Milestones
 
@@ -14,7 +14,7 @@
   - [x] Vercel project (production: https://hermes-motors.vercel.app) + preview per PR; `main` protected, `ci` required
 
 ### M1 Landing hero
-- [ ] Before Dawn: still, countdown, LEDs, sealed rows, CTAs, `.ics`
+- [x] Before Dawn: still, countdown, LEDs, sealed rows, CTAs, `.ics`
 - [ ] First Light: still, hotspots, dashboard, dials + ignite, HP/kW
 - [ ] Stripe wipe + live flip at DAY_ONE; reduced motion
 - [ ] Phone layouts (boards 22, 23)
@@ -60,18 +60,17 @@ Placeholders are in the code until he answers. Never present them as final.
 | D9 | Jump start | +5 s penalty | proposal |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
-| D12 | Token gaps (flag, not Oscar-only) | `--surface` day Studio Gray / night Carbon; `--rule` ink 10%; header round buttons `--chip-*` (P: .7/.95) vs floating `--glass-chip-*` (00-tokens: .62/.9 + blur); night frame `#050506` (footer board shows `#0E0F11`); phone values below 900 px | 00-tokens names these without values or the boards disagree |
+| D12 | Token gaps | `--surface` Studio Gray / Carbon; `--rule` ink 10%; `--chip-*` (header buttons) vs `--glass-chip-*` (floating chips); night frame `#050506`; phone values < 900 px | 00-tokens names these without values, or boards disagree |
 | D13 | Preview button semantics | label switches by theme (copy.md), no `aria-pressed`; the visible "Preview" chip shows the state | rules/frontend.md says toggles use `aria-pressed`; a pressed state on a label that flips reads badly |
-| D14 | Header/footer vs boards | 900–1199 px: mark without "HERMES", tighter nav, short night status; 44 px social pills and links (boards: 36 px); phone "Preview" chip under the header; locked Test drive pill links to `/drive`; new strings: skip link, menu labels | boards are 1440 / 390 only; the full header needs ~1,100 px; 44 px targets rule |
+| D14 | Header/footer vs boards | 900–1199 px: mark only, tighter nav, short night status; 44 px pills and links (boards 36); phone "Preview" chip under the header; locked pill links to `/drive`; new strings: skip link, menu labels | boards are 1440/390 only; 44 px targets |
 | D15 | JS budget on `/` | **Decided 2026-11-10:** total < 190 KB gz + first-party < 40 KB gz (ARCH §10) | was < 120 KB, unreachable: Next 16 + React 19 ≈ 166 KB; M0 measured 176.6 total, ≈ 10 first-party |
+| D16 | Hero stills (ARCH §5 says next/image + priority) | **Decided:** `<picture>` with the pre-built AVIF/WebP 1x/2x, both `loading=lazy`; an inline script makes the visible one eager + high priority before layout | both themes are in the DOM (§4.2); next/image priority would fetch both stills |
+| D17 | Countdown over 100 h | **Decided:** "96 DAYS" at 84 px over HH:MM:SS at 44 px; under 100 h the board's single 84 px HH:MM:SS | "D DAYS · HH:MM:SS" (§4.1) is ~900 px wide at 84 px |
 
 ## Log
 
-- 2026-11-10 · Car package + assets (PR #6): `components/hermes` = vendor v2.2 verbatim (unit test keeps them equal); three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2/6.39.6, sharp 0.35.5 (override: stats-gl uses our three); `npm run assets`; `tools/render` with one change (sync from `components/hermes`); `react-hooks/immutability` off in 3D folders only (R3F mutates on purpose). `/` ships no three.js.
-- 2026-11-10 · Header + footer (PR #5): glass header (nav with `aria-current`, Store, preview, Test drive open/locked by theme), phone menu (modal `<dialog>`, focus sentinels for Safari), footer (boards 20/21) with both credits and the fictional line, page card + skip link; `content/nav.ts`, `copy/shared.ts`, `facts.ts` §C. E2E: targets ≥ 44 px, menu keyboard path, axe both themes.
-- 2026-11-10 · Launch clock (PR #4): `content/launch.ts` (placeholders D1/D2), `lib/clock` (phase, countdown, beats incl. "D−7", skew, preview stored as the previewed theme), inline head script, client store + `ClockSync`, `/api/now` (no-store), `PreviewToggle`. Live flip timer + stripe wipe stay in M1. Unit test fails if D2 picks a zone with DST.
-- 2026-11-10 · Tokens + fonts (PR #3): `styles/tokens.css` (palette, two themes, type scale, glass, motion, focus), `globals.css`, next/font in `lib/fonts.ts`; unit guard: no raw colours outside tokens.css, every `var(--…)` defined. Font licences checked (OFL 1.1) → credits.md.
-- 2026-11-10 · CI + tests (PR #2): vitest 5.1.0, @playwright/test + playwright-core 1.63.0 (pinned together so axe shares the types), @axe-core/playwright 4.14.0; projects desktop / Pixel 7 / iPhone 14 landscape; workflow `ci` (typecheck, lint, unit, build, e2e).
-- 2026-11-10 · M0 scaffold (PR #1): next 16.4.5 (cacheComponents on), react/react-dom 19.3.1, typescript 5.9.3 (not 7.x: the car package was tested on 5), eslint 9.39.5, eslint-config-next 16.4.5, @types/react(-dom) 19.3.0, @types/node 22.20.5; Node 22 in `.nvmrc`/engines (Oscar's machine runs 24; npm only warns). Fixed game.md §6 → §7.
-- 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); board 25 shows the renders; stills in `vendor/assets/images/drivers`.
-- 2026-11-07 · Handoff: design boards 01–30 (canvas "Hermes Motors — Visual Directions"), car package v2, First Light film, docs.
+- 2026-11-10 · Night hero (PR #8): stage (both stills via `<picture>` + inline eager switch, D16; outline word; grid), both text columns, night panel (LEDs over the last 6 h, countdown with D17 days line, sealed rows), `/day-one.ics` (static), `Cta`. Only the visible still is fetched. JS on `/`: 178.6 KB gz total (+2 KB vs M0).
+- 2026-11-10 · M1 plan approved: four PRs (night hero, day hero, stripe wipe, phone). D16, D17 decided.
+- 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
+- 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); stills in `vendor/assets/images/drivers`.
+- 2026-11-07 · Handoff: design boards 01–30, car package v2, First Light film, docs.

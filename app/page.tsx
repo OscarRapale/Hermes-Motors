@@ -1,11 +1,6 @@
-import { SITE_NAME } from '@/content/seo'
-import styles from './page.module.css'
+import { Hero } from '@/components/landing/Hero/Hero'
 
-// Placeholder until M1 builds the hero. The layout provides <main>.
+// The landing page (ARCHITECTURE §5): hero now; the specs section and the drive band follow in M2.
 export default function Home() {
-  return (
-    <section className={styles.placeholder}>
-      <h1>{SITE_NAME}</h1>
-    </section>
-  )
+  return <Hero />
 }
