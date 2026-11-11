@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M0 done (2026-11-10). **Next:** M1 landing hero, plan first. Waiting on Oscar: D15 (JS budget).
+**Now:** M0 done (2026-11-10). **Next:** M1 landing hero, plan first.
 
 ## Milestones
 
@@ -63,7 +63,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D12 | Token gaps (flag, not Oscar-only) | `--surface` day Studio Gray / night Carbon; `--rule` ink 10%; header round buttons `--chip-*` (P: .7/.95) vs floating `--glass-chip-*` (00-tokens: .62/.9 + blur); night frame `#050506` (footer board shows `#0E0F11`); phone values below 900 px | 00-tokens names these without values or the boards disagree |
 | D13 | Preview button semantics | label switches by theme (copy.md), no `aria-pressed`; the visible "Preview" chip shows the state | rules/frontend.md says toggles use `aria-pressed`; a pressed state on a label that flips reads badly |
 | D14 | Header/footer vs boards | 900–1199 px: mark without "HERMES", tighter nav, short night status; 44 px social pills and links (boards: 36 px); phone "Preview" chip under the header; locked Test drive pill links to `/drive`; new strings: skip link, menu labels | boards are 1440 / 390 only; the full header needs ~1,100 px; 44 px targets rule |
-| D15 | **JS budget on `/` (ARCH §10: < 120 KB gz)** | not met: 176.6 KB gz, of which Next 16 + React 19 ≈ 166 KB and our code ≈ 10 KB (three.js: none) | Unreachable on the pinned stack (turning off cacheComponents/partialPrefetching: 176.3). Oscar: raise to ~190 KB total, or budget first-party JS (e.g. ≤ 40 KB)? |
+| D15 | JS budget on `/` | **Decided 2026-11-10:** total < 190 KB gz + first-party < 40 KB gz (ARCH §10) | was < 120 KB, unreachable: Next 16 + React 19 ≈ 166 KB; M0 measured 176.6 total, ≈ 10 first-party |
 
 ## Log
 
