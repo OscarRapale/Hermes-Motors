@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
+import { Footer } from '@/components/site/Footer/Footer'
+import { Header } from '@/components/site/Header/Header'
+import { headerCopy } from '@/content/copy/shared'
 import { SITE_NAME, seo } from '@/content/seo'
 import { ClockSync } from '@/lib/clock/client'
 import { themeScript } from '@/lib/clock/themeScript'
 import { fontVariables } from '@/lib/fonts'
 import '@/styles/tokens.css'
 import '@/styles/globals.css'
+import styles from './layout.module.css'
 
 export const metadata: Metadata = {
   title: { default: seo.home.title, template: `%s · ${SITE_NAME}` },
@@ -20,7 +24,18 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <script dangerouslySetInnerHTML={{ __html: themeScript() }} />
       </head>
       <body>
-        {children}
+        <a href="#main" className={styles.skip}>
+          {headerCopy.skipLink}
+        </a>
+        <div className={styles.frame}>
+          <div className={styles.page}>
+            <Header />
+            <main id="main" tabIndex={-1} className={styles.main}>
+              {children}
+            </main>
+          </div>
+          <Footer />
+        </div>
         <ClockSync />
       </body>
     </html>

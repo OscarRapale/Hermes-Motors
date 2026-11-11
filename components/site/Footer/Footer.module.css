@@ -1,0 +1,334 @@
+.footer {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-page);
+  background: var(--footer-card);
+  border: 1px solid var(--footer-card-border);
+  color: var(--footer-ink);
+  padding: var(--footer-pad);
+  padding-bottom: var(--footer-pad-bottom);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  background: var(--footer-glow);
+  pointer-events: none;
+}
+
+/* Desktop: brand | actions across the top, intro + social | columns, fine print across. */
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-areas:
+    'top top'
+    'intro columns'
+    'social columns'
+    'fine fine';
+  column-gap: var(--space-12);
+  align-items: start;
+}
+
+/* One row that wraps when the chip and the button don't fit beside the wordmark. */
+.top {
+  grid-area: top;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+}
+
+.brand {
+  grid-area: brand;
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--chip-height);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--footer-chip-bg);
+  border: 1px solid var(--footer-chip-border);
+  color: var(--footer-body);
+  letter-spacing: var(--tracking-label-tight);
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: var(--dot-s);
+  height: var(--dot-s);
+  border-radius: 50%;
+  background: var(--status-dot);
+  box-shadow: var(--dot-glow) var(--status-dot);
+}
+
+.phoneOnly {
+  display: none;
+}
+
+.intro {
+  grid-area: intro;
+  margin-top: var(--footer-row-gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.statement {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-footer-statement);
+  line-height: var(--lh-footer-statement);
+  letter-spacing: var(--tracking-display);
+}
+
+/* The footer is always dark: its dimmed line is the night value in both themes. */
+.dim {
+  color: var(--footer-dim);
+}
+
+.line {
+  max-width: var(--measure-footer-line);
+  font-size: var(--fs-footer-line);
+  line-height: var(--lh-body);
+  color: var(--footer-body);
+}
+
+.social {
+  grid-area: social;
+  margin-top: var(--space-6);
+}
+
+.socialList,
+.links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.socialList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--footer-pill-border);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-social);
+  color: var(--footer-body);
+  text-decoration: none;
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+
+.pill:hover {
+  border-color: var(--footer-underline);
+}
+
+.columns {
+  grid-area: columns;
+  margin-top: var(--footer-row-gap);
+  padding-top: var(--space-2);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.heading {
+  color: var(--footer-heading);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(var(--fs-footer-link) * var(--lh-footer-link) + var(--footer-col-gap));
+  font-size: var(--fs-footer-link);
+  color: var(--footer-ink);
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--footer-link-hover);
+}
+
+.fine {
+  grid-area: fine;
+  margin-top: var(--footer-rule-gap);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--footer-rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-10);
+}
+
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fineText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-credit);
+  line-height: var(--lh-fine);
+  letter-spacing: var(--tracking-fine);
+  color: var(--footer-meta);
+}
+
+.fineLink {
+  color: var(--footer-ink);
+  text-underline-offset: var(--underline-offset-fine);
+  text-decoration-color: var(--footer-underline);
+}
+
+.legal {
+  white-space: nowrap;
+}
+
+.legalItem + .legalItem::before {
+  content: '\00a0\00a0·\00a0\00a0';
+  color: var(--footer-meta);
+}
+
+.outline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--footer-outline-drop);
+  text-align: center;
+  pointer-events: none;
+}
+
+.outline span {
+  font-family: var(--font-display);
+  /* the board's crop at every width: the word spans the card */
+  font-size: min(var(--fs-footer-outline), var(--footer-outline-fit));
+  line-height: 1;
+  letter-spacing: var(--tracking-outline);
+  margin-right: calc(-1 * var(--tracking-outline));
+  color: var(--footer-outline-fill);
+  -webkit-text-stroke: 1px var(--footer-outline-stroke);
+  white-space: nowrap;
+}
+
+/* Under 1200 px the long night status doesn't fit beside the wordmark: use the short line. */
+@media (max-width: 1199.98px) {
+  .wideOnly {
+    display: none;
+  }
+
+  .phoneOnly {
+    display: inline;
+  }
+}
+
+/* Phone (board 21): one column; Test drive above the status chip; link columns 2 × 2. */
+@media (max-width: 899.98px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'brand' 'intro' 'actions' 'social' 'columns' 'fine';
+  }
+
+  /* brand and actions take their own rows, with the intro between them */
+  .top {
+    display: contents;
+  }
+
+  .intro {
+    margin-top: var(--footer-row-gap);
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    margin-top: var(--space-6);
+    margin-left: 0;
+  }
+
+  .social {
+    margin-top: var(--space-4);
+  }
+
+  .socialList {
+    gap: var(--space-2) var(--space-1);
+  }
+
+  .pill {
+    padding: 0 var(--space-3);
+  }
+
+  .columns {
+    margin-top: var(--space-8);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-8);
+  }
+
+  .link {
+    min-height: var(--tap);
+  }
+
+  .fine {
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .legal {
+    white-space: normal;
+  }
+
+  .legal .fineLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
+  .outline {
+    bottom: calc(var(--footer-outline-drop) / 4);
+  }}
+
+/* Touch screens: every footer link is a 44 px target. */
+@media (pointer: coarse) {
+  .link {
+    min-height: var(--tap);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill,
+  .link {
+    transition: none;
+  }
+}

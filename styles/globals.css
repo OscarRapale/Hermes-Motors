@@ -93,6 +93,11 @@ h4 {
   display: none !important;
 }
 
+/* While a modal dialog (the phone menu) is open, the page behind it doesn't scroll. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
 /* ── Screen-reader only ────────────────────────────────────── */
 .visually-hidden {
   position: absolute !important;
