@@ -31,17 +31,18 @@ describe('scroll → chapter (ARCHITECTURE §6)', () => {
     expect(chapterAt(0.17, 1)).toBe(0)
   })
 
-  it('on phones, starts a chapter as its text scrolls into view, and rests inside it', () => {
-    // 390 × 844: 560 px slots, text resting 314 px below each slot's top
-    const at = (scrollY: number, current = 0) => chapterAt(scrollingProgress(scrollY, 1000, 560, 314, 844), current)
+  it('where the text scrolls, starts a chapter halfway up from the rail, and rests inside it', () => {
+    // 390 × 844: 560 px slots, text resting 314 px below each slot's top, rail at 780
+    const at = (scrollY: number, current = 0) => chapterAt(scrollingProgress(scrollY, 1000, 560, 314, 780), current)
     for (let c = 0; c < 5; c++) expect(at(1000 + c * 560, c)).toBe(c) // each slot top is its chapter
-    // chapter 2 starts when its text's top reaches 72% of the screen (y = 608)
-    const start = 1000 + 560 + 314 - 0.72 * 844
+    // chapter 2 starts when its text's top reaches (314 + 780) / 2 = 547
+    const start = 1000 + 560 + 314 - 547
     expect(at(start - 100)).toBe(0)
     expect(at(start + 100)).toBe(1)
-    // 750 × 340 landscape, 400 px slots, text at 118 px: slot tops still land in their own chapter
-    for (let c = 0; c < 5; c++) expect(chapterAt(scrollingProgress(c * 400, 0, 400, 118, 340), c === 0 ? 0 : c - 1)).toBe(c)
-    expect(scrollingProgress(0, 1000, 0, 314, 844)).toBe(0)
+    // slot tops land in their own chapter, coming from the one before: 750 × 340, 1280 × 650, 1440 × 800
+    for (const [slot, textTop, railTop] of [[400, 118, 276], [560, 128, 560], [610, 128, 710]])
+      for (let c = 1; c < 5; c++) expect(chapterAt(scrollingProgress(c * slot, 0, slot, textTop, railTop), c - 1)).toBe(c)
+    expect(scrollingProgress(0, 1000, 0, 314, 780)).toBe(0)
   })
 })
 

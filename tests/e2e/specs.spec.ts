@@ -167,3 +167,46 @@ test.describe('specs section on phones (board 24, ARCHITECTURE §6)', () => {
     await expect(page.locator('#specs [style*="transform-origin"]')).toHaveAttribute('style', /scale\(1\);/, { timeout: 5_000 })
   })
 })
+
+test.describe('specs section on desktop and laptops (board 11, Decision D25)', () => {
+  test.beforeEach(async ({ page }) => {
+    test.skip(isPhone(page), 'desktop layouts')
+  })
+
+  test('at 1440 × 1000 the text stays pinned and the chapters swap in place', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 })
+    await open(page, 'day')
+    await jumpTo(page, 2)
+    await expect(current(page)).toHaveAttribute('aria-label', chapters[1].rail)
+    const text = page.locator('[data-chapter="1"]')
+    const y = (await text.boundingBox())!.y
+    await page.evaluate(() => window.scrollBy({ top: 120, behavior: 'instant' }))
+    await page.waitForTimeout(200)
+    expect((await text.boundingBox())!.y).toBeCloseTo(y, 0)
+    await expect(page.locator('[data-chapter="0"]')).toHaveCSS('opacity', '0')
+  })
+
+  test('below 830 px tall the text scrolls beside the pinned car, and chapter 5 clears the rail', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 650 })
+    await open(page, 'day')
+    await jumpTo(page, 1)
+    await jumpTo(page, 2)
+    await expect(current(page)).toHaveAttribute('aria-label', chapters[1].rail)
+    const text = page.locator('[data-chapter="1"]')
+    const car = page.getByRole('img', { name: chapters[1].carAlt })
+    const before = await Promise.all([text.boundingBox(), car.boundingBox()])
+    await page.evaluate(() => window.scrollBy({ top: 120, behavior: 'instant' }))
+    await expect.poll(async () => (await text.boundingBox())!.y).toBeLessThan(before[0]!.y - 100)
+    expect((await car.boundingBox())!.y).toBeCloseTo(before[1]!.y, 0)
+    await expect(page.locator('[data-chapter="0"]')).toHaveAttribute('data-seen', '')
+
+    await page.evaluate(() => {
+      const specs = document.getElementById('specs')!
+      window.scrollTo({ top: specs.getBoundingClientRect().bottom + window.scrollY - window.innerHeight - 1, behavior: 'instant' })
+    })
+    await expect(current(page)).toHaveAttribute('aria-label', chapters[4].rail)
+    const last = await page.locator('[data-chapter="4"]').boundingBox()
+    expect(last!.y + last!.height).toBeLessThanOrEqual((await rail(page).boundingBox())!.y)
+    await expect(page.locator('[data-chapter="4"]').getByRole('link', { name: specsCopy.cta })).toBeVisible()
+  })
+})

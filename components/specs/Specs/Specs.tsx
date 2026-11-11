@@ -43,6 +43,9 @@ const PIVOT_ORIGIN = `${(100 * PIVOT.x) / FRAME_SIZE.w}% ${(100 * PIVOT.y) / FRA
 const PLACE = canvasPlacement(layout.crop)
 const SpecsScene = dynamic(() => import('../SpecsScene/SpecsScene'), { ssr: false })
 const isPhoneWidth = () => window.matchMedia('(max-width: 899.98px)').matches
+// where the chapter text scrolls instead of swapping in place: phones, and screens too short for board 11
+// (Decisions D24, D25; the same query as Specs.module.css)
+const textScrolls = () => window.matchMedia('(max-width: 899.98px), (max-height: 829.98px)').matches
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const fmt = (value: number, decimals = 0) => (decimals ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-US'))
 
@@ -184,8 +187,8 @@ export function Specs() {
         setSettled(true)
         return
       }
-      // desktop: the chapters swap in place, so the new one wipes in (phones: see the scroll measure)
-      if (!isPhoneWidth()) setWipe((w) => ({ i: next, n: (w?.n ?? 0) + 1 }))
+      // the chapters swap in place, so the new one wipes in (where the text scrolls: see the scroll measure)
+      if (!textScrolls()) setWipe((w) => ({ i: next, n: (w?.n ?? 0) + 1 }))
       setChapter(next)
       setSettled(false)
       const from = frame.current
@@ -213,15 +216,15 @@ export function Specs() {
       const rect = el.getBoundingClientRect()
       const top = rect.top + window.scrollY
       let progress: number
-      if (isPhoneWidth()) {
-        // the text scrolls: a chapter starts as its text comes into view (slots may be taller than the screen)
+      if (textScrolls()) {
+        // the text scrolls: a chapter starts as its text comes up the screen (lib/specs/chapters.ts)
         const slot = (el.firstElementChild as HTMLElement | null)?.offsetHeight ?? window.innerHeight
         const text = el.querySelector<HTMLElement>('[data-chapter="0"]')
         const textTop = text ? text.getBoundingClientRect().top - rect.top : 0
-        progress = scrollingProgress(window.scrollY, top, slot, textTop, window.innerHeight)
+        const railTop = el.querySelector('nav')?.getBoundingClientRect().top ?? window.innerHeight
+        progress = scrollingProgress(window.scrollY, top, slot, textTop, railTop)
         // a chapter's text shows from the moment it scrolls into view above the rail, wiping in the
         // first time, and stays (so the screen is never empty between chapters)
-        const railTop = el.querySelector('nav')?.getBoundingClientRect().top ?? window.innerHeight
         let fresh = -1
         el.querySelectorAll<HTMLElement>('[data-chapter]').forEach((a, i) => {
           if (seenRef.current & (1 << i)) return

@@ -312,6 +312,11 @@
   --specs-box-reserve: 110px; /* room below the car for the rail */
   --specs-text-left: 44px;
   --specs-text-top: 128px;
+  /* short screens (D25): the text scrolls; one chapter of scroll, then chapter 5 and the rail */
+  --specs-slot-short: max(560px, calc(100svh - 190px)); /* the next chapter starts below the rail */
+  --specs-end-short: 840px;
+  --specs-rail-cover: 124px; /* the rail and its labels, plus the fade */
+  --specs-rail-mask: linear-gradient(to top, #000 calc(100% - 40px), transparent);
   --specs-text-width: 400px;
   --specs-text-gap: 28px;
   --specs-copy-gap: 18px;
@@ -447,7 +452,7 @@
   --muted: var(--ink-3-dark);
   --body: var(--ink-2-dark);
   --dim: rgba(244, 244, 245, 0.42);
-  --dim-specs-phone: var(--dim);
+  --dim-specs-scroll: var(--dim);
   --rule: rgba(255, 255, 255, 0.1);
   --accent-text: var(--red-on-dark);
 
@@ -507,8 +512,8 @@
   --muted: var(--ink-2-light);
   --body: var(--ink-2-light);
   --dim: rgba(14, 15, 17, 0.42);
-  /* phones: the specs text scrolls over the gradient's darker edge, where 0.42 is 2.7:1 (axe); 3.4:1 */
-  --dim-specs-phone: rgba(14, 15, 17, 0.5);
+  /* where the specs text scrolls (phones, short screens), it passes the gradient's darker edge, where 0.42 is 2.7:1 (axe); 3.4:1 */
+  --dim-specs-scroll: rgba(14, 15, 17, 0.5);
   --rule: rgba(14, 15, 17, 0.1);
   --accent-text: var(--red-on-light);
 
