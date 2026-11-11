@@ -1,0 +1,13 @@
+.mark {
+  width: var(--mark-width);
+  height: var(--mark-height);
+  flex: none;
+}
+
+.h {
+  fill: currentColor;
+}
+
+.feathers {
+  fill: var(--redline);
+}

@@ -1,12 +1,11 @@
-import { PreviewToggle } from '@/components/site/PreviewToggle/PreviewToggle'
 import { SITE_NAME } from '@/content/seo'
+import styles from './page.module.css'
 
-// Placeholder until M1 builds the hero. The preview toggle moves into the header in the next PR.
+// Placeholder until M1 builds the hero. The layout provides <main>.
 export default function Home() {
   return (
-    <main>
+    <section className={styles.placeholder}>
       <h1>{SITE_NAME}</h1>
-      <PreviewToggle />
-    </main>
+    </section>
   )
 }

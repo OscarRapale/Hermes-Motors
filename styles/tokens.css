@@ -102,21 +102,54 @@
 
   --tap: 44px; /* minimum touch target */
   --chip-height-s: 24px; /* small status chips (not a control) */
+  --chip-height: 36px; /* status chip in the footer */
   --btn-height: 56px; /* primary 52–56 */
   --btn-height-s: 52px;
   --btn-knob: 44px; /* the white circle holding the arrow, 38–44 */
   --btn-knob-s: 38px;
+  --btn-knob-xs: 34px; /* in a 44 px pill */
+  --icon: 18px;
+  --icon-s: 16px;
+  --icon-xs: 15px;
+  --icon-stroke: 1.6;
+  --icon-stroke-bold: 2;
+  --dot: 8px;
+  --dot-s: 7px;
+  --dot-glow: 0 0 10px;
+  --fs-button-s: 14px;
 
   --header-inset: 16px;
   --header-min-height: 64px;
   --header-pad: 10px 10px 10px 20px;
   --header-nav-gap: 28px;
+  --header-nav-gap-tight: 16px;
+  --header-actions-gap: 8px;
   --mark-width: 42px;
   --mark-height: 28px;
+  --wordmark-gap: 12px;
   --nav-underline: 2px;
   --nav-underline-offset: 7px;
 
   --footer-pad: 44px 56px;
+  --footer-pad-bottom: 150px; /* room for the outline wordmark */
+  --footer-row-gap: 64px;
+  --footer-rule-gap: 52px;
+  --footer-col-gap: 14px;
+  --fs-footer-line: 16px;
+  --fs-footer-link: 15px;
+  --tracking-social: 0.12em;
+  --tracking-fine: 0.02em;
+  --tracking-display: 0.01em;
+  --tracking-outline: 0.14em;
+  --lh-fine: 1.7;
+  --lh-footer-link: 1.3;
+  --measure-footer-line: 400px;
+  --lh-footer-statement: 1.15;
+  --footer-outline-drop: -58px; /* how far the outline wordmark is cut by the card edge */
+  --footer-outline-fit: 12.2vw; /* 176 px at 1440: the word spans the card */
+
+  --menu-pad: 20px;
+  --underline-offset-fine: 3px;
 
   /* ── Glass that doesn't change with the theme ────────────── */
   --glass-blur: blur(18px) saturate(160%);
@@ -131,6 +164,25 @@
   --footer-ink: var(--gallery-white);
   --footer-meta: var(--ink-3-dark);
   --footer-rule: rgba(255, 255, 255, 0.1);
+  --footer-body: var(--ink-2-dark);
+  --footer-dim: rgba(244, 244, 245, 0.42);
+  --footer-heading: var(--ink-4-dark);
+  --footer-link-hover: var(--red-on-dark);
+  --footer-chip-bg: rgba(255, 255, 255, 0.05);
+  --footer-chip-border: rgba(255, 255, 255, 0.14);
+  --footer-pill-border: rgba(255, 255, 255, 0.16);
+  --footer-underline: rgba(255, 255, 255, 0.35);
+  --footer-outline-fill: rgba(255, 255, 255, 0.02);
+
+  /* ── Buttons that don't change with the theme ────────────── */
+  --cta-red-bg: var(--redline);
+  --cta-red-ink: var(--white);
+  --cta-knob-bg: var(--white);
+  --cta-dark-bg: var(--carbon);
+  --cta-dark-ink: var(--white);
+  /* the locked "opens 06:00" pill only shows on dark surfaces */
+  --locked-border: rgba(255, 255, 255, 0.18);
+  --locked-ink: var(--ink-2-dark);
 
   /* ── Hero and section backgrounds ────────────────────────── */
   --bg-hero-day: radial-gradient(70% 55% at 50% 34%, #ffffff 0%, #eef0f3 40%, #dadde2 76%, #cdd1d7 100%);
@@ -191,10 +243,17 @@
 
     --header-inset: 12px;
     --header-min-height: 60px;
+    --header-pad: 8px 8px 8px 16px;
+    --header-actions-gap: 6px;
     --mark-width: 36px;
     --mark-height: 24px;
+    --wordmark-gap: 10px;
 
     --footer-pad: 30px 24px;
+    --footer-pad-bottom: 72px;
+    --footer-row-gap: 28px;
+    --footer-rule-gap: 36px;
+    --fs-footer-line: 15px;
   }
 }
 
@@ -228,6 +287,10 @@
 
   --btn-bg: rgba(255, 255, 255, 0.06);
   --btn-border: rgba(255, 255, 255, 0.16);
+
+  /* phone menu button (Landing-Phone P.menu*) */
+  --menu-bg: var(--gallery-white);
+  --menu-ink: var(--carbon);
 
   --grid-stroke: var(--white);
   --grid-opacity: 0.05;
@@ -267,6 +330,9 @@
 
   --btn-bg: rgba(255, 255, 255, 0.55);
   --btn-border: rgba(255, 255, 255, 0.9);
+
+  --menu-bg: var(--carbon);
+  --menu-ink: var(--white);
 
   --grid-stroke: var(--carbon);
   --grid-opacity: 0.07;

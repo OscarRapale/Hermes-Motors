@@ -1,0 +1,113 @@
+.menuButton {
+  display: none;
+  width: var(--tap);
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  place-items: center;
+  background: var(--menu-bg);
+  color: var(--menu-ink);
+}
+
+@media (max-width: 899.98px) {
+  .menuButton {
+    display: grid;
+  }
+}
+
+.dialog {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  color: var(--ink);
+}
+
+/* Focus sentinels: tabbable, invisible, and they move focus on at once. */
+.sentinel {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.dialog::backdrop {
+  background: transparent;
+}
+
+.sheet {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--header-inset) var(--menu-pad) var(--space-8);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-min-height);
+  padding: var(--header-pad);
+}
+
+.close {
+  width: var(--tap);
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--menu-bg);
+  color: var(--menu-ink);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--tap) + var(--space-3));
+  font-family: var(--font-display);
+  font-size: var(--fs-menu-link);
+  text-decoration: none;
+  text-underline-offset: var(--nav-underline-offset);
+  text-decoration-thickness: var(--nav-underline);
+  text-decoration-color: var(--redline);
+}
+
+.link[aria-current='page'] {
+  text-decoration-line: underline;
+}
+
+.cta {
+  margin-top: auto;
+}
+
+.credit {
+  font-family: var(--font-mono);
+  font-size: var(--fs-credit);
+  line-height: var(--lh-fine);
+  letter-spacing: var(--tracking-fine);
+  color: var(--muted);
+}
+
+.creditLink {
+  color: var(--ink);
+  text-underline-offset: var(--underline-offset-fine);
+}

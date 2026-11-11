@@ -1,0 +1,43 @@
+/* The frame and the page card (docs/design/00-tokens.md → Shape and space). */
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  gap: var(--frame-pad);
+  padding: var(--frame-pad);
+}
+
+.page {
+  position: relative;
+  min-height: calc(100dvh - 2 * var(--frame-pad));
+  border-radius: var(--radius-page);
+  background: var(--surface);
+  /* clip, not hidden: hidden makes a scroll container and breaks the sticky header */
+  overflow: clip;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  outline: none;
+}
+
+.skip {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-dialog);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--frame);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--space-4)));
+}
+
+.skip:focus-visible {
+  transform: none;
+}
