@@ -3,7 +3,9 @@ import { Feather, SunriseIcon } from '@/components/site/icons/icons'
 import { beforeDawn, calendarCopy, firstLight } from '@/content/copy/landing'
 import { driveHref } from '@/content/nav'
 import { heroScript } from '@/lib/landing/heroScript'
+import { Dashboard } from '../Dashboard/Dashboard'
 import { HeroStill } from '../HeroStill/HeroStill'
+import { Hotspots } from '../Hotspots/Hotspots'
 import { NightPanel } from '../NightPanel/NightPanel'
 import styles from './Hero.module.css'
 
@@ -23,8 +25,8 @@ function Headline({ lines }: { lines: readonly [string, string, string] }) {
 
 /**
  * The landing hero (docs/design/02-landing.md, boards 09/10). Both states are rendered and CSS shows
- * the theme's own (ARCHITECTURE §4.2). The day dashboard and hotspots land in M1 PR 2, the stripe
- * wipe in PR 3, the phone layout (boards 22/23) in PR 4.
+ * the theme's own (ARCHITECTURE §4.2). The stripe wipe lands in M1 PR 3, the phone layout
+ * (boards 22/23) in PR 4.
  */
 export function Hero() {
   return (
@@ -44,6 +46,7 @@ export function Hero() {
         <div className={styles.car}>
           <HeroStill look="night" alt={beforeDawn.carAlt} className="night-only" />
           <HeroStill look="day" alt={firstLight.carAlt} className="day-only" />
+          <Hotspots className="day-only" />
           <p className={`label ${styles.carChip} night-only`}>
             <SunriseIcon className={styles.chipIcon} />
             {beforeDawn.carChip}
@@ -88,6 +91,7 @@ export function Hero() {
 
         <div className={styles.panel}>
           <NightPanel className="night-only" />
+          <Dashboard className="day-only" />
         </div>
       </div>
 

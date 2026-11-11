@@ -1,0 +1,74 @@
+.list {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+/* The dot sits on the point; the label floats above it (board 10). */
+.hotspot {
+  position: absolute;
+  left: var(--local-x);
+  top: var(--local-y);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--space-hairline);
+  transform: translate(-50%, calc(-100% + var(--tap) / 2));
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.target {
+  width: var(--tap);
+  height: var(--tap);
+  display: grid;
+  place-items: center;
+}
+
+.dot {
+  width: var(--hotspot-dot);
+  height: var(--hotspot-dot);
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: var(--hotspot-ring);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.hotspot:hover .dot,
+.hotspot:focus-visible .dot {
+  transform: scale(1.2);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--panel-chip-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--glass-chip-bg);
+  -webkit-backdrop-filter: var(--glass-chip-blur);
+  backdrop-filter: var(--glass-chip-blur);
+  border: 1px solid var(--glass-chip-border);
+  box-shadow: var(--glass-chip-shadow);
+  color: var(--carbon);
+  letter-spacing: var(--tracking-social);
+  white-space: nowrap;
+  /* written in capitals in content/, except the unit: "750 kW POWER UNIT" */
+  text-transform: none;
+}
+
+/* Desktop only (02-landing). */
+@media (max-width: 899.98px) {
+  .list {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    transition: none;
+  }
+}
