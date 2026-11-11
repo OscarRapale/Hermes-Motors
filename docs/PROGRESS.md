@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M2 specs, PR #16 (short screens, D25). **Next:** plan M3.
+**Now:** M3 test drive (plan approved 2026-11-11), PR 1 circuit. **Next:** PR 2 physics + timing.
 ## Milestones
 
 ### M0 Foundation
@@ -24,8 +24,8 @@
 - [x] Phone layout (board 24); reduced motion
 
 ### M3 Test drive
-- [ ] Circuit from PTS (3,121 m), kerbs, walls, gantry
-- [ ] Messenger ghost from SPD (sums to 71.906 s)
+- [x] Circuit from PTS (3,119 m), kerbs, walls, gantry
+- [x] Messenger ghost from SPD (sums to 71.906 s)
 - [ ] Physics + tuning + three reference laps in tests
 - [ ] HUD, lights, sectors, delta, map; desktop keys; phone controls; rotate; pause; no-WebGL state
 
@@ -74,10 +74,8 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-11 · Specs on short screens (PR #16): D25; one rule for when a chapter starts where text scrolls (halfway up from the rail); desktop e2e at 1280 × 720 now covers it, board 11 tested at 1440 × 1000.
-- 2026-11-11 · Specs on phones (PR #15): board 24 (366 px car box, zoom gone by ch 2, glass rail pill, CTA last and full width); text scrolls under the car (D24), 560 px slots; landscape layout; reduced-motion fades ≤ 150 ms.
-- 2026-11-11 · Live specs car (PR #14): `SpecsScene` placed from the recovered crop in the frames' zoom layer; loads one viewport early; night frames (D20). **SITE PATCH** `HermesStudio` `near={-0.01}` (no contact shadow before); three.js kept out of first load. JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz.
-- 2026-11-10 · Specs chapters (PR #13): pinned section, slots #specs-1…5, hysteresis, frame stack + zoom, callouts from anchors, text wipe, count-up, rail, Play; sealed at night (D19, D21).
+- 2026-11-11 · Circuit and ghost (PR #17): `lib/game` circuit (centripetal spline, scale from his speeds), ghost table, corners → kerbs/run-off, layout for `<Track>`. Approved: lap 3,119 m (was 3,121, straight-line); sector lines at his exact sector times.
+- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (hysteresis, frame stack + zoom, anchored callouts, text wipe, count-up, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz on approach.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
 - 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); stills in `vendor/assets/images/drivers`.
