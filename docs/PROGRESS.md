@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M1 done (2026-11-10). **Next:** M2 specs section, plan first. Waiting on Oscar: D18 (LCP measurement method).
+**Now:** M1 done (2026-11-10). **Next:** M2 specs section, plan first.
 
 ## Milestones
 
@@ -66,7 +66,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D15 | JS budget on `/` | **Decided 2026-11-10:** total < 190 KB gz + first-party < 40 KB gz (ARCH §10) | was < 120 KB, unreachable: Next 16 + React 19 ≈ 166 KB; M0 measured 176.6 total, ≈ 10 first-party |
 | D16 | Hero stills (ARCH §5 says next/image + priority) | **Decided:** `<picture>` with the pre-built AVIF/WebP 1x/2x, both `loading=lazy`; the head script preloads the visible one (high priority, `/` only) and an inline script makes it eager | both themes are in the DOM (§4.2); next/image priority would fetch both stills |
 | D17 | Countdown over 100 h | **Decided:** "96 DAYS" at 84 px over HH:MM:SS at 44 px; under 100 h the board's single 84 px HH:MM:SS | "D DAYS · HH:MM:SS" (§4.1) is ~900 px wide at 84 px |
-| D18 | How M6 measures LCP | Lighthouse mobile with real (devtools) throttling: `/` = 2.2 s | The default simulated mode says 3.0 s: it models hydration before the image paint, but traces show LCP = first paint (the still is in the first frame). Oscar: OK to gate on the real-throttling number? |
+| D18 | How M6 measures LCP | **Decided 2026-11-10:** Lighthouse mobile with real (devtools) throttling (ARCH §10); `/` = 2.2 s | The default simulated mode (3.0 s) models hydration before the image paint; traces show LCP = first paint |
 
 ## Log
 
