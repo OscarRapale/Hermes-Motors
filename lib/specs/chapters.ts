@@ -35,17 +35,16 @@ export function chapterAt(progress: number, current: number, hysteresis = HYSTER
   return Math.min(CHAPTERS - 1, Math.max(0, Math.floor(raw)))
 }
 
-/** Phones: a chapter starts when the top of its text has scrolled up to 72% of the screen's height. */
-export const PHONE_REVEAL = 0.72
-
 /**
- * Phones, where the chapter text scrolls under the pinned car (ARCHITECTURE §6): the progress at
- * which each chapter starts as its text comes into view, not when its slot reaches the top. `textTop`
- * is where a chapter's text rests below its slot's top; `slot` is one chapter's scroll length.
+ * Where the chapter text scrolls (phones, short screens: ARCHITECTURE §6, Decisions D24, D25): a
+ * chapter starts when its text has come halfway up from the rail to where it rests, so the car changes
+ * as the reader reaches the new text. `textTop` is where a chapter's text rests below its slot's top,
+ * `railTop` the rail's top on screen, `slot` one chapter's scroll length.
  */
-export function scrollingProgress(scrollY: number, sectionTop: number, slot: number, textTop: number, viewport: number): number {
+export function scrollingProgress(scrollY: number, sectionTop: number, slot: number, textTop: number, railTop: number): number {
   if (slot <= 0) return 0
-  const raw = (scrollY - sectionTop - textTop + PHONE_REVEAL * viewport) / slot
+  const line = (textTop + railTop) / 2
+  const raw = (scrollY - sectionTop - textTop + line) / slot
   return Math.min(1, Math.max(0, raw / CHAPTERS))
 }
 
