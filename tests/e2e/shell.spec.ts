@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test'
 import { footerCopy, headerCopy, previewCopy, testDriveCopy } from '@/content/copy/shared'
 import { footerColumns, primaryNav } from '@/content/nav'
 import { expectNoAxeViolations } from './axe'

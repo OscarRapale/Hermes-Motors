@@ -1,10 +1,15 @@
 # Crops the explode frames to one shared box, writes WebPs, and projects the callout anchors.
-# usage: python3 -I specs_post.py <framesDir> <outDir> <outWidth> <dpr>
+# usage: python3 -I specs_post.py <framesDir> <outDir> <outWidth> <dpr> [x0,y0,x1,y1]
+#
+# Site change (M2): the crop is written into specs-layout.json ("crop"), so the live 3D car can
+# line up with the frames, and an optional fixed box crops a second set (the night livery) exactly
+# like the first, so the callout anchors stay valid for both.
 import json, sys, os
 import numpy as np
 from PIL import Image, ImageDraw
 
 src, out, out_w, dpr = sys.argv[1], sys.argv[2], int(sys.argv[3]), float(sys.argv[4])
+fixed_box = tuple(int(v) for v in sys.argv[5].split(',')) if len(sys.argv) > 5 else None
 os.makedirs(out, exist_ok=True)
 meta = json.load(open(f'{src}/meta.json'))
 
@@ -30,8 +35,8 @@ frames = [smooth_shadow(Image.open(f'{src}/f{m["i"]:02d}.png').convert('RGBA')) 
 boxes = [im.getchannel('A').point(lambda a: 255 if a > 6 else 0).getbbox() for im in frames]
 pad = int(18 * dpr)
 W, H = frames[0].size
-box = (max(0, min(b[0] for b in boxes) - pad), max(0, min(b[1] for b in boxes) - pad),
-       min(W, max(b[2] for b in boxes) + pad), min(H, max(b[3] for b in boxes) + pad))
+box = fixed_box or (max(0, min(b[0] for b in boxes) - pad), max(0, min(b[1] for b in boxes) - pad),
+                    min(W, max(b[2] for b in boxes) + pad), min(H, max(b[3] for b in boxes) + pad))
 cw, ch = box[2] - box[0], box[3] - box[1]
 out_h = round(out_w * ch / cw)
 scale = out_w / cw
@@ -70,7 +75,9 @@ def anchors(m):
     return {k: project(m, v) for k, v in a.items()}
 
 result = {'size': [out_w, out_h], 'frames': len(meta), 'anchors': {m['i']: anchors(m) for m in meta},
-          'camera': {m['i']: [round(v, 3) for v in m['pos']] for m in meta}}
+          'camera': {m['i']: [round(v, 3) for v in m['pos']] for m in meta},
+          # the render (css px) and the box cut from it (device px): the live canvas reproduces this
+          'crop': {'box': list(box), 'dpr': dpr, 'render': [meta[0]['w'], meta[0]['h']]}}
 json.dump(result, open(f'{out}/specs-layout.json', 'w'), indent=1)
 
 # check sheet: chapter frames with their anchors drawn

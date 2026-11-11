@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page } from './test'
 import { previewCopy, testDriveCopy } from '@/content/copy/shared'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
 

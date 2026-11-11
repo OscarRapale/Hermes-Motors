@@ -1,7 +1,11 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
+import layout from '@/content/specs-layout.json'
+import { useClock } from '@/lib/clock/client'
+import { canRunLiveCar, canvasPlacement } from '@/lib/specs/live'
 import { ArrowIcon, LockIcon } from '@/components/site/icons/icons'
 import { testDriveCopy } from '@/content/copy/shared'
 import { chapters, powerPanel, specsCopy, wheelbase, type Callout, type SpecFigure } from '@/content/copy/specs'
@@ -30,8 +34,14 @@ import {
 } from '@/lib/specs/chapters'
 import styles from './Specs.module.css'
 
-const FRAMES = Array.from({ length: LAST_FRAME + 1 }, (_, i) => `/images/specs/hm27-specs-${String(i).padStart(2, '0')}.webp`)
+// The frame stack: First Light by day, Before Dawn at night (Decision D20, same crop and anchors).
+const frameSrc = (set: 'day' | 'night', i: number) =>
+  `/images/${set === 'day' ? 'specs' : 'specs-night'}/hm27-specs-${String(i).padStart(2, '0')}.webp`
+const INDICES = Array.from({ length: LAST_FRAME + 1 }, (_, i) => i)
 const PIVOT_ORIGIN = `${(100 * PIVOT.x) / FRAME_SIZE.w}% ${(100 * PIVOT.y) / FRAME_SIZE.h}%`
+const PLACE = canvasPlacement(layout.crop)
+const SpecsScene = dynamic(() => import('../SpecsScene/SpecsScene'), { ssr: false })
+const isPhoneWidth = () => window.matchMedia('(max-width: 899.98px)').matches
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const fmt = (value: number, decimals = 0) => (decimals ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-US'))
 
@@ -118,17 +128,27 @@ function CalloutChip({ callout, frame }: { callout: Callout; frame: number }) {
 
 /**
  * The specs section (ARCHITECTURE §6, docs/design/03-specs.md, board 11): five viewport-heights of
- * scroll, a pinned stage; scroll picks the chapter, the car comes apart in the 19-frame stack (the
- * live 3D car replaces it in M2 PR 2), the text wipes in, the figures count up, the callouts
- * settle. At night the Before Dawn figures stay sealed (Decision D19).
+ * scroll, a pinned stage; scroll picks the chapter, the car comes apart, the text wipes in, the
+ * figures count up, the callouts settle. The car is live 3D where the device can (WebGL2, no data
+ * saver), loaded one viewport early; otherwise the 19-frame stack. Both share one frame position and
+ * one zoom layer, so they line up with each other and with the callouts. At night: the Before Dawn
+ * livery and frames, and the Before Dawn figures stay sealed (Decisions D19, D20).
  */
 export function Specs() {
   const root = useRef<HTMLElement>(null)
   const framesLayer = useRef<HTMLDivElement>(null)
+  // the frame stack's images: day set at 0…18, night set at 19…37
   const imgs = useRef<(HTMLImageElement | null)[]>([])
   const [chapter, setChapter] = useState(0)
   const [settled, setSettled] = useState(true)
   const [playing, setPlaying] = useState(false)
+  // which car: undecided on the server, then live 3D or the frame stack
+  const [car, setCar] = useState<'pending' | 'live' | 'frames'>('pending')
+  const [near, setNear] = useState(false)
+  const [onScreen, setOnScreen] = useState(false)
+  const [liveReady, setLiveReady] = useState(false)
+  const [lod, setLod] = useState<'hero' | 'game'>('hero')
+  const night = useClock().theme === 'night'
   const current = useRef(0)
   const frame = useRef(0)
   const tweenFrame = useRef(0)
@@ -138,8 +158,8 @@ export function Specs() {
 
   const drawFrames = useCallback((f: number) => {
     frame.current = f
-    imgs.current.forEach((img, i) => {
-      if (img) img.style.opacity = String(frameOpacity(f, i))
+    imgs.current.forEach((img, k) => {
+      if (img) img.style.opacity = String(frameOpacity(f, k % (LAST_FRAME + 1)))
     })
     if (framesLayer.current) framesLayer.current.style.transform = `scale(${zoomAt(f)})`
   }, [])
@@ -240,6 +260,43 @@ export function Specs() {
     }
   }, [chapter])
 
+  // Which car this device gets (client only): live 3D, or the frame stack.
+  useEffect(() => {
+    const live = canRunLiveCar()
+    const phone = isPhoneWidth()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- a one-time device check after hydration
+    setCar(live ? 'live' : 'frames')
+    setLod(phone ? 'game' : 'hero')
+  }, [])
+
+  // When the frame stack mounts (fallback devices), draw it at the current frame position.
+  useEffect(() => {
+    if (car === 'frames') drawFrames(frame.current)
+  }, [car, drawFrames])
+
+  // Load the live car one viewport early (rules/three.md); run it only while the section is on screen.
+  useEffect(() => {
+    const el = root.current
+    if (!el || car !== 'live') return
+    const nearBy = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        // dynamic: a static import of the car package would put three.js in the page's first load
+        void import('@/components/hermes/HermesCar').then((m) => m.preloadHermesCar(lod))
+        setNear(true)
+        nearBy.disconnect()
+      },
+      { rootMargin: '100% 0px' },
+    )
+    const visible = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting))
+    nearBy.observe(el)
+    visible.observe(el)
+    return () => {
+      nearBy.disconnect()
+      visible.disconnect()
+    }
+  }, [car, lod])
+
   // Board 11 underlines HM-27 in the header while the specs are on screen (a location, not a page).
   useEffect(() => {
     const el = root.current
@@ -321,22 +378,55 @@ export function Specs() {
 
         <div className={styles.carBox} role="img" aria-label={chapters[chapter].carAlt}>
           <div ref={framesLayer} className={styles.frames} style={{ transformOrigin: PIVOT_ORIGIN, transform: `scale(${zoomAt(0)})` }}>
-            {FRAMES.map((src, i) => (
-              // eslint-disable-next-line @next/next/no-img-element -- pre-rendered frames, crossfaded by opacity
-              <img
-                key={src}
-                ref={(el) => {
-                  imgs.current[i] = el
-                }}
-                src={src}
-                alt=""
-                width={FRAME_SIZE.w}
-                height={FRAME_SIZE.h}
-                loading="lazy"
-                decoding="async"
-                style={{ opacity: i === 0 ? 1 : 0 }}
-              />
-            ))}
+            {car === 'frames' &&
+              (['day', 'night'] as const).map((set, s) => (
+                // both sets in the page, the theme's shown; lazy, so only the visible set downloads
+                <div key={set} className={`${styles.stack} ${set === 'day' ? 'day-only' : 'night-only'}`}>
+                  {INDICES.map((i) => (
+                    // eslint-disable-next-line @next/next/no-img-element -- pre-rendered frames, crossfaded by opacity
+                    <img
+                      key={i}
+                      ref={(el) => {
+                        imgs.current[s * (LAST_FRAME + 1) + i] = el
+                      }}
+                      src={frameSrc(set, i)}
+                      alt=""
+                      width={FRAME_SIZE.w}
+                      height={FRAME_SIZE.h}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ opacity: i === 0 ? 1 : 0 }}
+                    />
+                  ))}
+                </div>
+              ))}
+            {car !== 'frames' && !liveReady && (
+              // the live car's poster: just the settled frame for this chapter until the canvas draws
+              <div className={styles.stack}>
+                {(['day', 'night'] as const).map((set) => (
+                  // eslint-disable-next-line @next/next/no-img-element -- poster frame
+                  <img
+                    key={set}
+                    className={set === 'day' ? 'day-only' : 'night-only'}
+                    src={frameSrc(set, settledFrame)}
+                    alt=""
+                    width={FRAME_SIZE.w}
+                    height={FRAME_SIZE.h}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ))}
+              </div>
+            )}
+            {car === 'live' && near && (
+              <div
+                className={styles.live}
+                data-live-ready={liveReady ? '' : undefined}
+                style={{ left: `${PLACE.left}%`, top: `${PLACE.top}%`, width: `${PLACE.width}%`, height: `${PLACE.height}%` }}
+              >
+                <SpecsScene frame={frame} night={night} lod={lod} active={onScreen} onReady={() => setLiveReady(true)} />
+              </div>
+            )}
             <svg
               className={styles.wheelbase}
               viewBox={`0 0 ${FRAME_SIZE.w} ${FRAME_SIZE.h}`}

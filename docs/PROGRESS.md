@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M2 specs (plan approved 2026-11-10). **Next:** PR 2, live 3D car + night frames.
+**Now:** M2 specs (plan approved 2026-11-10). **Next:** PR 3, phone layout (board 24).
 ## Milestones
 
 ### M0 Foundation
@@ -20,7 +20,7 @@
 
 ### M2 Specs section
 - [x] Pinned chapters, scroll mapping, rail, Play
-- [ ] Live scene (SpecsApart) + frame fallback, callouts from anchors
+- [x] Live scene (SpecsApart) + frame fallback, callouts from anchors
 - [ ] Phone layout (board 24); reduced motion
 
 ### M3 Test drive
@@ -70,9 +70,11 @@ Placeholders are in the code until he answers. Never present them as final.
 | D20 | Night fallback frames | **Decided:** render them (M2 PR 2), same crop as the day set | |
 | D21 | Chapter 5 at night | **Decided 2026-11-11:** "THE NUMBER / ARRIVES AT / 06:00." + body without kW | its day headline and body are sealed numbers |
 | D22 | Total JS on `/` | **Decided 2026-11-11:** < 206 KB gz (framework ≈ 166 + first-party 40), ARCH §10 | 190 tripped before the first-party budget |
+| D23 | Effects in the specs scene | **None** (ARCH §6 says HermesEffects on desktop) | the frames were rendered without them; 03-specs: live and frames "must match"; also saves GPU and the postprocessing chunk |
 
 ## Log
 
+- 2026-11-11 · Live specs car (PR #14): `SpecsScene` (frames' camera), canvas placed from the recovered crop (`specs-layout.json` → `crop`) inside the same zoom layer; loads one viewport early, WebGL2 + no data saver; night frames rendered (D20). Fixed: R3F measured through the CSS zoom (`offsetSize`); **SITE PATCH** `HermesStudio` `near={-0.01}` (v2.1's 3 mm lift clipped drei's blur plane: no contact shadow); three.js leaked into first load via a static preload import. JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz on approach.
 - 2026-11-10 · Specs chapters (PR #13): pinned section, 5 slots (#specs-1…5), hysteresis, frame stack + zoom, callouts from anchors, text wipe, count-up, rail, Play, HM‑27 location; sealed at night (D19, D21). Fix: label-case overrides out-rank the global `.label`.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
