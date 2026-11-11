@@ -1,0 +1,152 @@
+/* Dashboard dials (board 10). The panel is always dark, so the colours are fixed dark-panel tokens. */
+
+.dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.svg {
+  display: block;
+  overflow: visible;
+}
+
+.s .svg {
+  width: var(--dial-s);
+  height: var(--dial-s);
+}
+
+.m .svg {
+  width: var(--dial-m);
+  height: var(--dial-m);
+}
+
+.l .svg {
+  width: var(--dial-l);
+  height: var(--dial-l);
+}
+
+.bezel,
+.bezelLarge {
+  fill: var(--dial-face);
+  stroke: var(--dial-bezel);
+  stroke-width: 1;
+}
+
+.bezelLarge {
+  fill: var(--dial-face-large);
+  stroke: var(--dial-bezel-large);
+}
+
+.minor,
+.major {
+  fill: none;
+}
+
+.minor {
+  stroke: var(--dial-tick-minor);
+  stroke-width: 4;
+  stroke-dashoffset: 0.2;
+}
+
+.major {
+  stroke: var(--dial-tick-major);
+  stroke-width: 8;
+  stroke-dashoffset: 0.4;
+}
+
+.zone {
+  fill: none;
+  stroke: var(--redline);
+  stroke-width: 3;
+}
+
+.track,
+.arc {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: var(--dial-track);
+}
+
+.arc {
+  stroke: var(--redline);
+}
+
+.needle path {
+  fill: var(--white);
+}
+
+.hub {
+  fill: var(--graphite);
+  stroke: var(--white);
+  stroke-width: 2;
+}
+
+.value,
+.valueLarge,
+.unit,
+.unitLarge,
+.sub {
+  text-anchor: middle;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.value,
+.valueLarge {
+  font-weight: var(--fw-medium);
+  fill: var(--white);
+}
+
+.value {
+  font-size: 30px;
+}
+
+.valueLarge {
+  font-size: 31px;
+}
+
+.unit {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  fill: var(--ink-2-dark);
+}
+
+.unitLarge {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  fill: var(--ink-2-dark);
+}
+
+.sub {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  fill: var(--dial-sub);
+}
+
+.caption,
+.captionLarge {
+  letter-spacing: var(--tracking-label-tight);
+  white-space: nowrap;
+}
+
+.caption {
+  color: var(--ink-2-dark);
+}
+
+.captionLarge {
+  color: var(--white);
+}
+
+/* Before the first ignition the needles, arcs and numbers wait at rest (set by the hero script). */
+:global([data-ignite='pending']) .needle,
+:global([data-ignite='pending']) .arc,
+:global([data-ignite='pending']) .value,
+:global([data-ignite='pending']) .valueLarge {
+  opacity: 0;
+}

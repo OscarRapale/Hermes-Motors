@@ -274,6 +274,28 @@
   --feather-eyebrow-width: 22px;
   --feather-eyebrow-height: 9px;
   --dur-pulse: 1.8s;
+
+  /* First Light dashboard (board 10) */
+  --dial-s: 120px;
+  --dial-m: 130px;
+  --dial-l: 172px;
+  --dial-face: rgba(255, 255, 255, 0.04);
+  --dial-bezel: rgba(255, 255, 255, 0.12);
+  --dial-face-large: rgba(255, 255, 255, 0.05);
+  --dial-bezel-large: rgba(255, 255, 255, 0.2);
+  --dial-tick-minor: rgba(255, 255, 255, 0.28);
+  --dial-tick-major: rgba(255, 255, 255, 0.72);
+  --dial-track: rgba(255, 255, 255, 0.1);
+  --dial-sub: #e4e6ea;
+  --btn-on-dark: rgba(255, 255, 255, 0.06);
+  --btn-on-dark-hover: rgba(255, 255, 255, 0.12);
+  --ignite-ring: 0 0 0 5px rgba(213, 18, 30, 0.16);
+  --units-pad: 3px;
+  --units-min: 54px;
+  --fs-units: 12px;
+  --space-hairline: 2px;
+  --hotspot-dot: 12px;
+  --hotspot-ring: 0 0 0 3px var(--redline), 0 0 0 9px rgba(213, 18, 30, 0.18);
 }
 
 /* ── Phone (under 900 px) ──────────────────────────────────── */
@@ -314,6 +336,9 @@
 
     --led-width: 9px;
     --led-gap: 3px;
+    --dial-s: 108px;
+    --dial-m: 108px;
+    --dial-l: 176px;
     --footer-pad: 30px 24px;
     --footer-pad-bottom: 72px;
     --footer-row-gap: 28px;

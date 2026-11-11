@@ -14,6 +14,8 @@ export const primaryNav: readonly NavLink[] = [
 ]
 
 export const storeHref = '/store'
+/** Specs chapters on the landing page (the ids are set in M2). */
+export const specsChapterHref = (chapter: number) => `/#specs-${chapter}`
 export const driveHref = '/drive'
 
 export type NavColumn = { heading: string; links: readonly NavLink[] }

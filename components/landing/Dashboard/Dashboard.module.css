@@ -1,0 +1,147 @@
+/* First Light dashboard (board 10). The panel is dark in both themes. */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--panel-gap);
+  min-height: var(--panel-min-height);
+  padding: var(--panel-pad);
+  border-radius: var(--panel-radius);
+  background: var(--panel-dark-bg);
+  -webkit-backdrop-filter: var(--panel-dark-blur);
+  backdrop-filter: var(--panel-dark-blur);
+  border: 1px solid var(--panel-dark-border);
+  box-shadow: var(--panel-dark-shadow);
+  color: var(--gallery-white);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--panel-gap);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--panel-gap);
+}
+
+.ignite {
+  width: var(--power-size);
+  height: var(--power-size);
+  padding: 0;
+  border-radius: 50%;
+  border: var(--power-border) solid var(--redline);
+  background: var(--btn-on-dark);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--ignite-ring);
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.ignite:hover {
+  background: var(--btn-on-dark-hover);
+}
+
+.leds {
+  display: flex;
+  gap: var(--led-gap);
+}
+
+.led {
+  width: var(--led-width);
+  height: var(--led-height);
+  border-radius: var(--radius-pill);
+  background: var(--led-red);
+  opacity: var(--led-off);
+}
+
+.led:nth-child(-n + 5) {
+  background: var(--led-white);
+}
+
+.led[data-on] {
+  opacity: var(--led-on-day);
+  box-shadow: var(--dot-glow) var(--led-red);
+}
+
+.led:nth-child(-n + 5)[data-on] {
+  box-shadow: var(--dot-glow) var(--led-white);
+}
+
+.units {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--units-pad);
+  border-radius: var(--radius-pill);
+  background: var(--btn-on-dark);
+  border: 1px solid var(--panel-chip-border);
+}
+
+.unit {
+  min-width: var(--units-min);
+  height: var(--tap);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-2-dark);
+  font-family: var(--font-mono);
+  font-size: var(--fs-units);
+  letter-spacing: var(--tracking-social);
+}
+
+.unit[aria-pressed='true'] {
+  background: var(--white);
+  color: var(--carbon);
+}
+
+.dials {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ignite {
+    transition: none;
+  }
+}
+
+/* Phone (board 23): the System Power dial first and large, the other four 2 × 2. PR 4 tunes it. */
+@media (max-width: 899.98px) {
+  .dials {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'power power'
+      'd1 d2'
+      'd4 d5';
+    justify-items: center;
+    row-gap: var(--space-6);
+  }
+
+  .d1 {
+    grid-area: d1;
+  }
+
+  .d2 {
+    grid-area: d2;
+  }
+
+  .d3 {
+    grid-area: power;
+  }
+
+  .d4 {
+    grid-area: d4;
+  }
+
+  .d5 {
+    grid-area: d5;
+  }
+}
