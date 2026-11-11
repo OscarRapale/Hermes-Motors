@@ -52,12 +52,20 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
 
+      # The runner image's apt lists go stale: without a refresh, apt asks the mirror for package
+      # versions that have been replaced (404). Time limits keep a slow mirror from eating the job.
+      - name: Refresh apt package lists
+        timeout-minutes: 5
+        run: sudo apt-get update
+
       - name: Install Playwright browsers
         if: steps.pw-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 10
         run: npx playwright install --with-deps chromium webkit
 
       - name: Install Playwright system deps
         if: steps.pw-cache.outputs.cache-hit == 'true'
+        timeout-minutes: 10
         run: npx playwright install-deps chromium webkit
 
       - name: E2E
