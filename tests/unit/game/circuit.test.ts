@@ -6,7 +6,7 @@ import { messenger } from '@/content/facts'
 import { WALL, circuit } from '@/lib/game/circuit'
 import { MAP_POINTS, MESSENGER_KMH } from '@/lib/game/data'
 import { GHOST_HIDDEN_S, gapAt, ghostPose, ghostSpeed, ghostVisible } from '@/lib/game/ghost'
-import { circuitLayout, corners, forBuilder, kerbs, runoff } from '@/lib/game/layout'
+import { brakingBoards, circuitLayout, corners, forBuilder, kerbs, runoff } from '@/lib/game/layout'
 
 const c = circuit()
 const LAP = messenger.lapMs / 1000
@@ -157,5 +157,27 @@ describe('the layout for ProvingGround', () => {
       const f = c.frameAt(ours.from)
       expect(Math.hypot(p.x - f.x, p.z - f.z)).toBeLessThan(0.5)
     }
+  })
+})
+
+describe('braking boards', () => {
+  it('count 3-2-1 down to each tight corner, on the outside, from where the messenger starts to slow', () => {
+    const list = corners(c)
+    const boards = brakingBoards(c, list)
+    const tight = list.filter((k) => k.apex)
+    expect(boards).toHaveLength(tight.length * 3)
+    tight.forEach((k, i) => {
+      const [three, two, one] = boards.slice(i * 3, i * 3 + 3)
+      expect([three.stripes, two.stripes, one.stripes]).toEqual([3, 2, 1])
+      expect(three.s).toBeLessThan(two.s)
+      expect(two.s).toBeLessThan(one.s)
+      expect(one.s).toBeLessThan(k.from)
+      expect(k.from - three.s).toBeGreaterThanOrEqual(45)
+      expect(three.side).not.toBe(k.turns)
+      // he slows down after "3": it stands at (or a little before) where he brakes
+      let slowest = Infinity
+      for (let x = k.from; x <= k.to; x += 2) slowest = Math.min(slowest, ghostSpeed(c, c.ghostTimeAt(x)))
+      expect(ghostSpeed(c, c.ghostTimeAt(three.s))).toBeGreaterThan(slowest + 5)
+    })
   })
 })
