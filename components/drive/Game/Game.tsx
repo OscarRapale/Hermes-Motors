@@ -164,6 +164,16 @@ export function Game({ preview }: { preview: boolean }) {
     }
   }, [status, pause])
 
+  // Right Ctrl is a brake: Right Ctrl + W closes the tab, and no page can stop that shortcut. While a lap
+  // is on, the browser asks first.
+  const lapOn = ui.phase === 'running' && !ui.result
+  useEffect(() => {
+    if (!lapOn) return
+    const ask = (e: BeforeUnloadEvent) => e.preventDefault()
+    window.addEventListener('beforeunload', ask)
+    return () => window.removeEventListener('beforeunload', ask)
+  }, [lapOn])
+
   // the pause sheet is a modal dialog: focus moves in, Esc resumes
   useEffect(() => {
     const d = pauseDialog.current

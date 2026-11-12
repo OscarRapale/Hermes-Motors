@@ -59,11 +59,11 @@ export const driveCopy = {
   },
 
   keys: [
-    { keys: ['W'], label: 'Throttle' },
-    { keys: ['S'], label: 'Brake' },
+    { keys: ['W', 'R SHIFT'], label: 'Throttle' },
+    { keys: ['S', 'R CTRL'], label: 'Brake' },
     { keys: ['A', 'D'], label: 'Steer' },
     { keys: ['SPACE'], label: 'Overtake' },
-    { keys: ['SHIFT'], label: 'Boost' },
+    { keys: ['L SHIFT'], label: 'Boost' },
   ],
 
   pause: {

@@ -24,7 +24,7 @@ describe('who can drive (ARCHITECTURE §3, §4.4, Decision D3)', () => {
 describe('desktop keys (rules/game.md)', () => {
   const keys = (...codes: string[]) => inputFromKeys(new Set(codes))
 
-  it('maps W/↑, S/↓, A/D and ←/→, Space and Shift', () => {
+  it('maps W/↑/Right Shift, S/↓/Right Ctrl, A/D and ←/→, Space and Left Shift', () => {
     expect(keys('KeyW')).toEqual({ throttle: 1, brake: 0, steer: 0, boost: false, overtake: false })
     expect(keys('ArrowUp').throttle).toBe(1)
     expect(keys('KeyS').brake).toBe(1)
@@ -32,7 +32,10 @@ describe('desktop keys (rules/game.md)', () => {
     expect(keys('KeyA').steer).toBe(1) // left is positive
     expect(keys('ArrowRight').steer).toBe(-1)
     expect(keys('Space').overtake).toBe(true)
-    expect(keys('ShiftRight').boost).toBe(true)
+    expect(keys('ShiftRight')).toEqual({ throttle: 1, brake: 0, steer: 0, boost: false, overtake: false })
+    expect(keys('ControlRight').brake).toBe(1)
+    expect(keys('ShiftLeft').boost).toBe(true)
+    expect(keys('ControlLeft')).toEqual(IDLE) // Ctrl+key browser shortcuts stay with the left hand
   })
 
   it('cancels out both steering directions, and owns only its keys', () => {

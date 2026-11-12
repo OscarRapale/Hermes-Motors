@@ -1,14 +1,15 @@
-// Desktop controls (rules/game.md): W/↑ throttle, S/↓ brake, A/D or ←/→ steer, Space Overtake, Shift Boost,
-// Esc pause. Keys are read by KeyboardEvent.code, so they sit in the same place on any layout.
+// Desktop controls (rules/game.md): W/↑/Right Shift throttle, S/↓/Right Ctrl brake, A/D or ←/→ steer,
+// Space Overtake, Left Shift Boost, Esc pause. The right-hand pedals let one hand steer on A/D while the
+// other works throttle and brake (Oscar's playtest, 2026-11-12). Keys are read by KeyboardEvent.code, so they sit in the same place on any layout.
 
 import type { Input } from '@/lib/game/race'
 
-const THROTTLE = ['KeyW', 'ArrowUp']
-const BRAKE = ['KeyS', 'ArrowDown']
+const THROTTLE = ['KeyW', 'ArrowUp', 'ShiftRight']
+const BRAKE = ['KeyS', 'ArrowDown', 'ControlRight']
 const LEFT = ['KeyA', 'ArrowLeft']
 const RIGHT = ['KeyD', 'ArrowRight']
 const OVERTAKE = ['Space']
-const BOOST = ['ShiftLeft', 'ShiftRight']
+const BOOST = ['ShiftLeft']
 
 /** Every key the game owns (the page mustn't scroll or act on them while driving) */
 export const GAME_KEYS: ReadonlySet<string> = new Set([...THROTTLE, ...BRAKE, ...LEFT, ...RIGHT, ...OVERTAKE, ...BOOST])
