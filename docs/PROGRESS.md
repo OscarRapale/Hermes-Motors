@@ -64,7 +64,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D19–23 | Specs | **Decided:** sealed at night (Before Dawn livery, sealed figures); night frames rendered; ch 5 at night "THE NUMBER / ARRIVES AT / 06:00."; total JS on `/` < 206 KB gz; no effects in the specs scene | PRs #13–#14, ARCH §6, §10 |
 | D24–25 | Specs text that scrolls | **Decided:** on phones (ARCH §6 over the prototype) and on screens under 830 px tall, the text scrolls under/beside the pinned car; landscape phones: car right, text left | PRs #15–#16 |
 | D26 | The start | **Decided 2026-11-11:** grid 65 m behind the line, lap and ghost start at the line; the car holds the centre line until it | his is a flying lap. `tuning.ts` `gridBehindM` |
-| D27 | three.js on `/` before scroll | as built: the specs load the live car one viewport early (rules/three.md), which at load is already true (they start 990 px down) | ARCH §10 says no three.js before scroll; e2e misses it (no WebGL). Proposal: start that watch on the first scroll |
+| D27 | three.js on `/` before scroll | **Decided 2026-11-12:** the specs load their car one viewport away only after the first scroll (or at once if the page opens on them) | ARCH §10; rules/three.md updated; WebGL e2e guards it |
 | D28 | Test drive difficulty | careful lap just behind him (+0.15), clean racing line −3.5 s; grip ×0.7, friction circle, pedal ramps, brakes 34/22 | after Oscar's playtest (hard to turn under power, harsh brakes); ARCH §7.3. Confirm after driving it |
 
 ## Log
