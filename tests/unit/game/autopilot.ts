@@ -18,6 +18,8 @@ export type Style = {
   /** One corner taken too fast (to put the car in the wall): from…to metres, at this pace */
   overcook?: { from: number; to: number; pace: number }
   useBoost: boolean
+  /** Line-following gains: rad per metre off the line, and per second of heading error (defaults 0.06, 4) */
+  gains?: { offset: number; heading: number }
 }
 
 const SMOOTH_M = 10
@@ -134,8 +136,9 @@ export function drive(c: Circuit, style: Style, seed: number): InputLog {
       const brake = car.v > target + 0.8 ? Math.min(1, Math.max(0.25, (car.v - target) / 4)) : 0
       const ahead = c.frameAt(car.s + car.v * 0.12)
       const pathK = pathCurvatureAt(car.s + car.v * 0.12)
-      const psiWanted = Math.max(-0.25, Math.min(0.25, 0.06 * (lineAt(line, car.s + car.v * 0.3) - car.d)))
-      const yaw = pathK * car.v + 4 * (psiWanted - car.psi)
+      const g = style.gains ?? { offset: 0.06, heading: 4 }
+      const psiWanted = Math.max(-0.25, Math.min(0.25, g.offset * (lineAt(line, car.s + car.v * 0.3) - car.d)))
+      const yaw = pathK * car.v + g.heading * (psiWanted - car.psi)
       const steer = Math.max(-1, Math.min(1, yaw / maxYawRate(Math.max(car.v, 1))))
       const straight = Math.abs(ahead.curvature) < 0.002 && car.v > 50
       input = { throttle, brake, steer, boost: style.useBoost && straight && throttle === 1, overtake: overtakeReady(c, state) }

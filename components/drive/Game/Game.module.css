@@ -1,0 +1,278 @@
+/* The test drive's stage (board 13, 1440 × 900): full screen over the page while driving; the dawn sky
+   in CSS behind a transparent canvas; dark glass panels over it. The full HUD comes in M3 PR 4. */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drive);
+  overflow: hidden;
+  color: var(--white);
+}
+
+.stage canvas {
+  touch-action: none;
+}
+
+/* The car package's sky: cool grey down to the horizon colour, a warm glow at 74% across */
+.sky {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 40% at 74% var(--drive-horizon-y), var(--drive-glow), transparent),
+    linear-gradient(var(--drive-sky-top), var(--drive-horizon) var(--drive-horizon-y), var(--drive-horizon));
+}
+
+.panel {
+  position: absolute;
+  border-radius: var(--radius-glass);
+  background: var(--panel-dark-bg);
+  -webkit-backdrop-filter: var(--panel-dark-blur);
+  backdrop-filter: var(--panel-dark-blur);
+  border: 1px solid var(--panel-dark-border);
+  box-shadow: var(--panel-dark-shadow);
+}
+
+.timing {
+  top: var(--drive-inset);
+  left: var(--drive-inset);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: var(--drive-timing-width);
+  padding: var(--space-5) var(--space-6);
+}
+
+.title {
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-label);
+}
+
+.clock {
+  font-family: var(--font-mono);
+  font-size: var(--fs-drive-clock);
+  line-height: 1;
+  letter-spacing: var(--tracking-countdown);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-6);
+  color: var(--ink-3-dark);
+  letter-spacing: var(--tracking-label);
+}
+
+.gap {
+  color: var(--red-on-dark);
+}
+
+.gap[data-ahead] {
+  color: var(--timing-green);
+}
+
+.banner {
+  position: absolute;
+  top: var(--drive-inset);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--glass-chip-bg);
+  border: 1px solid var(--glass-chip-border);
+  color: var(--carbon);
+  letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+}
+
+.pauseButton {
+  position: absolute;
+  top: var(--drive-inset);
+  right: var(--drive-inset);
+  width: var(--tap);
+  height: var(--tap);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--panel-dark-bg);
+  border: 1px solid var(--panel-dark-border);
+  color: var(--white);
+}
+
+.pauseButton svg {
+  width: var(--icon-s);
+  height: var(--icon-s);
+  fill: currentColor;
+}
+
+/* The start: five red lights, one a second, then all out (ARCHITECTURE §7.4) */
+.lights {
+  position: absolute;
+  top: var(--drive-lights-top);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lamps {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--panel-dark-bg);
+  border: 1px solid var(--panel-dark-border);
+}
+
+.lamps i {
+  width: var(--drive-lamp);
+  height: var(--drive-lamp);
+  border-radius: 50%;
+  background: var(--drive-lamp-off);
+}
+
+.lamps i[data-on] {
+  background: var(--redline);
+  box-shadow: var(--drive-lamp-glow);
+}
+
+.caption {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--panel-dark-bg);
+  letter-spacing: var(--tracking-label);
+}
+
+/* The key bar (board 13), desktop only: phones get thumb controls (M3 PR 5) */
+.keys {
+  position: absolute;
+  bottom: var(--drive-inset);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--panel-dark-bg);
+  border: 1px solid var(--panel-dark-border);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.key kbd {
+  min-width: var(--drive-keycap);
+  height: var(--drive-keycap);
+  display: inline-grid;
+  place-items: center;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-keycap);
+  border: 1px solid var(--panel-dark-border);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+}
+
+@media (max-width: 899.98px), (hover: none) {
+  .keys {
+    display: none;
+  }
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--carbon);
+  letter-spacing: var(--tracking-label);
+}
+
+.noWebgl {
+  padding: var(--space-14) var(--space-section-x);
+  font-size: var(--fs-body);
+  color: var(--muted);
+}
+
+/* Pause (rules/game.md): a modal sheet; Esc resumes */
+.sheet {
+  margin: auto;
+  padding: var(--space-8);
+  border-radius: var(--radius-glass);
+  background: var(--panel-dark-bg);
+  border: 1px solid var(--panel-dark-border);
+  color: var(--white);
+}
+
+.sheet::backdrop {
+  background: var(--drive-backdrop);
+}
+
+.sheetTitle {
+  font-size: var(--fs-card-title);
+  margin-bottom: var(--space-6);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+}
+
+.primary {
+  background: var(--redline);
+  border: 0;
+  color: var(--white);
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--panel-dark-border);
+  color: var(--white);
+}
+
+/* The lap's end, until the finish screens (boards 14, 17) arrive in M4 */
+.finish {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-8);
+}
+
+.finishTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-card-title);
+}
+
+.finishGap {
+  font-family: var(--font-mono);
+  font-size: var(--fs-drive-clock);
+  color: var(--red-on-dark);
+}
+
+.finishGap[data-ahead] {
+  color: var(--timing-green);
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { DrivePreload } from '@/components/drive/DrivePreload'
 import { Footer } from '@/components/site/Footer/Footer'
 import { Header } from '@/components/site/Header/Header'
 import { Wipe } from '@/components/site/Wipe/Wipe'
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         {/* The wipe registers first, so the clock's first correction can already play it. */}
         <Wipe />
         <ClockSync />
+        <DrivePreload />
       </body>
     </html>
   )

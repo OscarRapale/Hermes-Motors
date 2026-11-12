@@ -6,7 +6,7 @@ export const REFERENCE_LAPS: { name: string; about: string; seed: number; style:
     name: 'clean',
     about: 'A good driver: the racing line at 97% of the grip limit, Boost on the straights. Lands within ±0.4 s of the messenger.',
     seed: 1,
-    style: { line: true, pace: 0.97, brakeMargin: 0.9, useBoost: true },
+    style: { line: true, pace: 0.97, brakeMargin: 0.9, useBoost: true, gains: { offset: 0.05, heading: 8 } },
   },
   {
     name: 'careful',

@@ -24,6 +24,9 @@ const current = (page: Page) => rail(page).locator('[aria-current="step"]')
 const isPhone = (page: Page) => (page.viewportSize()?.width ?? 0) < 900
 const toChapter = (page: Page, n: number) =>
   page.evaluate((c) => document.getElementById(`specs-${c}`)?.scrollIntoView(), n)
+/** Axe samples colours: wait until the chapter's text wipe is over (it can still be running under load) */
+const settled = (page: Page, i: number) =>
+  expect(page.locator(`[data-chapter="${i}"] [data-text-wipe]`)).toHaveCSS('clip-path', 'none', { timeout: 5_000 })
 // the page scrolls smoothly; measuring positions needs an instant jump
 const jumpTo = (page: Page, n: number) =>
   page.evaluate((c) => document.getElementById(`specs-${c}`)?.scrollIntoView({ behavior: 'instant' }), n)
@@ -88,6 +91,7 @@ test.describe('specs section', () => {
     await toChapter(page, 5)
     await expect(page.getByRole('heading', { name: chapters[4].headline.join(' ') })).toBeVisible()
     await expect(page.getByRole('link', { name: specsCopy.cta })).toBeVisible()
+    await settled(page, 4)
     await expectNoAxeViolations(page)
   })
 
@@ -110,12 +114,13 @@ test.describe('specs section', () => {
       for (const el of await page.locator('#specs').getByText(/750\s*kW/i).all()) await expect(el).toBeHidden()
     })
     await expect(page.locator('#specs').getByRole('link', { name: testDriveCopy.locked })).toBeVisible()
+    await settled(page, 4)
     await expectNoAxeViolations(page)
   })
 
   test('chapter 5: the test drive button sits between the text and the panel (board 11), last and full width on phones (board 24)', async ({ page }) => {
     await open(page, 'day')
-    await toChapter(page, 5)
+    await jumpTo(page, 5) // the text may scroll (phones, short screens): measure it at rest
     const article = page.locator('[data-chapter="4"]')
     const cta = article.getByRole('link', { name: specsCopy.cta })
     await expect(cta).toBeVisible()

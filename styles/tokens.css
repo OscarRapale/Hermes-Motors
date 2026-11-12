@@ -29,6 +29,27 @@
   --timing-purple: #c9a0ff;
   --timing-yellow: #f2c94c;
   --timing-green: #5be58f;
+  /* The Proving Ground (test drive): the CSS dawn sky behind the canvas and the scene's own colours,
+     from the car package's TestDriveScene and ProvingGround */
+  --drive-sky-top: #c3c9d2;
+  --drive-horizon: #eceae6;
+  --drive-glow: #fff0df;
+  --drive-runoff: #c7cbd1;
+  --drive-block: #cdd1d7;
+  --drive-glass: #2a2c31;
+  --drive-far: #b4bac3;
+  --drive-horizon-y: 44%; /* the horizon's height on screen behind the chase camera */
+  --drive-lamp-off: rgba(255, 255, 255, 0.14);
+  --drive-lamp-glow: 0 0 18px rgba(213, 18, 30, 0.75);
+  --drive-backdrop: rgba(14, 15, 17, 0.45);
+  --drive-inset: 28px; /* board 13: panels 28 px from the edges */
+  --drive-timing-width: 300px;
+  --drive-lights-top: 18%;
+  --drive-lamp: 30px;
+  --drive-keycap: 24px;
+  --radius-keycap: 6px;
+  --fs-drive-clock: 44px;
+  --drive-locked-width: 720px;
   --white: #ffffff;
 
   /* ── Type families (next/font sets the --font-* face variables on <html>) ── */
@@ -208,6 +229,7 @@
   --focus-offset: 2px;
 
   /* ── Layers ──────────────────────────────────────────────── */
+  --z-drive: 40; /* the test drive's full-screen stage: under the header, which shows again on pause */
   --z-header: 50;
   --z-dialog: 100;
   --z-wipe: 200;
