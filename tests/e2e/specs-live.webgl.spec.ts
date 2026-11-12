@@ -2,11 +2,10 @@ import { expect, test } from './test'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
 
 // The live 3D car (ARCHITECTURE §6). Opts into WebGL; skips where the browser has none (a CI
-// runner without a GPU may not). Desktop only: one software-rendered run is slow enough.
+// runner without a GPU may not). Runs in the "webgl" project (desktop, after the others).
 test.use({ webgl: true })
 
-test('the live car loads near the section, replaces the frames, and logs no errors', async ({ page }, info) => {
-  test.skip(info.project.name !== 'desktop', 'desktop only')
+test('the live car loads near the section, replaces the frames, and logs no errors', async ({ page }) => {
   test.slow()
   const errors: string[] = []
   page.on('console', (m) => {

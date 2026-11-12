@@ -190,7 +190,7 @@ export function Game({ preview }: { preview: boolean }) {
   const gaps = result ? gapsToMessenger(result) : null
 
   return (
-    <div className={styles.stage} data-status={status}>
+    <div className={styles.stage} data-status={status} data-phase={ui.phase}>
       <div className={styles.sky} aria-hidden="true" />
       {status !== 'checking' && (
         <DriveScene

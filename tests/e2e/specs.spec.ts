@@ -115,7 +115,7 @@ test.describe('specs section', () => {
 
   test('chapter 5: the test drive button sits between the text and the panel (board 11), last and full width on phones (board 24)', async ({ page }) => {
     await open(page, 'day')
-    await toChapter(page, 5)
+    await jumpTo(page, 5) // the text may scroll (phones, short screens): measure it at rest
     const article = page.locator('[data-chapter="4"]')
     const cta = article.getByRole('link', { name: specsCopy.cta })
     await expect(cta).toBeVisible()
