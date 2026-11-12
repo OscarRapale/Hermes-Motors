@@ -1,6 +1,6 @@
 // The arcade car's numbers (ARCHITECTURE §7.3). Figures about the car come from content/facts.ts; the
-// rest are game tuning, never shown on the site as facts. Tuned so a clean lap by a good driver lands
-// within ±0.4 s of the messenger's 71.906 (tests/unit/game/laps.test.ts keeps the reference laps).
+// rest are game tuning, never shown on the site as facts. Tuned so a careful lap lands just behind the
+// messenger's 71.906 and a clean one beats him (Decision D28; tests/unit/game/laps.test.ts keeps the laps).
 
 import { hm27, rules } from '@/content/facts'
 
@@ -26,25 +26,32 @@ export const T = {
   driveMaxAccel: kmh(100) / hm27.zeroToHundredS + ROLLING + (dragK * kmh(100) ** 2) / 3,
   rollingDecel: ROLLING,
 
-  /** Brakes: 40 m/s² at speed, 25 below 100 km/h, blended up to 200 km/h */
-  brakeHigh: 40,
-  brakeLow: 25,
+  /** Brakes: 34 m/s² at speed, 22 below 100 km/h, blended up to 200 km/h (ARCH's 40 and 25 felt harsh on a
+      keyboard; Oscar's playtest, 2026-11-12) */
+  brakeHigh: 34,
+  brakeLow: 22,
   brakeBlendFrom: kmh(100),
   brakeBlendTo: kmh(200),
 
   /** Grip: a_lat_max = g · (base + aero · v²), downforce growing with v². ARCH's starting 1.6 and 0.00045,
-      × 0.58: what puts a clean lap on the messenger's time, and his own envelope (≈ 1.2 g at 110 km/h,
-      1.75 g at 200, from his speeds and the circuit's curvature) */
-  gripBase: 0.926,
-  gripAero: 0.00026,
+      × 0.7, with the friction circle below: a 60 m corner at about 102 km/h. A careful lap lands just behind
+      the messenger, a clean one on the racing line beats him by a few seconds (Decision D28) */
+  gripBase: 1.12,
+  gripAero: 0.000315,
 
   /** Steering: yaw rate up to 1.6 rad/s at low speed, never more than grip allows; none standing still */
   yawMax: 1.6,
   /** The tightest turn, metres: caps the yaw rate at v / 7 (1.6 rad/s from 40 km/h up) */
   minTurnRadius: 7,
   /** How fast the steering follows the input (per second); keyboards are on/off */
-  steerRate: 3.2,
-  steerReturn: 5,
+  steerRate: 4.5,
+  steerReturn: 6,
+  /** Cornering takes from the drive the tyres can put down (friction circle); braking is left alone */
+  frictionCircle: true,
+  /** Pedals, per second: the brake squeezes in over 0.25 s, the throttle over 0.17 s, both let go in 0.1 s */
+  brakeRise: 4,
+  throttleRise: 6,
+  pedalRelease: 10,
   /** The car never points more than this far off the track's direction (radians) */
   headingErrorMax: 1.2,
 

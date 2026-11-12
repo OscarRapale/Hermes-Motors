@@ -29,7 +29,8 @@ describe('the HUD (board 13)', () => {
   })
 
   it('on the lap: the clock, the signed delta, progress, and the live sector', () => {
-    const v = hudView(c, at(600, 0.244), { ...IDLE, throttle: 1 })
+    const lap = at(600, 0.244)
+    const v = hudView(c, { ...lap, car: { ...lap.car, throttle: 1 } }, { ...IDLE, throttle: 1 })
     expect(v.delta).toBe('+0.244')
     expect(v.deltaState).toBe('behind')
     expect(v.tag).toBe('+0.24 S')

@@ -114,8 +114,9 @@ export function hudView(c: Circuit, state: RaceState, input: Input): HudView {
     rpm: rpm.toLocaleString('en-US'),
     gear,
     leds: shiftLeds(rpm),
-    throttle: Math.round(input.throttle * 100),
-    brake: Math.round(input.brake * 100),
+    // the pedals as applied (they squeeze in over a moment)
+    throttle: Math.round(car.throttle * 100),
+    brake: Math.round(car.brake * 100),
     ers: Math.round((100 * car.energy) / T.storeJ),
     aero: onGrid ? 'corner' : aeroMode(car, input),
     overtake: active ? 'active' : ready ? 'ready' : 'off',

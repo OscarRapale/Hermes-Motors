@@ -39,8 +39,8 @@ describe('the car against the facts', () => {
     expect(T.powerW).toBe(750_000)
   })
 
-  it('does 0–100 km/h in 2.6 s (facts §B)', () => {
-    let car = createCar(100) // on the start straight
+  it('does 0–100 km/h in 2.6 s, flat out (facts §B)', () => {
+    let car = { ...createCar(100), throttle: 1 } // on the start straight, the throttle already down
     let t = 0
     while (car.v < 100 / 3.6) {
       car = stepCar(c, car, FLAT, DT)
@@ -56,10 +56,28 @@ describe('the car against the facts', () => {
     expect(topSpeed(T.powerW + T.boostW)).toBeLessThan(hm27.topSpeedKmh + 1)
   })
 
-  it('brakes at 25 m/s² below 100 km/h and 40 above 200', () => {
-    expect(brakeDecel(20)).toBe(25)
-    expect(brakeDecel(60)).toBe(40)
-    expect(brakeDecel(150 / 3.6)).toBeCloseTo(32.5, 5)
+  it('brakes at 22 m/s² below 100 km/h and 34 above 200', () => {
+    expect(brakeDecel(20)).toBe(22)
+    expect(brakeDecel(60)).toBe(34)
+    expect(brakeDecel(150 / 3.6)).toBeCloseTo(28, 5)
+  })
+
+  it('squeezes the pedals in over a moment and lets go quickly (keyboards are on/off)', () => {
+    const car = { ...createCar(200), v: 40 }
+    expect(stepCar(c, car, { ...NO_INPUT, brake: 1 }, DT).brake).toBeCloseTo(T.brakeRise * DT, 9)
+    expect(run(car, { ...NO_INPUT, brake: 1 }, 0.25).brake).toBeCloseTo(1, 6)
+    expect(run({ ...car, brake: 1 }, NO_INPUT, 0.1).brake).toBeCloseTo(0, 6)
+    expect(run(car, FLAT, 0.17).throttle).toBeGreaterThan(0.99)
+  })
+
+  it('puts down less drive the harder it corners (friction circle), none at the limit', () => {
+    const car = { ...createCar(100), v: 40, throttle: 1 }
+    const straight = stepCar(c, car, FLAT, DT).v - car.v
+    const turning = stepCar(c, { ...car, steer: 0.7 }, { ...FLAT, steer: 0.7 }, DT).v - car.v
+    const limit = stepCar(c, { ...car, steer: 1 }, { ...FLAT, steer: 1 }, DT).v - car.v
+    expect(turning).toBeLessThan(straight)
+    expect(turning).toBeGreaterThan(limit)
+    expect(limit).toBeLessThan(0) // at the limit, drag wins: no drive left
   })
 })
 
@@ -118,7 +136,7 @@ describe('off the road and the walls', () => {
     const touch = stepCar(c, { ...createCar(200), v: 10, d: limit, psi: 0.05 }, NO_INPUT, DT)
     expect(touch.wallHits).toBe(0)
     const away = run({ ...createCar(500), d: limit, v: 0 }, { ...FLAT, steer: -1 }, 2)
-    expect(away.v).toBeGreaterThan(10)
+    expect(away.v).toBeGreaterThan(6)
     expect(away.d).toBeLessThan(limit - 3)
     expect(away.wallHits).toBe(0)
   })
@@ -136,7 +154,7 @@ describe('energy', () => {
     const boosted = stepCar(c, car, { ...FLAT, boost: true }, DT)
     expect(boosted.boosting).toBe(true)
     expect(boosted.energy).toBeCloseTo(car.energy - T.boostW * DT, 3)
-    const braked = stepCar(c, car, { ...NO_INPUT, brake: 1 }, DT)
+    const braked = stepCar(c, { ...car, brake: 1 }, { ...NO_INPUT, brake: 1 }, DT)
     expect(braked.energy).toBeCloseTo(car.energy + T.harvestW * DT, 3)
     expect(stepCar(c, { ...car, energy: 0 }, { ...FLAT, boost: true }, DT).boosting).toBe(false)
     expect(stepCar(c, { ...car, energy: T.storeJ }, { ...NO_INPUT, brake: 1 }, DT).energy).toBe(T.storeJ)
