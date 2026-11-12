@@ -314,25 +314,38 @@ export function Specs() {
     if (car === 'frames') drawFrames(frame.current)
   }, [car, drawFrames])
 
-  // Load the live car one viewport early (rules/three.md); run it only while the section is on screen.
+  // Load the live car one viewport early (rules/three.md), but not before the reader scrolls: the section
+  // starts within a viewport of the top, and ARCHITECTURE §10 keeps three.js out of the first load
+  // (Decision D27). A page that opens on the specs (a /#specs link, a reload mid-page) loads at once.
+  // The car runs only while the section is on screen.
   useEffect(() => {
     const el = root.current
     if (!el || car !== 'live') return
-    const nearBy = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        // dynamic: a static import of the car package would put three.js in the page's first load
-        void import('@/components/hermes/HermesCar').then((m) => m.preloadHermesCar(lod))
-        setNear(true)
-        nearBy.disconnect()
-      },
-      { rootMargin: '100% 0px' },
-    )
-    const visible = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting))
-    nearBy.observe(el)
+    let nearBy: IntersectionObserver | null = null
+    const watchNear = () => {
+      if (nearBy) return
+      window.removeEventListener('scroll', watchNear)
+      nearBy = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return
+          // dynamic: a static import of the car package would put three.js in the page's first load
+          void import('@/components/hermes/HermesCar').then((m) => m.preloadHermesCar(lod))
+          setNear(true)
+          nearBy?.disconnect()
+        },
+        { rootMargin: '100% 0px' },
+      )
+      nearBy.observe(el)
+    }
+    window.addEventListener('scroll', watchNear, { passive: true })
+    const visible = new IntersectionObserver(([entry]) => {
+      setOnScreen(entry.isIntersecting)
+      if (entry.isIntersecting) watchNear()
+    })
     visible.observe(el)
     return () => {
-      nearBy.disconnect()
+      window.removeEventListener('scroll', watchNear)
+      nearBy?.disconnect()
       visible.disconnect()
     }
   }, [car, lod])

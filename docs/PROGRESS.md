@@ -65,7 +65,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D24 | Specs text on phones | **ARCH §6 wins:** text scrolls under the pinned car (the prototype swaps it in place); at a slot's top it rests as on board 24. Landscape (no board): car right, text left | PR #15; dim headline line 0.5 alpha where text scrolls (3:1) |
 | D25 | Specs on short screens ≥ 900 px wide | **Decided 2026-11-11:** below 830 px tall (most laptops in a browser) the text scrolls beside the pinned car, fading behind the rail; board 11's swap from 830 px | ch 5 ends 717 px down; the rail starts 90 px above the bottom. PR #16 |
 | D26 | The start | **Decided 2026-11-11:** grid 65 m behind the line, lap and ghost start at the line; the car holds the centre line until it | his is a flying lap. `tuning.ts` `gridBehindM` |
-| D27 | three.js on `/` before scroll | as built: the specs load the live car one viewport early (rules/three.md), which at load is already true (they start 990 px down) | ARCH §10 says no three.js before scroll; e2e misses it (no WebGL). Proposal: start that watch on the first scroll |
+| D27 | three.js on `/` before scroll | **Decided 2026-11-12:** the specs load their car one viewport away only after the first scroll (or at once if the page opens on them) | ARCH §10; rules/three.md updated; WebGL e2e guards it |
 
 ## Log
 
