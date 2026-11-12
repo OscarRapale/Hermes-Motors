@@ -5,7 +5,7 @@ import { frameAt } from '@/lib/drive/pose'
 import { circuit } from '@/lib/game/circuit'
 import { GHOST_HIDDEN_S } from '@/lib/game/ghost'
 import { createRace, step, IDLE, type RaceState } from '@/lib/game/race'
-import { DT } from '@/lib/game/tuning'
+import { DT, T } from '@/lib/game/tuning'
 
 const c = circuit()
 
@@ -59,10 +59,10 @@ describe('what the scene draws', () => {
 })
 
 describe('the run-up (Decision D26)', () => {
-  it('holds the car on the centre line until the line, whatever the steering', () => {
+  it('holds the car on the centre line until 30 m past the line, whatever the steering', () => {
     let s = createRace(1)
     while (s.phase === 'grid') s = step(c, s, IDLE, DT)
-    while (s.car.s < -1) {
+    while (s.car.s < T.guidedUntilM - 1) {
       s = step(c, s, { ...IDLE, throttle: 1, steer: 1 }, DT)
       expect(s.car.d).toBe(0)
       expect(s.car.psi).toBe(0)

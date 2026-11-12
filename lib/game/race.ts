@@ -102,9 +102,9 @@ export function step(c: Circuit, state: RaceState, input: Input, dt: number): Ra
   }
   if (energyBonus) car = { ...car, energy: Math.min(T.storeJ, car.energy + energyBonus) }
   let next = stepCar(c, car, carInput, dt)
-  // the run-up (Decision D26): until the line the car holds the centre line through the last corner's
-  // exit; the player's throttle and brake count, the steering starts with the lap
-  if (state.lapStart === null && next.s < 0) next = { ...next, d: 0, psi: 0, steer: 0 }
+  // the run-up (Decision D26): until just past the line the car holds the centre line, through the last
+  // corner's exit and the first metres of the straight; throttle and brake are the player's throughout
+  if (next.s < T.guidedUntilM) next = { ...next, d: 0, psi: 0, steer: 0 } // s only grows: no reverse
 
   // line crossings, timed within the step
   const at = (line: number) => state.clock + dt * ((line - state.car.s) / (next.s - state.car.s))

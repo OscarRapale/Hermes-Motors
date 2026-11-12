@@ -5,13 +5,16 @@ import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { messenger } from '@/content/facts'
 import { driveCopy } from '@/content/copy/drive'
+import { hudView } from '@/lib/drive/hud'
 import { GAME_KEYS, PAUSE_KEY, inputFromKeys } from '@/lib/drive/keys'
 import { frameAt, type Frame } from '@/lib/drive/pose'
+import { countAttempt, recordLap, type DriveRecord } from '@/lib/drive/storage'
 import { circuit } from '@/lib/game/circuit'
 import { advance, startLoop, type Loop } from '@/lib/game/loop'
-import { createRace, lapTime, lightsLit, liveGap, type Phase } from '@/lib/game/race'
+import { createRace, lightsLit, type Phase } from '@/lib/game/race'
 import { formatGap, formatLap, gapsToMessenger, type LapResult } from '@/lib/game/timing'
 import { T } from '@/lib/game/tuning'
+import { Hud, type HudHandle } from '../Hud/Hud'
 import styles from './Game.module.css'
 
 const DriveScene = dynamic(() => import('../DriveScene/DriveScene'), { ssr: false })
@@ -27,15 +30,13 @@ const hasWebgl2 = () => {
   }
 }
 
-/** Lap time as on the board: m:ss.mmm, ticking with the lap; a dash before the line */
-const lapClock = (t: number | null) => (t === null ? '—' : formatLap(Math.floor(t * 1000)))
+const HUD_INTERVAL_S = 1 / 30 // the HUD's DOM is written at 30 Hz, as in the prototype
 
 type Ui = { lit: number; phase: Phase; go: boolean; result: LapResult | null }
 
 /**
  * The test drive (ARCHITECTURE §7, board 13): the full-screen stage, the fixed-step loop, the keys, the
- * start, pause and the result. The HUD comes with the next step (M3 PR 4); this shows the lap clock and
- * the gap to the messenger.
+ * start, the HUD, pause and the result. Your best lap and attempt count stay on this device.
  */
 export function Game({ preview }: { preview: boolean }) {
   const c = circuit()
@@ -43,6 +44,7 @@ export function Game({ preview }: { preview: boolean }) {
   const [paused, setPaused] = useState(false)
   const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, result: null })
   const [motion, setMotion] = useState(true)
+  const [record, setRecord] = useState<DriveRecord>({ bestMs: null, attempts: 0 })
 
   // the first attempt, made once (the lights-out delay is random)
   const [first] = useState(() => {
@@ -52,11 +54,14 @@ export function Game({ preview }: { preview: boolean }) {
   const loop = useRef<Loop>(first.loop)
   const frame = useRef<Frame>(first.frame)
   const held = useRef(new Set<string>())
+  // keys pressed since the last step: a quick tap (down and up between two frames) still counts once
+  const taps = useRef(new Set<string>())
   const snap = useRef(0)
   const running = useRef(false) // ready and not paused: the loop advances
   const uiRef = useRef(ui)
-  const clockEl = useRef<HTMLSpanElement>(null)
-  const gapEl = useRef<HTMLSpanElement>(null)
+  const hud = useRef<HudHandle>(null)
+  const hudClock = useRef(0)
+  const ghostTag = useRef<HTMLDivElement>(null)
   const pauseDialog = useRef<HTMLDialogElement>(null)
   const runItBack = useRef<HTMLButtonElement>(null)
 
@@ -72,22 +77,24 @@ export function Game({ preview }: { preview: boolean }) {
     if (prev.lit === next.lit && prev.phase === next.phase && prev.go === next.go && prev.result === next.result) return
     uiRef.current = next
     setUi(next)
+    // a finished lap: keep it if it's the best on this device
+    if (next.result && !prev.result) setRecord(recordLap(next.result.totalMs))
   }, [])
 
   // One rendered frame: advance the physics at its fixed step, then what the scene and the clock show.
   const onFrame = useCallback(
     (dt: number) => {
       if (!running.current) return
-      const { loop: next, alpha } = advance(c, loop.current, inputFromKeys(held.current), dt)
+      const input = inputFromKeys(taps.current.size ? new Set([...held.current, ...taps.current]) : held.current)
+      const { loop: next, alpha } = advance(c, loop.current, input, dt)
+      if (next.state !== loop.current.state) taps.current.clear() // a step has seen them
       loop.current = next
       frame.current = frameAt(c, next.prev, next.state, alpha)
       const s = next.state
-      if (clockEl.current) clockEl.current.textContent = lapClock(lapTime(s))
-      if (gapEl.current) {
-        const gap = liveGap(c, s)
-        gapEl.current.textContent = gap === null ? '—' : formatGap(Math.round(gap * 1000))
-        if (gap !== null && gap < 0) gapEl.current.dataset.ahead = ''
-        else delete gapEl.current.dataset.ahead
+      hudClock.current += dt
+      if (hudClock.current >= HUD_INTERVAL_S || s.phase !== uiRef.current.phase) {
+        hudClock.current = 0
+        hud.current?.update(hudView(c, s, input))
       }
       pushUi({
         lit: lightsLit(s),
@@ -103,6 +110,7 @@ export function Game({ preview }: { preview: boolean }) {
     if (!running.current || uiRef.current.result) return
     running.current = false
     held.current.clear()
+    taps.current.clear()
     setPaused(true)
   }, [])
 
@@ -116,10 +124,11 @@ export function Game({ preview }: { preview: boolean }) {
     frame.current = frameAt(c, loop.current.state, loop.current.state, 0)
     snap.current += 1
     held.current.clear()
+    taps.current.clear()
     uiRef.current = { lit: 0, phase: 'grid', go: false, result: null }
     setUi(uiRef.current)
-    if (clockEl.current) clockEl.current.textContent = lapClock(null)
-    if (gapEl.current) gapEl.current.textContent = '—'
+    hud.current?.update(hudView(c, loop.current.state, inputFromKeys(held.current)))
+    setRecord(countAttempt())
     setPaused(false)
     running.current = true
   }, [c])
@@ -139,6 +148,7 @@ export function Game({ preview }: { preview: boolean }) {
       if (!GAME_KEYS.has(e.code) || !running.current) return
       e.preventDefault()
       held.current.add(e.code)
+      taps.current.add(e.code)
     }
     const up = (e: KeyboardEvent) => held.current.delete(e.code)
     const hidden = () => document.visibilityState === 'hidden' && pause()
@@ -179,8 +189,10 @@ export function Game({ preview }: { preview: boolean }) {
 
   const onReady = useCallback(() => {
     setStatus('ready')
+    setRecord(countAttempt()) // the first attempt starts with the lights
     running.current = true
   }, [])
+
 
   if (status === 'nowebgl') {
     return <p className={styles.noWebgl}>{driveCopy.noWebgl(formatLap(messenger.lapMs))}</p>
@@ -199,6 +211,7 @@ export function Game({ preview }: { preview: boolean }) {
           reducedMotion={!motion}
           snap={snap}
           onReady={onReady}
+          ghostTag={ghostTag}
           paused={paused}
           label={driveCopy.sceneLabel}
         />
@@ -206,22 +219,7 @@ export function Game({ preview }: { preview: boolean }) {
 
       {preview && <p className={`label ${styles.banner}`}>{driveCopy.previewBanner}</p>}
 
-      <div className={`${styles.panel} ${styles.timing}`}>
-        <p className={`label ${styles.title}`}>{driveCopy.hud.title}</p>
-        <span ref={clockEl} className={`tnum ${styles.clock}`}>
-          {lapClock(null)}
-        </span>
-        <p className={`label ${styles.row}`}>
-          <span>{driveCopy.hud.messenger}</span>
-          <span className="tnum">{formatLap(messenger.lapMs)}</span>
-        </p>
-        <p className={`label ${styles.row}`}>
-          <span>{driveCopy.hud.delta}</span>
-          <span ref={gapEl} className={`tnum ${styles.gap}`}>
-            —
-          </span>
-        </p>
-      </div>
+      {status === 'ready' && <Hud ref={hud} attempt={Math.max(1, record.attempts)} bestMs={record.bestMs} tagRef={ghostTag} />}
 
       <button type="button" className={styles.pauseButton} onClick={pause} aria-label={driveCopy.pause.button}>
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -230,7 +228,7 @@ export function Game({ preview }: { preview: boolean }) {
       </button>
 
       {status === 'ready' && (ui.phase === 'grid' || ui.go) && (
-        <div className={styles.lights} role="status" aria-label={driveCopy.lightsLabel(ui.lit)}>
+        <div className={styles.lights} data-go={ui.phase !== 'grid' ? '' : undefined} role="status" aria-label={driveCopy.lightsLabel(ui.lit)}>
           <span className={styles.lamps} aria-hidden="true">
             {Array.from({ length: T.lightsCount }, (_, i) => (
               <i key={i} data-on={ui.phase === 'grid' && i < ui.lit ? '' : undefined} />

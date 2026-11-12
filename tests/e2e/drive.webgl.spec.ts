@@ -22,6 +22,10 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   await expect(stage).toBeAttached({ timeout: 120_000 })
   await expect(stage).toHaveAttribute('data-phase', 'grid')
   await expect(page.getByText(driveCopy.lights.wait)).toBeVisible()
+  // the HUD (board 13): the first attempt on this device, nothing on the clock yet
+  await expect(page.getByText(driveCopy.hud.attempt(1))).toBeVisible()
+  await expect(page.getByRole('timer', { name: driveCopy.hud.labels.clock })).toHaveText('—')
+  expect(await page.evaluate(() => localStorage.getItem('hermes.drive.v1'))).toContain('"attempts":1')
   await expect(page.locator('html')).toHaveAttribute('data-drive', 'on')
   await expect(page.getByRole('banner')).toBeHidden()
 
@@ -35,7 +39,11 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   // lights out, then full throttle carries the car to the line and the lap clock starts
   await expect(stage).toHaveAttribute('data-phase', 'running', { timeout: 150_000 })
   await page.keyboard.down('KeyW')
-  await expect(page.getByText(/^0:0\d\.\d{3}$/)).toBeVisible({ timeout: 120_000 })
+  await expect(page.getByRole('timer', { name: driveCopy.hud.labels.clock })).toHaveText(/^0:0\d\.\d{3}$/, { timeout: 120_000 })
+  // on the lap: sector 1 live, the signed gap to the messenger, the dial reading
+  await expect(page.getByRole('region', { name: driveCopy.hud.labels.sectorTimes }).getByText(driveCopy.hud.live)).toBeVisible()
+  await expect(page.locator('[data-f="delta"]')).toHaveText(/^[+−]\d\.\d{3}$/)
+  await expect(page.locator('[data-f="speed"]')).not.toHaveText('0')
   await page.keyboard.up('KeyW')
   expect(errors).toEqual([])
 })

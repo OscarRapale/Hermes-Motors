@@ -26,78 +26,62 @@
 .panel {
   position: absolute;
   border-radius: var(--radius-glass);
-  background: var(--panel-dark-bg);
-  -webkit-backdrop-filter: var(--panel-dark-blur);
-  backdrop-filter: var(--panel-dark-blur);
-  border: 1px solid var(--panel-dark-border);
-  box-shadow: var(--panel-dark-shadow);
-}
-
-.timing {
-  top: var(--drive-inset);
-  left: var(--drive-inset);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  min-width: var(--drive-timing-width);
-  padding: var(--space-5) var(--space-6);
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
 }
 
 .title {
-  color: var(--red-on-dark);
-  letter-spacing: var(--tracking-label);
-}
-
-.clock {
   font-family: var(--font-mono);
-  font-size: var(--fs-drive-clock);
-  line-height: 1;
-  letter-spacing: var(--tracking-countdown);
+  font-size: var(--fs-hud-small);
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-hud-wide);
 }
 
 .row {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-6);
-  color: var(--ink-3-dark);
-  letter-spacing: var(--tracking-label);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--hud-k);
+  letter-spacing: var(--tracking-hud-chip);
 }
 
-.gap {
-  color: var(--red-on-dark);
-}
-
-.gap[data-ahead] {
-  color: var(--timing-green);
+/* Centred between the map and the dashboard, as on the board (x ≈ 678 at 1440) */
+.banner,
+.keys {
+  position: absolute;
+  left: calc((100% + var(--hud-side-width) - var(--hud-dash-width)) / 2);
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .banner {
-  position: absolute;
-  top: var(--drive-inset);
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: calc(var(--drive-inset) + var(--hud-pill-height) + var(--space-3));
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill);
   background: var(--glass-chip-bg);
   border: 1px solid var(--glass-chip-border);
   color: var(--carbon);
   letter-spacing: var(--tracking-label);
-  white-space: nowrap;
 }
 
 .pauseButton {
   position: absolute;
   top: var(--drive-inset);
   right: var(--drive-inset);
-  width: var(--tap);
-  height: var(--tap);
+  width: var(--hud-pause);
+  height: var(--hud-pause);
   display: grid;
   place-items: center;
   padding: 0;
   border-radius: 50%;
-  background: var(--panel-dark-bg);
-  border: 1px solid var(--panel-dark-border);
-  color: var(--white);
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
+  color: var(--gallery-white);
 }
 
 .pauseButton svg {
@@ -106,7 +90,7 @@
   fill: currentColor;
 }
 
-/* The start: five red lights, one a second, then all out (ARCHITECTURE §7.4) */
+/* The start (prototype): five 44 px lamps in a glass panel under the delta, then all out */
 .lights {
   position: absolute;
   top: var(--drive-lights-top);
@@ -116,15 +100,18 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-3-5);
+  border-radius: var(--radius-glass);
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
 }
 
 .lamps {
   display: flex;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-pill);
-  background: var(--panel-dark-bg);
-  border: 1px solid var(--panel-dark-border);
+  gap: var(--space-3-5);
 }
 
 .lamps i {
@@ -132,40 +119,49 @@
   height: var(--drive-lamp);
   border-radius: 50%;
   background: var(--drive-lamp-off);
+  border: 2px solid var(--drive-lamp-rim);
+  box-shadow: var(--drive-lamp-inset);
 }
 
 .lamps i[data-on] {
-  background: var(--redline);
+  background: var(--drive-lamp-lit);
   box-shadow: var(--drive-lamp-glow);
 }
 
 .caption {
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-pill);
-  background: var(--panel-dark-bg);
-  letter-spacing: var(--tracking-label);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-small);
+  letter-spacing: var(--tracking-hud-wide);
+  color: var(--hud-k);
+}
+
+.lights[data-go] .caption {
+  color: var(--white);
 }
 
 /* The key bar (board 13), desktop only: phones get thumb controls (M3 PR 5) */
 .keys {
-  position: absolute;
   bottom: var(--drive-inset);
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  gap: var(--space-5);
-  padding: var(--space-3) var(--space-5);
+  align-items: center;
+  gap: var(--space-3-5);
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill);
-  background: var(--panel-dark-bg);
-  border: 1px solid var(--panel-dark-border);
-  font-size: var(--fs-small);
-  white-space: nowrap;
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-small);
+  letter-spacing: var(--tracking-keys);
+  color: var(--hud-live-ink);
 }
 
 .key {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1-5);
 }
 
 .key kbd {
@@ -173,14 +169,16 @@
   height: var(--drive-keycap);
   display: inline-grid;
   place-items: center;
-  padding: 0 var(--space-2);
+  padding: 0 var(--space-1-5);
   border-radius: var(--radius-keycap);
-  border: 1px solid var(--panel-dark-border);
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
+  background: var(--hud-keycap-bg);
+  border: 1px solid var(--hud-keycap-border);
+  font-family: inherit;
+  color: var(--white);
 }
 
-@media (max-width: 899.98px), (hover: none) {
+/* The bar needs ~520 px between the map and the dashboard */
+@media (max-width: 1239.98px), (hover: none) {
   .keys {
     display: none;
   }

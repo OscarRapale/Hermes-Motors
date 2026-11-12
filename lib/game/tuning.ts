@@ -75,6 +75,9 @@ export const T = {
 
   /** The start (Decision D26, placeholder): the grid sits this far behind the line; the lap is timed from it */
   gridBehindM: 65,
+  /** ...and holds the centre line until this far past it, where the start straight is truly straight
+      (the spline bends a little for its first 26 m, toward the last corner) */
+  guidedUntilM: 30,
   lightsCount: 5,
   lightIntervalS: 1,
   lightsOutMinS: 0.2,

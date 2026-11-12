@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M3, PR #19 (`/drive` scene). **Next:** PR 4, the HUD.
+**Now:** M3, PR #20 (HUD). **Next:** PR 5, phones (boards 15, 16).
 ## Milestones
 
 ### M0 Foundation
@@ -31,7 +31,7 @@
 
 ### M4 Finish and share
 - [ ] Finish screens (14, 17); `/drive/r` + validation; `/api/card` link + story
-- [ ] Web Share / download / copy link; best lap in localStorage
+- [ ] Web Share / download / copy link (best lap + attempts in localStorage: done in M3, PR #20)
 
 ### M5 Pages
 - [ ] Drivers (3D helmets: stills first, then live `DriverHelmet`), News (+ MDX article), Team, Season, Partners, Store
@@ -69,9 +69,9 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
+- 2026-11-12 · HUD (PR #20): board 13 (timing, Δ pill, sectors on rounded times, map + dots, dash, ghost tag projected from 3D); best + attempts on device; key taps latched (Overtake missed quick taps); run-up guided to 30 m past the line (start-line spline bend).
 - 2026-11-11 · `/drive` scene (PR #19): locked page + countdown; full-screen stage (header hides, back on pause), the package scene on our circuit, fixed-step loop, keys, lights, pause sheet, no-WebGL, interim lap clock + finish; drive preloads on intent (D27 context).
-- 2026-11-11 · Physics + timing (PR #18): track-relative arcade car, race flow (lights, jump start, line timing, Overtake), fixed step, input logs; grip × 0.58 so a clean lap is −0.27 s; three reference laps replayed in CI. Fixed: wall pinning, turning on the spot, wall-riding.
-- 2026-11-11 · Circuit and ghost (PR #17): `lib/game` circuit (centripetal spline, scale from his speeds), ghost table, corners → kerbs/run-off, layout for `<Track>`. Lap 3,119 m; sector lines at his sector times.
+- 2026-11-11 · Circuit + physics (PRs #17–#18): `lib/game` circuit (3,119 m; sector lines at his times), ghost, kerbs/run-off; arcade car, race flow, fixed step, input logs; grip × 0.58; three reference laps replayed in CI.
 - 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (hysteresis, frame stack + zoom, anchored callouts, text wipe, count-up, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz on approach.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.

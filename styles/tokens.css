@@ -39,17 +39,73 @@
   --drive-glass: #2a2c31;
   --drive-far: #b4bac3;
   --drive-horizon-y: 44%; /* the horizon's height on screen behind the chase camera */
-  --drive-lamp-off: rgba(255, 255, 255, 0.14);
-  --drive-lamp-glow: 0 0 18px rgba(213, 18, 30, 0.75);
+  --drive-lamp-off: #26282d;
+  --drive-lamp-rim: rgba(255, 255, 255, 0.08);
+  --drive-lamp-inset: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+  --drive-lamp-glow: 0 0 18px rgba(255, 43, 43, 0.9), inset 0 0 8px rgba(255, 255, 255, 0.35);
   --drive-backdrop: rgba(14, 15, 17, 0.45);
   --drive-inset: 28px; /* board 13: panels 28 px from the edges */
-  --drive-timing-width: 300px;
-  --drive-lights-top: 18%;
-  --drive-lamp: 30px;
+  --drive-lights-top: 92px; /* under the delta pill */
+  --drive-lamp: 44px;
   --drive-keycap: 24px;
-  --radius-keycap: 6px;
+  --radius-keycap: 8px;
   --fs-drive-clock: 44px;
   --drive-locked-width: 720px;
+  /* The test drive's HUD (board 13, prototype TestDrive-Lap: .td-glass, .td-k, .td-chip) */
+  --hud-glass-bg: linear-gradient(180deg, rgba(34, 35, 40, 0.66) 0%, rgba(12, 13, 15, 0.78) 100%);
+  --hud-glass-blur: blur(20px) saturate(150%);
+  --hud-glass-border: rgba(255, 255, 255, 0.16);
+  --hud-glass-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --hud-k: #c9cdd3;
+  --hud-muted: #9ea3ab;
+  --hud-live: rgba(255, 255, 255, 0.55);
+  --hud-live-ink: #e4e6ea;
+  --hud-track: rgba(255, 255, 255, 0.12);
+  --hud-tick: rgba(255, 255, 255, 0.4);
+  --hud-map-track: rgba(255, 255, 255, 0.16);
+  --hud-ghost-fill: rgba(255, 90, 99, 0.18);
+  --hud-chip-border: rgba(255, 255, 255, 0.3);
+  --hud-ot-ready: rgba(213, 18, 30, 0.3);
+  --hud-tag-stem-ink: rgba(255, 90, 99, 0.8);
+  --hud-side-width: 300px;
+  --hud-sectors-width: 312px;
+  --hud-dash-width: 384px;
+  --hud-pad-x: 18px;
+  --hud-pill-height: 46px;
+  --hud-pause: 48px;
+  --hud-bar: 6px;
+  --hud-pedal-width: 10px;
+  --hud-pedal-height: 150px;
+  --hud-dial: 210px;
+  --hud-side-col: 74px;
+  --hud-ers-width: 22px;
+  --hud-ers-height: 70px;
+  --hud-chip-width: 70px;
+  --hud-legend-dot: 9px;
+  --hud-tag-dot: 7px;
+  --hud-tag-stem: 16px;
+  --radius-hud-dash: 26px;
+  --radius-hud-ers: 8px;
+  --radius-hud-tag: 14px;
+  --fs-hud-clock: 42px;
+  --fs-hud-delta: 21px;
+  --fs-hud-sector: 15px;
+  --fs-hud-ers: 13px;
+  --fs-hud-small: 11px;
+  --fs-hud-k: 10px;
+  --fs-hud-tiny: 9.5px;
+  --fs-hud-chip: 9px;
+  --fs-hud-dial-speed: 54px;
+  --fs-hud-gear: 26px;
+  --tracking-hud: 0.16em;
+  --tracking-hud-tight: 0.14em;
+  --tracking-hud-wide: 0.24em;
+  --tracking-hud-chip: 0.1em;
+  --dur-hud-pulse: 1.6s;
+  --tracking-keys: 0.04em;
+  --hud-keycap-bg: rgba(255, 255, 255, 0.1);
+  --hud-keycap-border: rgba(255, 255, 255, 0.2);
+  --drive-lamp-lit: #ff2b2b;
   --white: #ffffff;
 
   /* ── Type families (next/font sets the --font-* face variables on <html>) ── */
@@ -110,8 +166,11 @@
   --space-section-x: 60px; /* text side padding */
   --space-card-inset: 28px;
   --space-1: 4px;
+  --space-1-5: 6px;
   --space-2: 8px;
+  --space-2-5: 10px;
   --space-3: 12px;
+  --space-3-5: 14px;
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
