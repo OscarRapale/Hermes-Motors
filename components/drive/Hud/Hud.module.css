@@ -1,0 +1,568 @@
+/* Board 13's HUD (1440 × 900, prototype TestDrive-Lap). Dark glass panels 28 px from the edges. */
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  color: var(--white);
+}
+
+.glass {
+  position: absolute;
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
+}
+
+.k {
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+  color: var(--hud-k);
+}
+
+.signed[data-state='ahead'] {
+  color: var(--timing-green);
+}
+
+.signed[data-state='behind'] {
+  color: var(--red-on-dark);
+}
+
+/* ── Lap timing (top left) ── */
+.timing {
+  top: var(--drive-inset);
+  left: var(--drive-inset);
+  width: var(--hud-side-width);
+  padding: var(--space-4) var(--hud-pad-x);
+  border-radius: var(--radius-glass-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2-5);
+}
+
+.timingTop {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--fs-hud-small);
+  letter-spacing: var(--tracking-hud);
+  color: var(--hud-k);
+}
+
+.title {
+  color: var(--red-on-dark);
+}
+
+.clock {
+  font-size: var(--fs-hud-clock);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.timingGrid > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-hairline);
+}
+
+.timingGrid .k {
+  font-size: var(--fs-hud-tiny);
+}
+
+/* ── Δ messenger (top centre) ── */
+.deltaPill {
+  top: var(--drive-inset);
+  left: 50%;
+  transform: translateX(-50%);
+  height: var(--hud-pill-height);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.delta {
+  font-size: var(--fs-hud-delta);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--hud-k);
+}
+
+/* ── Sectors (top right, beside the pause button) ── */
+.sectors {
+  top: var(--drive-inset);
+  right: calc(var(--drive-inset) + var(--hud-pause) + var(--space-2));
+  width: var(--hud-sectors-width);
+  padding: var(--space-3-5) var(--space-4);
+  border-radius: var(--radius-glass-s);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.sector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sectorTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-hud);
+  color: var(--hud-k);
+}
+
+.sectorBar {
+  position: relative;
+  height: var(--hud-bar);
+  border-radius: calc(var(--hud-bar) / 2);
+  background: var(--hud-track);
+  overflow: hidden;
+}
+
+.sectorBar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--local-fill, 0%);
+  border-radius: inherit;
+  background: var(--hud-live);
+}
+
+.sectorTime {
+  font-size: var(--fs-hud-sector);
+  font-variant-numeric: tabular-nums;
+  color: var(--hud-muted);
+}
+
+.sector[data-state='live'] .sectorTime {
+  color: var(--hud-live-ink);
+}
+
+.sector[data-state='faster'] .sectorBar i {
+  background: var(--timing-purple);
+}
+
+.sector[data-state='slower'] .sectorBar i {
+  background: var(--timing-yellow);
+}
+
+.sector[data-state='faster'] .sectorTag {
+  color: var(--timing-purple);
+}
+
+.sector[data-state='slower'] .sectorTag {
+  color: var(--timing-yellow);
+}
+
+.sector[data-state='faster'] .sectorTime,
+.sector[data-state='slower'] .sectorTime {
+  color: var(--white);
+}
+
+/* ── Track map (bottom left) ── */
+.map {
+  left: var(--drive-inset);
+  bottom: var(--drive-inset);
+  width: var(--hud-side-width);
+  padding: var(--space-3-5) var(--space-4) var(--space-3);
+  border-radius: var(--radius-glass-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mapTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mapSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mapOutline {
+  fill: none;
+  stroke: var(--hud-map-track);
+  stroke-width: 10;
+  stroke-linejoin: round;
+}
+
+.mapTrace {
+  fill: none;
+  stroke: var(--redline);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.mapLine {
+  fill: none;
+  stroke: var(--gallery-white);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.mapText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  fill: var(--gallery-white);
+}
+
+.mapGhost {
+  fill: var(--hud-ghost-fill);
+  stroke: var(--red-on-dark);
+  stroke-width: 2;
+  stroke-dasharray: 3 2;
+}
+
+.mapPulse {
+  fill: var(--redline);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse var(--dur-hud-pulse) var(--ease-out) infinite;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.mapMe {
+  fill: var(--white);
+  stroke: var(--redline);
+  stroke-width: 2.5;
+}
+
+.legend {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--fs-hud-tiny);
+  letter-spacing: var(--tracking-hud-tight);
+  color: var(--hud-k);
+}
+
+.legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+}
+
+.legendMe,
+.legendGhost {
+  width: var(--hud-legend-dot);
+  height: var(--hud-legend-dot);
+  border-radius: 50%;
+}
+
+.legendMe {
+  background: var(--white);
+  box-shadow: 0 0 0 2px var(--redline);
+}
+
+.legendGhost {
+  border: 2px dashed var(--red-on-dark);
+}
+
+/* ── Dashboard (bottom right) ── */
+.dash {
+  right: var(--drive-inset);
+  bottom: var(--drive-inset);
+  width: var(--hud-dash-width);
+  padding: var(--space-4);
+  border-radius: var(--radius-hud-dash);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.leds {
+  display: flex;
+  gap: var(--space-1-5);
+}
+
+.leds i {
+  flex: 1;
+  height: var(--hud-bar);
+  border-radius: calc(var(--hud-bar) / 2);
+  background: var(--redline);
+  opacity: 0.2;
+}
+
+.leds i[data-white] {
+  background: var(--white);
+}
+
+.leds i[data-on] {
+  opacity: 1;
+  box-shadow: 0 0 8px var(--redline);
+}
+
+.leds i[data-white][data-on] {
+  box-shadow: 0 0 8px var(--white);
+}
+
+.dashRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2-5);
+}
+
+.pedals {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-end;
+}
+
+.pedal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1-5);
+  font-size: var(--fs-hud-tiny);
+  letter-spacing: var(--tracking-hud-tight);
+  color: var(--hud-k);
+}
+
+.pedalBar {
+  position: relative;
+  width: var(--hud-pedal-width);
+  height: var(--hud-pedal-height);
+  border-radius: calc(var(--hud-pedal-width) / 2);
+  background: var(--hud-track);
+  overflow: hidden;
+}
+
+.pedalBar i {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--local-level, 0%);
+  border-radius: inherit;
+  background: var(--white);
+}
+
+.brake .pedalBar i {
+  background: var(--redline);
+}
+
+.dial {
+  flex: none;
+  width: var(--hud-dial);
+  height: var(--hud-dial);
+}
+
+.ticks {
+  fill: none;
+  stroke: var(--hud-tick);
+  stroke-width: 7;
+}
+
+.arcBack {
+  fill: none;
+  stroke: var(--hud-track);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.arc {
+  fill: none;
+  stroke: var(--redline);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.speed,
+.unit,
+.rpm,
+.gear {
+  text-anchor: middle;
+}
+
+.speed {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-dial-speed);
+  font-weight: var(--fw-medium);
+  fill: var(--white);
+}
+
+.unit {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-small);
+  letter-spacing: var(--tracking-hud-wide);
+  fill: var(--hud-k);
+}
+
+.rpm {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-hud-tight);
+  fill: var(--hud-k);
+}
+
+.gearBox {
+  fill: var(--white);
+}
+
+.gear {
+  font-family: var(--font-display);
+  font-size: var(--fs-hud-gear);
+  fill: var(--carbon);
+}
+
+.side {
+  width: var(--hud-side-col);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1-5);
+}
+
+.sideLabel {
+  font-size: var(--fs-hud-tiny);
+  letter-spacing: var(--tracking-hud-tight);
+  color: var(--hud-k);
+}
+
+.ers {
+  position: relative;
+  width: var(--hud-ers-width);
+  height: var(--hud-ers-height);
+  padding: 2px;
+  border-radius: var(--radius-hud-ers);
+  border: 1px solid var(--hud-chip-border);
+}
+
+.ers i {
+  position: absolute;
+  inset: auto 2px 2px 2px;
+  height: calc(var(--local-level, 0%) - 4px);
+  border-radius: calc(var(--radius-hud-ers) - 2px);
+  background: var(--white);
+}
+
+.ersText {
+  font-size: var(--fs-hud-ers);
+  font-variant-numeric: tabular-nums;
+}
+
+.chip {
+  width: var(--hud-chip-width);
+  padding: var(--space-1) 0;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hud-chip-border);
+  font-size: var(--fs-hud-chip);
+  letter-spacing: var(--tracking-hud-chip);
+  text-align: center;
+  color: var(--hud-muted);
+}
+
+.chip[data-state='straight'] {
+  background: var(--gallery-white);
+  border-color: var(--gallery-white);
+  color: var(--carbon);
+}
+
+.chip[data-state='corner'] {
+  color: var(--hud-k);
+}
+
+.chip[data-state='ready'] {
+  border-color: var(--redline);
+  background: var(--hud-ot-ready);
+  color: var(--white);
+}
+
+.chip[data-state='active'],
+.chip[data-state='on'] {
+  border-color: transparent;
+  background: var(--redline);
+  color: var(--white);
+}
+
+/* ── The messenger's tag, over his car ── */
+.tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  visibility: hidden;
+  will-change: transform;
+}
+
+.tag[data-show] {
+  visibility: visible;
+}
+
+.tagBox {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-hairline);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-hud-tag);
+}
+
+.tagLine {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-hud-small);
+  letter-spacing: var(--tracking-hud-tight);
+  white-space: nowrap;
+}
+
+.tagDot {
+  width: var(--hud-tag-dot);
+  height: var(--hud-tag-dot);
+  border-radius: 50%;
+  background: var(--red-on-dark);
+  box-shadow: 0 0 8px var(--red-on-dark);
+}
+
+.tagOt {
+  display: none;
+  font-size: var(--fs-hud-tiny);
+  letter-spacing: var(--tracking-hud-tight);
+  white-space: nowrap;
+}
+
+.tagOt[data-show='true'] {
+  display: block;
+}
+
+.stem {
+  width: 1px;
+  height: var(--hud-tag-stem);
+  background: var(--hud-tag-stem-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapPulse {
+    animation: none;
+  }
+}

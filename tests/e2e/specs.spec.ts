@@ -24,6 +24,12 @@ const current = (page: Page) => rail(page).locator('[aria-current="step"]')
 const isPhone = (page: Page) => (page.viewportSize()?.width ?? 0) < 900
 const toChapter = (page: Page, n: number) =>
   page.evaluate((c) => document.getElementById(`specs-${c}`)?.scrollIntoView(), n)
+/** Where chapter 5 comes to rest: the end of the section (on phones its text scrolls on from the slot's top) */
+const toEnd = (page: Page) =>
+  page.evaluate(() => {
+    const specs = document.getElementById('specs')!
+    window.scrollTo({ top: specs.getBoundingClientRect().bottom + window.scrollY - window.innerHeight - 1, behavior: 'instant' })
+  })
 /** Axe samples colours: wait until the chapter's text wipe is over (it can still be running under load) */
 const settled = (page: Page, i: number) =>
   expect(page.locator(`[data-chapter="${i}"] [data-text-wipe]`)).toHaveCSS('clip-path', 'none', { timeout: 5_000 })
@@ -91,6 +97,7 @@ test.describe('specs section', () => {
     await toChapter(page, 5)
     await expect(page.getByRole('heading', { name: chapters[4].headline.join(' ') })).toBeVisible()
     await expect(page.getByRole('link', { name: specsCopy.cta })).toBeVisible()
+    await toEnd(page)
     await settled(page, 4)
     await expectNoAxeViolations(page)
   })
@@ -114,6 +121,7 @@ test.describe('specs section', () => {
       for (const el of await page.locator('#specs').getByText(/750\s*kW/i).all()) await expect(el).toBeHidden()
     })
     await expect(page.locator('#specs').getByRole('link', { name: testDriveCopy.locked })).toBeVisible()
+    await toEnd(page)
     await settled(page, 4)
     await expectNoAxeViolations(page)
   })

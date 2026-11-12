@@ -22,8 +22,40 @@ export const driveCopy = {
 
   hud: {
     title: 'BEAT THE MESSENGER',
+    /** "ATTEMPT 3" */
+    attempt: (n: number) => `ATTEMPT ${n}`,
     messenger: 'MESSENGER',
+    best: 'YOUR BEST',
     delta: 'Δ MESSENGER',
+    track: 'PROVING GROUND',
+    grid: 'ON THE GRID',
+    /** "42% · CHASING" / "LEADING" */
+    progress: (pct: number, ahead: boolean) => `${pct}% · ${ahead ? 'LEADING' : 'CHASING'}`,
+    you: 'YOU',
+    theMessenger: 'THE MESSENGER',
+    startFinish: 'S/F',
+    overtakeReady: 'WITHIN 1 S · OVERTAKE READY',
+    live: 'LIVE',
+    sectors: ['S1', 'S2', 'S3'],
+    kmh: 'KM/H',
+    rpm: 'RPM',
+    throttle: 'THR',
+    brake: 'BRK',
+    ers: 'ERS',
+    straight: 'STRAIGHT',
+    corner: 'CORNER',
+    overtake: 'OVERTAKE',
+    boost: 'BOOST',
+    /** new: names of the HUD's parts for screen readers (from the prototype's labels) */
+    labels: {
+      timing: 'Lap timing',
+      clock: 'Current lap time',
+      sectorTimes: 'Sector times against the messenger',
+      map: 'Track map',
+      mapImage: 'Track map with your car and the messenger',
+      dash: 'Speed, gear, energy and aero',
+      speed: (kmh: number, gear: string) => `${kmh} kilometres per hour, gear ${gear}`,
+    },
   },
 
   keys: [

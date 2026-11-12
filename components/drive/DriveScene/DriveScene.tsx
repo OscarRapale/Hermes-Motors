@@ -121,9 +121,13 @@ type RigProps = {
   /** Bumped on restart: the camera snaps instead of easing across the circuit */
   snap: RefObject<number>
   onReady: () => void
+  /** The HUD's tag over the messenger: placed here each frame, above his car on screen */
+  ghostTag: RefObject<HTMLElement | null>
 }
 
-function Rig({ frame, onFrame, reducedMotion, snap, onReady }: RigProps) {
+const TAG_HEIGHT = 1.2 // metres: just over the messenger's car (the camera is at 1.55, so higher would sit on the horizon)
+
+function Rig({ frame, onFrame, reducedMotion, snap, onReady, ghostTag }: RigProps) {
   const car = useRef<THREE.Group>(null)
   const messenger = useRef<THREE.Group>(null)
   const speed = useRef(0)
@@ -131,9 +135,9 @@ function Rig({ frame, onFrame, reducedMotion, snap, onReady }: RigProps) {
   const lastSnap = useRef(-1)
   const ready = useRef(false)
   const shadow = useMemo(() => sceneColours().shadow, [])
-  const v = useMemo(() => ({ fwd: new THREE.Vector3(), want: new THREE.Vector3(), look: new THREE.Vector3() }), [])
+  const v = useMemo(() => ({ fwd: new THREE.Vector3(), want: new THREE.Vector3(), look: new THREE.Vector3(), tag: new THREE.Vector3() }), [])
 
-  useFrame(({ camera }, dt) => {
+  useFrame(({ camera, size }, dt) => {
     onFrame(dt)
     const f = frame.current
     if (!f) return
@@ -158,6 +162,22 @@ function Rig({ frame, onFrame, reducedMotion, snap, onReady }: RigProps) {
     } else camera.position.lerp(v.want, 1 - Math.exp(-dt * CHASE.follow))
     v.look.set(p.x, CHASE.lookUp, p.z).addScaledVector(v.fwd, CHASE.lookAhead)
     camera.lookAt(v.look)
+    camera.updateMatrixWorld()
+    // the messenger's tag: on screen above his car, hidden when he's behind the camera or off screen
+    const tag = ghostTag.current
+    if (tag) {
+      let show = false
+      if (f.ghost) {
+        v.tag.set(f.ghost.x, TAG_HEIGHT, f.ghost.z).project(camera)
+        show = v.tag.z < 1 && Math.abs(v.tag.x) < 1.1 && Math.abs(v.tag.y) < 1.1
+        if (show) {
+          const x = ((v.tag.x + 1) / 2) * size.width
+          const y = ((1 - v.tag.y) / 2) * size.height
+          tag.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`
+        }
+      }
+      tag.toggleAttribute('data-show', show)
+    }
     if (!ready.current) {
       ready.current = true
       requestAnimationFrame(onReady)
