@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M4 PR 1, share link + cards. **Next:** PR 2, finish screens (boards 14, 17), `/drive/r`, sharing.
+**Now:** M4 done (PR 2, finish screens). **Next:** M5, pages (plan first).
 ## Milestones
 
 ### M0 Foundation
@@ -30,8 +30,8 @@
 - [x] HUD, lights, sectors, delta, map; desktop keys; phone controls; rotate; pause; no-WebGL state
 
 ### M4 Finish and share
-- [ ] Finish screens (14, 17); `/drive/r` + validation; `/api/card` link + story
-- [ ] Web Share / download / copy link (best lap + attempts in localStorage: done in M3, PR #20)
+- [x] Finish screens (14, 17); `/drive/r` + validation; `/api/card` link + story
+- [x] Web Share / download / copy link
 
 ### M5 Pages
 - [ ] Drivers (3D helmets: stills first, then live `DriverHelmet`), News (+ MDX article), Team, Season, Partners, Store
@@ -70,7 +70,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-13 · Share link + cards (M4 PR 1): `lib/game/share.ts` codec; `/api/card` link 1200 × 630 + story 1080 × 1920 (OFL fonts in `assets/fonts`), immutable, else 404.
+- 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15; lights wait for landscape, upright pauses), compact HUD (board 16) on touch screens and small windows, thumb pads (both thumbs, slide to steer), BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
 - 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, stage, scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device.

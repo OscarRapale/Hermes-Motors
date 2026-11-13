@@ -166,14 +166,69 @@ export const driveCopy = {
     exit: 'Exit',
   },
 
+  /** The finish (boards 14, 17) and /drive/r. Strings marked "new" aren't in copy.md yet */
   finish: {
     complete: 'LAP COMPLETE',
     won: ['YOU BEAT THE', 'MESSENGER.'],
     lost: ['THE MESSENGER', 'HOLDS ON.'],
+    bar: 'TEST DRIVE · BEAT THE MESSENGER',
+    exit: 'EXIT',
+    /** "FLYING LAP · ATTEMPT 4 · PROVING GROUND" (the phone drops the last part) */
+    kicker: (attempt: number) => `FLYING LAP · ATTEMPT ${attempt} · PROVING GROUND`,
+    kickerShort: (attempt: number) => `FLYING LAP · ATTEMPT ${attempt}`,
     you: 'YOU',
     messenger: 'MESSENGER',
+    gap: 'GAP',
+    lap: 'LAP',
+    sectors: ['S1', 'S2', 'S3'],
+    /** new: the timing table, for screen readers */
+    table: 'Your lap against the messenger, sector by sector',
+    driver: 'Driver',
+    /** "YOU 1:11.692 · MESSENGER 1:11.906" */
+    times: (you: string, his: string) => `YOU ${you} · MESSENGER ${his}`,
+    /** Decision D30: the summary with figures, not words ("four tenths") */
+    summary: {
+      times: (you: string, his: string) => `Your lap: ${you}. The test driver's: ${his}.`,
+      lost: (s: string, where: string) => `You lost ${s} s in ${where}`,
+      gained: (s: string, where: string) => `gained ${s} s in ${where}`,
+      gainedOnly: (s: string, where: string) => `You gained ${s} s in ${where}`,
+      level: 'You matched him sector for sector',
+      /** "sector 1" / "sectors 2 and 3" / "sectors 1, 2 and 3" */
+      where: (n: number[]) =>
+        n.length === 1 ? `sector ${n[0]}` : `sectors ${n.slice(0, -1).join(', ')} and ${n[n.length - 1]}`,
+      penalty: (s: number) => `It includes the ${s} s jump-start penalty.`,
+    },
+    /** new: what a screen reader hears at the finish (rules/game.md) */
+    live: {
+      lap: (lap: string, gap: string, faster: boolean) =>
+        `Lap complete. ${lap}, ${gap} seconds ${faster ? 'faster' : 'slower'} than the messenger.`,
+      sector: (n: number, gap: string, faster: boolean) => `Sector ${n} ${faster ? 'faster' : 'slower'} by ${gap}.`,
+    },
+    /** Buttons: won "Share your card" + "Run it back"; lost "Run it back" + "Share" (copy.md) */
     runItBack: 'Run it back',
-    /** new: the jump-start penalty on the result (Decision D9) */
-    jumpStart: 'Jump start · +5 s',
+    shareWon: 'Share your card',
+    share: 'Share',
+    /** /drive/r: someone else's lap, so the main button takes you to the drive */
+    beatHim: 'Beat the messenger',
+    /** changed (Oscar, 2026-11-13): never a word about sign-up or databases */
+    note: 'Your time lives on the card.',
+    yourCard: 'YOUR CARD',
+    theCard: 'THE CARD',
+    linkChip: 'LINK · 1200 × 630',
+    storyChip: 'STORY · 1080 × 1920',
+    /** board 14, adjusted: the link opens the result; it doesn't replay the lap */
+    cardHint: "Share opens your phone's share sheet with the story card attached. On a computer it saves both cards and copies the link to your result.",
+    /** new: the card previews' alt text */
+    cardAlt: (format: 'link' | 'story', said: string) => `The ${format === 'link' ? 'link' : 'story'} card: ${said}`,
+    /** new: what sharing says it did */
+    status: {
+      saved: 'Both cards saved. Link copied.',
+      savedNoCopy: 'Both cards saved. Copy your link:',
+      failed: "That didn't work. Try again.",
+    },
+    /** new: the text that goes with a shared card */
+    shareText: (won: boolean, gap: string) =>
+      won ? `I beat the messenger by ${gap} s at the Proving Ground.` : `I chased the messenger to ${gap} s at the Proving Ground.`,
+    file: (format: 'link' | 'story') => `hermes-beat-the-messenger-${format}.png`,
   },
 } as const

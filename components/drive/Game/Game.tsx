@@ -14,10 +14,12 @@ import { countAttempt, recordLap, type DriveRecord } from '@/lib/drive/storage'
 import { circuit } from '@/lib/game/circuit'
 import { advance, startLoop, type Loop } from '@/lib/game/loop'
 import { createRace, lightsLit, type Phase } from '@/lib/game/race'
-import { formatGap, formatLap, gapsToMessenger, type LapResult } from '@/lib/game/timing'
+import { sharedFromResult } from '@/lib/game/share'
+import { formatLap, type LapResult } from '@/lib/game/timing'
 import { T } from '@/lib/game/tuning'
 import { ControlsKeyboard, ControlsList } from '../Controls/Controls'
 import { Hud, type HudHandle } from '../Hud/Hud'
+import { Result } from '../Result/Result'
 import { Rotate } from '../Rotate/Rotate'
 import { TouchControls, type TouchHandle } from '../TouchControls/TouchControls'
 import styles from './Game.module.css'
@@ -242,13 +244,14 @@ export function Game({ preview }: { preview: boolean }) {
     }
   }, [rotate, status, pause])
 
-  // while driving, the stage owns the screen: the header hides (it comes back on pause), no page scroll
+  // while driving, the stage owns the screen: the header hides (it comes back on pause), no page scroll.
+  // The finish (board 14) has its own bar, so the header stays away then too
   useEffect(() => {
     if (status === 'checking' || status === 'nowebgl') return
     const html = document.documentElement
     window.scrollTo(0, 0)
     // the rotate screen has its own home link and close button: the header stays away
-    html.dataset.drive = (paused || ui.result) && !rotate ? 'paused' : 'on'
+    html.dataset.drive = paused && !rotate && !ui.result ? 'paused' : 'on'
     return () => {
       delete html.dataset.drive
     }
@@ -288,11 +291,10 @@ export function Game({ preview }: { preview: boolean }) {
   }
 
   const result = ui.result
-  const gaps = result ? gapsToMessenger(result) : null
 
   return (
     <>
-      <div className={styles.stage} data-status={status} data-phase={ui.phase} data-compact={compact ? '' : undefined} inert={rotate}>
+      <div className={styles.stage} data-status={status} data-phase={ui.phase} data-compact={compact ? '' : undefined} inert={rotate && !result}>
         <div className={styles.sky} aria-hidden="true" />
         {status !== 'checking' && (
           <DriveScene
@@ -401,33 +403,10 @@ export function Game({ preview }: { preview: boolean }) {
           </div>
         </dialog>
 
-        {result && gaps && (
-          <section className={`${styles.panel} ${styles.finish}`} aria-labelledby="drive-finish" aria-live="polite">
-            <p className={`label ${styles.title}`}>{driveCopy.finish.complete}</p>
-            <h2 id="drive-finish" className={`display ${styles.finishTitle}`}>
-              {(gaps.lapMs < 0 ? driveCopy.finish.won : driveCopy.finish.lost).map((line) => (
-                <span key={line}>{line}</span>
-              ))}
-            </h2>
-            <p className={`tnum ${styles.finishGap}`} data-ahead={gaps.lapMs < 0 ? '' : undefined}>
-              {formatGap(gaps.lapMs)} S
-            </p>
-            <p className={`label tnum ${styles.row}`}>
-              {driveCopy.finish.you} {formatLap(result.totalMs)} · {driveCopy.finish.messenger} {formatLap(messenger.lapMs)}
-            </p>
-            {result.penaltyMs > 0 && <p className={`label ${styles.row}`}>{driveCopy.finish.jumpStart}</p>}
-            <div className={styles.actions}>
-              <button ref={runItBack} type="button" className={styles.primary} onClick={restart}>
-                {driveCopy.finish.runItBack}
-              </button>
-              <Link href="/" className={styles.secondary}>
-                {driveCopy.pause.exit}
-              </Link>
-            </div>
-          </section>
-        )}
+        {result && <Result lap={sharedFromResult(result, record.attempts)} mode="finish" onRunItBack={restart} firstRef={runItBack} />}
       </div>
-      {rotate && status !== "checking" && <Rotate />}
+      {/* after the finish the rotate screen stays away: the result works either way up */}
+      {rotate && !result && status !== 'checking' && <Rotate />}
     </>
   )
 }

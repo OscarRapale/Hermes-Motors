@@ -23,28 +23,11 @@
     linear-gradient(var(--drive-sky-top), var(--drive-horizon) var(--drive-horizon-y), var(--drive-horizon));
 }
 
-.panel {
-  position: absolute;
-  border-radius: var(--radius-glass);
-  background: var(--hud-glass-bg);
-  -webkit-backdrop-filter: var(--hud-glass-blur);
-  backdrop-filter: var(--hud-glass-blur);
-  border: 1px solid var(--hud-glass-border);
-  box-shadow: var(--hud-glass-shadow);
-}
-
 .title {
   font-family: var(--font-mono);
   font-size: var(--fs-hud-small);
   color: var(--red-on-dark);
   letter-spacing: var(--tracking-hud-wide);
-}
-
-.row {
-  font-family: var(--font-mono);
-  font-size: var(--fs-small);
-  color: var(--hud-k);
-  letter-spacing: var(--tracking-hud-chip);
 }
 
 /* Centred between the map and the dashboard, as on the board (x ≈ 678 at 1440) */
@@ -211,7 +194,7 @@
 }
 
 /* Board 16's compact layout (lib/drive/media.ts COMPACT_QUERY): the pause button beside the map, smaller
-   lamps under the dash pill, the banner and the lap's end sized for 844 × 390 */
+   lamps under the dash pill, the banner sized for 844 × 390 */
 @media (max-width: 999.98px), (max-height: 499.98px), (hover: none) and (pointer: coarse) {
   .pauseButton {
     top: var(--hudc-inset);
@@ -244,25 +227,6 @@
     bottom: max(var(--space-3), env(safe-area-inset-bottom));
     font-size: var(--fs-hud-chip);
     padding: var(--space-1) var(--space-3);
-  }
-
-  .finish {
-    top: var(--hudc-finish-top);
-    transform: translateX(-50%);
-    max-height: calc(100% - var(--hudc-finish-top) - var(--space-3));
-    overflow-y: auto;
-    gap: var(--space-2-5);
-    padding: var(--space-4) var(--space-5);
-    text-align: center;
-    align-items: center;
-  }
-
-  .finishTitle {
-    font-size: var(--fs-body);
-  }
-
-  .finishGap {
-    font-size: var(--fs-hudc-clock);
   }
 }
 
@@ -353,29 +317,3 @@
   color: var(--white);
 }
 
-/* The lap's end, until the finish screens (boards 14, 17) arrive in M4 */
-.finish {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-8);
-}
-
-.finishTitle {
-  display: flex;
-  flex-direction: column;
-  font-size: var(--fs-card-title);
-}
-
-.finishGap {
-  font-family: var(--font-mono);
-  font-size: var(--fs-drive-clock);
-  color: var(--red-on-dark);
-}
-
-.finishGap[data-ahead] {
-  color: var(--timing-green);
-}

@@ -1,14 +1,14 @@
 // The share cards (board 14's previews, board 17's story), drawn by next/og from a validated lap only:
 // every word is fixed copy or a number formatted here, never text from the query string.
 
-import { messenger } from '@/content/facts'
 import { driveCopy } from '@/content/copy/drive'
 import { footerCopy, WORDMARK } from '@/content/copy/shared'
 import { MAP_PATH } from '@/lib/drive/hud'
-import { resultFromShared, type SharedLap } from '@/lib/game/share'
-import { formatLap, gapsToMessenger } from '@/lib/game/timing'
-import { T } from '@/lib/game/tuning'
+import type { SharedLap } from '@/lib/game/share'
 import type { Palette } from './palette'
+import { cardText } from './text'
+
+export { cardText }
 
 const copy = driveCopy.card
 export const CARD_SIZE = { link: { width: 1200, height: 630 }, story: { width: 1080, height: 1920 } } as const
@@ -20,21 +20,6 @@ const MONO = 'GeistMono'
 // the winged H (components/site/Mark), in the card's own colours
 const H = 'M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z'
 const FEATHERS = 'M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z'
-
-/** What a card says, from the lap */
-export function cardText(s: SharedLap) {
-  const r = resultFromShared(s)
-  const gap = gapsToMessenger(r).lapMs
-  const won = gap < 0
-  return {
-    won,
-    headline: won ? copy.won : copy.lost,
-    gap: (Math.abs(gap) / 1000).toFixed(3),
-    you: copy.you(formatLap(r.totalMs)),
-    messenger: copy.messenger(formatLap(messenger.lapMs)),
-    jumpStart: s.jumpStart ? copy.jumpStart(T.jumpPenaltyS) : null,
-  }
-}
 
 const background = (P: Palette) => ({
   backgroundColor: P.carbon,
