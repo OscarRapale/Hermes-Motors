@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M4 done; jump-start warning (D9). **Next:** M5, pages (plan first).
+**Now:** M5 PR 1 (page template, 404, Credits, Privacy). **Next:** PR 2, Team + Season.
 ## Milestones
 
 ### M0 Foundation
@@ -59,8 +59,8 @@ Placeholders are in the code until he answers. Never present them as final.
 | D9 | Jump start | **Decided 2026-11-13:** +5 s, said at once (red lights caption), explained before the start | |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
-| D12–14 | Token gaps; Preview/Play labels flip (no `aria-pressed`); header 900–1199 px mark only, 44 px pills | as flagged | PRs #3–#5 |
-| D15–18 | JS, hero stills, countdown, LCP | **Decided:** first-party JS < 40 KB gz; `<picture>` + head preload; "96 DAYS" over 100 h; LCP with real throttling | PRs #8–#12 |
+| D12–14 | Token gaps; Preview/Play labels flip; header 900–1199 px mark only | as flagged | PRs #3–#5 |
+| D15–18 | JS, hero stills, countdown, LCP | **Decided:** JS < 40 KB gz first-party; `<picture>` + preload; "96 DAYS"; LCP throttled | PRs #8–#12 |
 | D19–23 | Specs | **Decided:** sealed at night; night frames; ch 5 night headline; JS on `/` < 206 KB gz; no effects in the specs scene | PRs #13–#14, ARCH §6, §10 |
 | D24–25 | Specs text that scrolls | **Decided:** on phones and screens under 830 px tall the text scrolls under/beside the pinned car | PRs #15–#16 |
 | D26–27 | Start; three.js before scroll | **Decided:** grid 65 m behind the line, lap and ghost start at it, car on the centre line until then; specs load their car only after the first scroll | `gridBehindM`; ARCH §10, rules/three.md |
@@ -70,8 +70,9 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
+- 2026-11-13 · M5 PR 1: `PageHero` (board 27) and `Doc`; `/credits`, `/privacy` (no sign-up line), 404; day `--dim-page` 50% (42% failed 3:1); unit guard: no sign-up/database in `content/`.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
-- 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15; lights wait for landscape, upright pauses), compact HUD (board 16) on touch screens and small windows, thumb pads (both thumbs, slide to steer), BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
+- 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15), compact HUD (board 16), thumb pads, BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
 - 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, stage, scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device.
 - 2026-11-11 · Circuit + physics (PRs #17–#18): circuit (3,119 m), ghost, kerbs; arcade car, fixed step, input logs; three reference laps replayed in CI.

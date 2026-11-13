@@ -18,6 +18,16 @@ export const seo = {
     title: 'Beat the messenger · Hermes Motors',
     description: "One flying lap of the Proving Ground against the test driver's ghost. His time is 1:11.906.",
   },
+  // new: no rows in seo.md for these
+  credits: {
+    title: 'Credits · Hermes Motors',
+    description: 'Who made what you see here: the 3D models, the typefaces and the public sources behind the facts.',
+  },
+  privacy: {
+    title: 'Privacy · Hermes Motors',
+    description: 'No accounts, no cookies, no analytics. What this site keeps, and where.',
+  },
+  notFound: { title: 'Off the racing line · Hermes Motors', description: 'This page isn’t on the Proving Ground.' },
 } satisfies Record<string, RouteSeo>
 
 /** /drive/r (seo.md: "I beat the messenger by 0.214 s · Hermes Motors"; the description is built from the result) */

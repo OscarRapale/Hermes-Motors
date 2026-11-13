@@ -1,0 +1,49 @@
+/* Board 27: eyebrow, a 56 px headline in three lines (the middle one dimmed), the intro on the right */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--page-intro-w));
+  align-items: end;
+  gap: var(--space-8);
+  padding: var(--page-hero-top) var(--space-section-x) var(--space-10);
+}
+
+.eyebrow {
+  color: var(--accent-text);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.h1 {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-5);
+  font-size: var(--fs-page-h1);
+  line-height: var(--lh-page-h1);
+  color: var(--ink);
+}
+
+.h1 > span:nth-child(2) {
+  color: var(--dim-page);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  padding-bottom: var(--space-2);
+}
+
+.intro {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--muted);
+}
+
+@media (max-width: 899.98px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-top: var(--page-hero-top-s);
+  }
+}
