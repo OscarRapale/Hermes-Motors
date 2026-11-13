@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M4 done (PR 2, finish screens). **Next:** M5, pages (plan first).
+**Now:** M4 done; jump-start warning (D9). **Next:** M5, pages (plan first).
 ## Milestones
 
 ### M0 Foundation
@@ -56,7 +56,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D6 | Analytics | none | Option: Vercel Web Analytics (cookieless) |
 | D7 | Store | Lookbook, no cart | |
 | D8 | Press office / partners contact | buttons, no target | mailto address or a form |
-| D9 | Jump start | +5 s penalty | proposal |
+| D9 | Jump start | **Decided 2026-11-13:** +5 s, said at once (red lights caption), explained before the start | |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
 | D12–14 | Token gaps; Preview/Play labels flip (no `aria-pressed`); header 900–1199 px mark only, 44 px pills | as flagged | PRs #3–#5 |
@@ -74,7 +74,7 @@ Placeholders are in the code until he answers. Never present them as final.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15; lights wait for landscape, upright pauses), compact HUD (board 16) on touch screens and small windows, thumb pads (both thumbs, slide to steer), BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
 - 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, stage, scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device.
-- 2026-11-11 · Circuit + physics (PRs #17–#18): `lib/game` circuit (3,119 m; sector lines at his times), ghost, kerbs/run-off; arcade car, race flow, fixed step, input logs; grip × 0.58; three reference laps replayed in CI.
+- 2026-11-11 · Circuit + physics (PRs #17–#18): circuit (3,119 m), ghost, kerbs; arcade car, fixed step, input logs; three reference laps replayed in CI.
 - 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (frame stack + zoom, callouts, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB gz.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell, tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel, car package in `components/hermes`, `npm run assets`, `tools/render`.

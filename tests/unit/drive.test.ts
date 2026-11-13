@@ -134,3 +134,22 @@ describe('the thumb controls (board 16, Decision D29)', () => {
     expect(withTouch(IDLE, pads('brake'), until, 11).boost).toBe(false)
   })
 })
+
+describe('the jump start (Decision D9)', () => {
+  // the lights are on from 1 s; lights out comes after 5 s of lights and a random 0.2–1.0 s
+  const lightsOn = (input: ReturnType<typeof inputFromKeys>) => {
+    let s = createRace(7)
+    while (s.clock < 2) s = step(c, s, IDLE, DT)
+    for (let k = 0; k < 12; k++) s = step(c, s, input, DT)
+    return s
+  }
+
+  it('counts every throttle: W, ↑, Right Shift and the THROTTLE pad', () => {
+    for (const code of ['KeyW', 'ArrowUp', 'ShiftRight']) expect(lightsOn(inputFromKeys(new Set([code]))).jumpStart, code).toBe(true)
+    expect(lightsOn(withTouch(IDLE, new Set<Pad>(['throttle']), 0, 0)).jumpStart).toBe(true)
+  })
+
+  it('leaves the other keys alone (Left Shift is no longer bound)', () => {
+    for (const code of ['ShiftLeft', 'KeyS', 'KeyA', 'KeyE', 'Space']) expect(lightsOn(inputFromKeys(new Set([code]))).jumpStart, code).toBe(false)
+  })
+})
