@@ -69,6 +69,26 @@
   --hudc-lamp: 30px;
   --hudc-lights-top: 82px;
   --hudc-finish-top: 96px; /* the lap result, under the dash pill (prototype) */
+  /* the finish (boards 14, 17) and /drive/r: always dark */
+  --finish-scrim: linear-gradient(180deg, rgba(22, 23, 27, 0.78) 0%, rgba(14, 15, 17, 0.9) 100%);
+  --finish-blur: blur(14px);
+  --finish-still: 0.5;
+  --finish-dim: rgba(255, 255, 255, 0.42);
+  --finish-text-w: 600px;
+  --finish-cards-w: 640px;
+  --finish-summary-w: 540px;
+  --fs-finish-h: clamp(36px, 3.7vw, 56px); /* "THE MESSENGER" on one line beside the cards */
+  --fs-finish-gap: 104px;
+  --fs-finish-gap-s: 64px;
+  --fs-finish-h-s: 26px;
+  --fs-finish-h-xs: 20px;
+  --fs-finish-gap-xs: 44px;
+  --finish-unit: 0.28em;
+  --tracking-number: -0.02em;
+  --finish-story-w: 144px;
+  --finish-story-w-l: 180px;
+  --finish-button: 56px;
+  --finish-primary-shadow: 0 14px 30px -14px rgba(213, 18, 30, 0.9);
   /* the share cards (/api/card draws them with lib/card/palette.ts, which mirrors these) */
   --card-top: #23252b;
   --card-grid: rgba(255, 255, 255, 0.045);
@@ -231,6 +251,7 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-14: 56px;
+  --space-16: 64px;
 
   --tap: 44px; /* minimum touch target */
   --chip-height-s: 24px; /* small status chips (not a control) */

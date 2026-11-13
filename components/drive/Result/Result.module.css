@@ -1,0 +1,503 @@
+/* Boards 14 (desktop, 1440 × 900) and 17 (phone, 390 × 844): always dark, like the stage. A phone held
+   sideways (short screens) gets board 17's content in two columns. */
+
+.result {
+  color: var(--white);
+}
+
+/* the end of your lap: over the blurred scene, scrolling on its own */
+.result[data-mode='finish'] {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  padding: var(--space-10) var(--space-16) var(--space-12);
+  background: var(--finish-scrim);
+  -webkit-backdrop-filter: var(--finish-blur);
+  backdrop-filter: var(--finish-blur);
+}
+
+/* /drive/r: a dark panel in the page, the drive still blurred behind */
+.result[data-mode='shared'] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--space-14) var(--space-section-x);
+  border-radius: var(--radius-card-l);
+  background: var(--finish-scrim), var(--carbon);
+}
+
+.result[data-mode='shared']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/images/drive.webp') center / cover no-repeat;
+  filter: var(--finish-blur);
+  transform: scale(1.08);
+  opacity: var(--finish-still);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  margin-bottom: var(--space-12);
+}
+
+.barLabel {
+  color: var(--hud-live-ink);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.exit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2-5);
+  min-height: var(--tap);
+  margin-left: auto;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--panel-dark-border);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label-wide);
+  text-decoration: none;
+}
+
+.exit svg {
+  width: var(--icon-s);
+  height: var(--icon-s);
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, var(--finish-text-w)) minmax(0, var(--finish-cards-w));
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.kicker {
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.short {
+  display: none;
+}
+
+.h {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-finish-h);
+  line-height: var(--lh-page-h1);
+}
+
+/* the copy's line breaks hold (voice.md) */
+.h > span {
+  white-space: nowrap;
+}
+
+.h > span:last-child {
+  color: var(--finish-dim);
+}
+
+.gap {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--fs-finish-gap);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: var(--tracking-number);
+}
+
+.gap[data-state='ahead'] {
+  color: var(--timing-green);
+}
+
+.gap[data-state='behind'] {
+  color: var(--red-on-dark);
+}
+
+.unit {
+  margin-left: var(--space-2);
+  font-size: var(--finish-unit);
+  color: var(--hud-live-ink);
+}
+
+.summary {
+  max-width: var(--finish-summary-w);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-3-dark);
+}
+
+.times {
+  display: none;
+  color: var(--hud-live-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.penalty {
+  color: var(--red-on-dark);
+}
+
+/* the timing table (board 14) */
+.table {
+  width: 100%;
+  margin-top: var(--space-2);
+  border-collapse: separate;
+  border-spacing: 0;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-glass);
+  background: var(--hud-glass-bg);
+  border: 1px solid var(--hud-glass-border);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) 0;
+  text-align: right;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-regular);
+}
+
+.table thead th,
+.table tbody th {
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--hud-k);
+}
+
+.table tbody th {
+  text-align: left;
+}
+
+.table tbody tr > * {
+  border-top: 1px solid var(--hud-track);
+}
+
+.table [data-state='faster'] {
+  color: var(--timing-purple);
+}
+
+.table [data-state='slower'] {
+  color: var(--timing-yellow);
+}
+
+.table [data-state='ahead'] {
+  color: var(--timing-green);
+}
+
+.table [data-state='behind'] {
+  color: var(--red-on-dark);
+}
+
+/* board 17's sector chips */
+.chips {
+  display: none;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--hud-k);
+}
+
+.chips li {
+  padding: var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--panel-dark-border);
+}
+
+.chips [data-state='faster'] {
+  color: var(--timing-purple);
+}
+
+.chips [data-state='slower'] {
+  color: var(--timing-yellow);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: var(--finish-button);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primary {
+  background: var(--redline);
+  border: 0;
+  color: var(--white);
+  box-shadow: var(--finish-primary-shadow);
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--panel-dark-border);
+  color: var(--white);
+}
+
+.primary[disabled],
+.secondary[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.icon {
+  width: var(--icon-m);
+  height: var(--icon-m);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.status {
+  min-height: 1lh;
+  font-size: var(--fs-small);
+  color: var(--hud-live-ink);
+}
+
+.status:empty {
+  min-height: 0;
+}
+
+.link {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-tile);
+  border: 1px solid var(--panel-dark-border);
+  background: var(--hud-keycap-bg);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}
+
+.note {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-hud-chip);
+  color: var(--hud-muted);
+}
+
+/* your card: the link and story previews (board 14) */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cardsTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.cardsLabel {
+  color: var(--hud-live-ink);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.chipRow {
+  display: flex;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label-tight);
+}
+
+.chipRow span {
+  padding: var(--space-1-5) var(--space-2-5);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--panel-dark-border);
+  color: var(--hud-k);
+}
+
+.chipRow span:first-child {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--carbon);
+}
+
+.previews {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.linkCard,
+.storyCard {
+  display: block;
+  height: auto;
+  border-radius: var(--radius-tile);
+  border: 1px solid var(--panel-dark-border);
+  background: var(--carbon);
+}
+
+.linkCard {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.storyCard {
+  flex: none;
+  width: var(--finish-story-w);
+}
+
+.hint {
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--ink-3-dark);
+}
+
+/* between a laptop and a phone: one column */
+@media (max-width: 1099.98px) {
+  .body {
+    grid-template-columns: minmax(0, var(--finish-cards-w));
+    justify-content: start;
+  }
+}
+
+/* board 17: phones, and anything short (a phone held sideways) */
+@media (max-width: 699.98px), (max-height: 599.98px) {
+  .result[data-mode='finish'] {
+    padding: max(var(--space-4), env(safe-area-inset-top)) max(var(--space-5), env(safe-area-inset-right))
+      max(var(--space-6), env(safe-area-inset-bottom)) max(var(--space-5), env(safe-area-inset-left));
+  }
+
+  .result[data-mode='shared'] {
+    padding: var(--space-8) var(--space-5);
+  }
+
+  .bar {
+    margin-bottom: var(--space-5);
+  }
+
+  .barLabel,
+  .exitText,
+  .long,
+  .summary,
+  .table,
+  .linkCard,
+  .cardsTop,
+  .hint {
+    display: none;
+  }
+
+  .exit {
+    width: var(--tap);
+    padding: 0;
+    justify-content: center;
+  }
+
+  .short {
+    display: inline;
+  }
+
+  .times {
+    display: block;
+  }
+
+  .chips {
+    display: flex;
+  }
+
+  .h {
+    font-size: var(--fs-finish-h-s);
+  }
+
+  .gap {
+    font-size: var(--fs-finish-gap-s);
+  }
+
+  .text {
+    gap: var(--space-3);
+  }
+
+  .actions {
+    align-self: stretch;
+  }
+
+  .actions > * {
+    flex: 1 1 auto;
+    padding: 0 var(--space-5);
+  }
+
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .previews {
+    justify-content: center;
+  }
+
+  .storyCard {
+    width: var(--finish-story-w-l);
+  }
+}
+
+/* a phone held sideways: text and buttons left, the story card right */
+@media (max-height: 599.98px) and (orientation: landscape) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .storyCard {
+    width: var(--finish-story-w);
+  }
+
+  /* 390 px tall: the buttons stay in view */
+  .h {
+    font-size: var(--fs-finish-h-xs);
+  }
+
+  .gap {
+    font-size: var(--fs-finish-gap-xs);
+  }
+
+  .text {
+    gap: var(--space-2);
+  }
+
+  .actions {
+    margin-top: var(--space-1);
+  }
+}

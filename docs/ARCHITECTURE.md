@@ -159,7 +159,8 @@ Grid → five lights (1 s apart) → lights out after random 0.2–1.0 s → liv
 - Share link: `/drive/r?lap=<ms>&s=<s1>.<s2>.<s3>&a=<attempt>[&j=1]`. Validate: integers, lap 60,000–180,000 ms, |Σs − lap| ≤ 3 ms, attempt 1–999, each key once. Invalid → 404. After a jump start, `j=1`: `lap` stays the lap as driven (its sectors add up to it) and the 5 s penalty is added to what counts (Decision D30). Codec: `lib/game/share.ts`.
 - Cards (`/api/card`, Node runtime): drawn from the validated numbers only, with Michroma and Geist Mono TTFs from `assets/fonts/`, the car from `assets/card/card-car.png` (`npm run assets`), and colours read from `styles/tokens.css`. Both carry the car credit and the fictional-team line. Cached `immutable`.
 - `/drive/r` renders the result (no game) with `generateMetadata` pointing OG/Twitter images to `/api/card?…&format=link`.
-- "Share your card": Web Share API with the story PNG (`format=story`) when `navigator.canShare({ files })`, otherwise download + copy link.
+- "Share your card": Web Share API with the story PNG (`format=story`) when `navigator.canShare({ files })`, otherwise download + copy link. As built (M4): the share sheet on touch screens only (desktop Chrome has one too, but board 14 says a computer saves both cards and copies the link); `lib/drive/shareCard.ts`.
+- As built (M4): `/drive/r` streams, so it can't set its status late; `proxy.ts` (matcher `/drive/r`) rewrites a link that doesn't parse to a path with no page, a real 404. Its metadata: the result's title (seo.md), the link card as OG/Twitter image, `noindex, follow` (every lap is its own URL).
 - Best lap and attempts in `localStorage` (`hermes.drive.v1`).
 - No leaderboard: a URL can be edited, and that's fine — the card is a brag, not a record.
 
