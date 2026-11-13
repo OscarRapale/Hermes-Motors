@@ -202,6 +202,10 @@
   --lh-body: 1.6;
   --fs-article: 18px;
   --lh-article: 1.65;
+  --article-w: 680px; /* the article and document column (ARCHITECTURE §8) */
+  --page-hero-top: 80px; /* board 27: the eyebrow sits 80 px under the header */
+  --page-hero-top-s: 40px;
+  --page-intro-w: 460px;
   --fs-small: 14px;
   --fs-button: 15px;
   --fs-label: 11px;
@@ -609,6 +613,7 @@
   --body: var(--ink-2-dark);
   --dim: rgba(244, 244, 245, 0.42);
   --dim-specs-scroll: var(--dim);
+  --dim-page: var(--dim); /* page headlines (board 27) */
   --rule: rgba(255, 255, 255, 0.1);
   --accent-text: var(--red-on-dark);
 
@@ -670,6 +675,8 @@
   --dim: rgba(14, 15, 17, 0.42);
   /* where the specs text scrolls (phones, short screens), it passes the gradient's darker edge, where 0.42 is 2.7:1 (axe); 3.4:1 */
   --dim-specs-scroll: rgba(14, 15, 17, 0.5);
+  /* 42% fails 3:1 on the page card's grey (2.7:1); 50% passes (3.4:1) */
+  --dim-page: rgba(14, 15, 17, 0.5);
   --rule: rgba(14, 15, 17, 0.1);
   --accent-text: var(--red-on-light);
 
