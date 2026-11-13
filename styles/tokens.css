@@ -48,6 +48,36 @@
   --drive-lights-top: 92px; /* under the delta pill */
   --drive-lamp: 44px;
   --drive-keycap: 24px;
+  /* the compact HUD (board 16, 844 × 390) */
+  --hudc-inset: 12px;
+  --hudc-timing-width: 224px;
+  --fs-hudc-clock: 24px;
+  --fs-hudc-top: 8px; /* "BEAT THE MESSENGER · ATTEMPT 3" on one line */
+  --hudc-led-w: 9px;
+  --hudc-led-h: 3px;
+  --hudc-ers-width: 34px;
+  --fs-hudc-speed: 24px;
+  --hudc-speed-width: 44px;
+  --hudc-gear: 26px;
+  --fs-hudc-gear: 14px;
+  --fs-hudc-delta: 15px;
+  --hudc-delta-width: 56px;
+  --hudc-map-width: 112px;
+  --hudc-fx-top: 84px;
+  --hudc-fx-height: 30px;
+  --hudc-fx-shadow: 0 10px 24px -10px var(--redline);
+  --hudc-lamp: 30px;
+  --hudc-lights-top: 82px;
+  --hudc-finish-top: 96px; /* the lap result, under the dash pill (prototype) */
+  /* the rotate screen (board 15) */
+  --drive-rotate-scrim: linear-gradient(180deg, rgba(40, 41, 46, 0.9) 0%, rgba(14, 15, 17, 0.96) 100%);
+  --drive-rotate-blur: 18px;
+  --drive-rotate-still: 0.4;
+  --fs-drive-rotate-h1: 32px;
+  --drive-rotate-phone: 64px;
+  --drive-rotate-step: 22px;
+  --drive-rotate-status: 56px;
+  --dur-rotate-hint: 2.8s;
   --drive-controls-width: 760px; /* the controls sheet before the first start */
   --drive-keyboard-legend: 12px; /* key legends, in the keyboard drawing's units (a key is 40) */
   --radius-swatch: 3px;
@@ -169,6 +199,7 @@
 
   --space-section-x: 60px; /* text side padding */
   --space-card-inset: 28px;
+  --space-0-5: 2px;
   --space-1: 4px;
   --space-1-5: 6px;
   --space-2: 8px;

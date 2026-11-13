@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M3, PR #22 (handling, controls, D28). **Next:** PR 5, phones (boards 15, 16).
+**Now:** M3 PR 5a, phone layout (boards 15, 16). **Next:** PR 5b, thumb controls + haptics.
 ## Milestones
 
 ### M0 Foundation
@@ -48,7 +48,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 | # | Decision | Placeholder | Notes |
 | --- | --- | --- | --- |
-| D1 | Day One date | Sun 14 Feb 2027 | Opener in Bahrain is 12–14 Mar 2027, so race day = D+28. Feb 14 is Valentine's Day; alternative Fri 12 Feb (D+28 = start of the opener weekend), or the day the portfolio piece goes live |
+| D1 | Day One date | Sun 14 Feb 2027 | Opener in Bahrain is 12–14 Mar 2027, so race day = D+28. Feb 14 is Valentine's Day; alt. Fri 12 Feb (D+28 = opener weekend) or the go-live day |
 | D2 | Proving Ground time zone | America/Puerto_Rico | UTC−4, no daylight saving |
 | D3 | Preview unlocks the drive before Day One | Yes, with a "Preview" banner | Otherwise recruiters can't play until Day One |
 | D4 | Drivers | Lena Brandt #9 (GER), Mateo Ríos #19 (PUR) | Fictional; helmets only, no faces. Numbers are drawn at runtime, but the helmet stills show 9 and 19: re-render them if the numbers change |
@@ -66,14 +66,16 @@ Placeholders are in the code until he answers. Never present them as final.
 | D26 | The start | **Decided 2026-11-11:** grid 65 m behind the line, lap and ghost start at the line; the car holds the centre line until it | his is a flying lap. `tuning.ts` `gridBehindM` |
 | D27 | three.js on `/` before scroll | **Decided 2026-11-12:** the specs load their car one viewport away only after the first scroll (or at once if the page opens on them) | ARCH §10; rules/three.md updated; WebGL e2e guards it |
 | D28 | Test drive difficulty | careful lap just behind him (+0.15), clean racing line −3.5 s; grip ×0.7, friction circle, pedal ramps, brakes 34/22 | after Oscar's playtest (hard to turn under power, harsh brakes); ARCH §7.3. Confirm after driving it |
+| D29 | Phone drive | **Decided 2026-11-13:** compact HUD as board 16, no sector bars; BST tap = 2 s of Boost (again extends, brake cancels) | PR 5a/5b |
 
 ## Log
 
+- 2026-11-13 · Phone layout (PR 5a): rotate screen (board 15; lights wait for landscape, upright mid-lap pauses), compact HUD (board 16) for landscape phones and small windows; WebGL e2e run one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
 - 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, full-screen stage, package scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device; fixed Esc, missed key taps, start-line drift.
 - 2026-11-11 · Circuit + physics (PRs #17–#18): `lib/game` circuit (3,119 m; sector lines at his times), ghost, kerbs/run-off; arcade car, race flow, fixed step, input logs; grip × 0.58; three reference laps replayed in CI.
-- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (hysteresis, frame stack + zoom, anchored callouts, text wipe, count-up, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB; 3D chunk ≈ 292 KB gz on approach.
-- 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. Bugs caught: minifier `450ms` → `.45s` (`parseCssTime`); favicon 404; 404 prefetches (now `BUILT_ROUTES`). `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
-- 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell (header, phone menu, footer, page card), tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel + protected main, car package verbatim in `components/hermes`, `npm run assets`, `tools/render` (sync from `components/hermes`). Details in the PRs.
-- 2026-11-09 · Driver helmets: a CC BY 4.0 helmet (Miopass) repainted in the Hermes livery; `HermesHelmet` and `DriverHelmet` in the car package (v2.2); stills in `vendor/assets/images/drivers`.
+- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (frame stack + zoom, callouts, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB gz.
+- 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
+- 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell, tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel, car package in `components/hermes`, `npm run assets`, `tools/render`.
+- 2026-11-09 · Driver helmets (Miopass, CC BY 4.0, Hermes livery): `HermesHelmet`, `DriverHelmet` (package v2.2); stills in `vendor/assets/images/drivers`.
 - 2026-11-07 · Handoff: design boards 01–30, car package v2, First Light film, docs.

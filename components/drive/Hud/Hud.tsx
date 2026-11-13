@@ -6,6 +6,7 @@ import { driveCopy } from '@/content/copy/drive'
 import { MAP_PATH, type HudView } from '@/lib/drive/hud'
 import { formatLap } from '@/lib/game/timing'
 import styles from './Hud.module.css'
+import c from './HudCompact.module.css'
 
 const hud = driveCopy.hud
 const LEDS = 15
@@ -21,18 +22,23 @@ type Props = {
   bestMs: number | null
   /** The tag over the messenger: the scene places it (projected from his car) */
   tagRef: RefObject<HTMLDivElement | null>
+  /** Board 16's compact HUD: landscape phones and small windows (lib/drive/media.ts) */
+  compact?: boolean
 }
 
 /**
- * Board 13's HUD: lap timing, the delta, the sectors, the track map, and the dashboard (LEDs, throttle and
+ * Board 13's HUD (or board 16's compact one): lap timing, the delta, the sectors, the track map, and the dashboard (LEDs, throttle and
  * brake, the speed dial, gear, ERS, aero mode, Overtake, Boost). Static markup; the game calls
  * `update(view)` a few dozen times a second and only what changed is written to the DOM.
  */
-export function Hud({ ref, attempt, bestMs, tagRef }: Props) {
+export function Hud({ ref, attempt, bestMs, tagRef, compact = false }: Props) {
   const root = useRef<HTMLDivElement>(null)
   const last = useRef<Record<string, string>>({})
+  const lastView = useRef<HudView | null>(null)
 
+  // rebuilt when the layout changes: the new markup gets the last view at once (even while paused)
   useImperativeHandle(ref, () => {
+    last.current = {}
     const q = <E extends Element = HTMLElement>(key: string) => root.current?.querySelector<E>(`[data-f="${key}"]`) ?? null
     const els = {
       clock: q('clock'),
@@ -57,6 +63,7 @@ export function Hud({ ref, attempt, bestMs, tagRef }: Props) {
       aero: q('aero'),
       ot: q('ot'),
       boost: q('boost'),
+      fx: q('fx'),
     }
     // write only when a value changed
     const set = (key: string, value: string, write: () => void) => {
@@ -68,8 +75,9 @@ export function Hud({ ref, attempt, bestMs, tagRef }: Props) {
     const attr = (key: string, el: Element | null, name: string, value: string) => set(key, value, () => el?.setAttribute(name, value))
     const style = (key: string, el: HTMLElement | null, prop: string, value: string) => set(key, value, () => el?.style.setProperty(prop, value))
 
-    return {
+    const handle = {
       update(v: HudView) {
+        lastView.current = v
         text('clock', els.clock, v.clock)
         text('delta', els.delta, v.delta)
         attr('deltaState', els.delta, 'data-state', v.deltaState)
@@ -113,26 +121,108 @@ export function Hud({ ref, attempt, bestMs, tagRef }: Props) {
         text('aeroText', els.aero, v.aero === 'straight' ? hud.straight : hud.corner)
         attr('ot', els.ot, 'data-state', v.overtake)
         attr('boost', els.boost, 'data-state', v.boost ? 'on' : 'off')
+        const fx = v.overtake === 'active' ? hud.fxOvertake : v.boost ? hud.fxBoost : ''
+        text('fx', els.fx, fx)
+        attr('fxShow', els.fx, 'data-show', String(fx !== ''))
       },
     }
-  }, [])
+    if (lastView.current) handle.update(lastView.current)
+    return handle
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the markup changes with `compact`: query it again
+  }, [compact])
+
+  // over the messenger's car: placed by the scene
+  const tag = (
+    <div ref={tagRef} className={styles.tag} aria-hidden="true">
+      <div className={`${styles.glass} ${styles.tagBox}`}>
+        <span className={styles.tagLine}>
+          <i className={styles.tagDot} />
+          {hud.theMessenger}
+          <span data-f="tag" className={styles.signed} />
+        </span>
+        <span data-f="tagOt" data-show="false" className={styles.tagOt}>
+          {hud.overtakeReady}
+        </span>
+      </div>
+      <span className={styles.stem} />
+    </div>
+  )
+  const best = bestMs === null ? '—' : formatLap(bestMs)
+  const leds = Array.from({ length: LEDS }, (_, i) => <i key={i} data-f="led" data-white={i < WHITE_LEDS ? '' : undefined} />)
+
+  if (compact) {
+    return (
+      <div ref={root} className={`${styles.hud} ${c.hud}`}>
+        {tag}
+
+        <section aria-label={hud.labels.timing} className={`${styles.glass} ${c.timing}`}>
+          <div className={c.top}>
+            <span className={styles.title}>{hud.title}</span>
+            <span aria-hidden="true">·</span>
+            <span className={styles.title}>{hud.attempt(attempt)}</span>
+          </div>
+          <div className={c.clockRow}>
+            <div role="timer" aria-label={hud.labels.clock} data-f="clock" className={c.clock}>
+              —
+            </div>
+            <span className={c.best}>
+              <span className={styles.k}>{hud.bestShort}</span> {best}
+            </span>
+          </div>
+          <div className={c.aeroRow}>
+            <span data-f="aero" data-state="corner" className={`${styles.chip} ${c.chip}`}>
+              {hud.corner}
+            </span>
+            <span className={styles.k}>
+              {hud.ers} <span data-f="ersText" />
+            </span>
+            <span className={c.ers} aria-hidden="true">
+              <i data-f="ers" />
+            </span>
+          </div>
+        </section>
+
+        <section aria-label={hud.labels.dash} className={`${styles.glass} ${c.dash}`}>
+          <div className={`${styles.leds} ${c.leds}`} aria-hidden="true">
+            {leds}
+          </div>
+          <div className={c.dashRow}>
+            <span role="img" aria-label={hud.labels.speed(0, 'N')} data-f="dial" className={c.reading}>
+              <span data-f="speed" className={c.speed} aria-hidden="true">
+                0
+              </span>
+              <span className={styles.k} aria-hidden="true">
+                {hud.kmh}
+              </span>
+              <span data-f="gear" className={c.gear} aria-hidden="true">
+                N
+              </span>
+            </span>
+            <i className={c.divider} aria-hidden="true" />
+            <span className={styles.k}>{hud.deltaShort}</span>
+            <span data-f="delta" data-state="none" className={`${styles.signed} ${c.delta}`}>
+              —
+            </span>
+          </div>
+        </section>
+
+        <section aria-label={hud.labels.map} className={`${styles.glass} ${c.map}`}>
+          <svg viewBox="0 0 280 190" role="img" aria-label={hud.labels.mapImage} className={styles.mapSvg}>
+            <path d={MAP_PATH} className={`${styles.mapOutline} ${c.mapOutline}`} />
+            <path d={MAP_PATH} pathLength={1000} strokeDasharray="0 1000" data-f="trace" className={`${styles.mapTrace} ${c.mapTrace}`} />
+            <circle cx="52" cy="160" r="11" data-f="ghost" className={`${styles.mapGhost} ${c.mapGhost}`} />
+            <circle cx="52" cy="160" r="10" data-f="me" className={`${styles.mapMe} ${c.mapMe}`} />
+          </svg>
+        </section>
+
+        <div data-f="fx" data-show="false" className={c.fx} aria-hidden="true" />
+      </div>
+    )
+  }
 
   return (
     <div ref={root} className={styles.hud}>
-      {/* over the messenger's car: placed by the scene */}
-      <div ref={tagRef} className={styles.tag} aria-hidden="true">
-        <div className={`${styles.glass} ${styles.tagBox}`}>
-          <span className={styles.tagLine}>
-            <i className={styles.tagDot} />
-            {hud.theMessenger}
-            <span data-f="tag" className={styles.signed} />
-          </span>
-          <span data-f="tagOt" data-show="false" className={styles.tagOt}>
-            {hud.overtakeReady}
-          </span>
-        </div>
-        <span className={styles.stem} />
-      </div>
+      {tag}
 
       <section aria-label={hud.labels.timing} className={`${styles.glass} ${styles.timing}`}>
         <div className={styles.timingTop}>
@@ -149,7 +239,7 @@ export function Hud({ ref, attempt, bestMs, tagRef }: Props) {
           </div>
           <div>
             <span className={styles.k}>{hud.best}</span>
-            <span>{bestMs === null ? '—' : formatLap(bestMs)}</span>
+            <span>{best}</span>
           </div>
         </div>
       </section>
@@ -208,9 +298,7 @@ export function Hud({ ref, attempt, bestMs, tagRef }: Props) {
 
       <section aria-label={hud.labels.dash} className={`${styles.glass} ${styles.dash}`}>
         <div className={styles.leds} aria-hidden="true">
-          {Array.from({ length: LEDS }, (_, i) => (
-            <i key={i} data-f="led" data-white={i < WHITE_LEDS ? '' : undefined} />
-          ))}
+          {leds}
         </div>
         <div className={styles.dashRow}>
           <div className={styles.pedals} aria-hidden="true">

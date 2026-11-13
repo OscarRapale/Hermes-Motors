@@ -6,6 +6,21 @@ export const driveCopy = {
   /** "One flying lap against the test driver's ghost. His time is 1:11.906." (rotate screen) */
   intro: (lap: string) => `One flying lap against the test driver's ghost. His time is ${lap}.`,
 
+  /** The rotate screen (board 15): a phone held upright */
+  rotate: {
+    turn: 'TURN YOUR PHONE TO DRIVE',
+    steps: [
+      'Five red lights. Go when they go out.',
+      'Get within one second of the messenger and Overtake unlocks.',
+      'Finish the lap, then share your card.',
+    ],
+    status: 'Waiting for landscape',
+    /** changed from the board: no game audio is planned */
+    footnote: 'No sign-up. Your time lives on the card.',
+    /** new: the close button's name */
+    close: 'Leave the test drive',
+  },
+
   locked: 'The test drive opens at 06:00 on Day One.',
   /** new: the locked page's timer */
   timerLabel: 'Time until the test drive opens',
@@ -46,6 +61,12 @@ export const driveCopy = {
     corner: 'CORNER',
     overtake: 'OVERTAKE',
     boost: 'BOOST',
+    /** the compact HUD (board 16): "BEAT THE MESSENGER · ATTEMPT 3", "BEST 1:12.381", "Δ" */
+    bestShort: 'BEST',
+    deltaShort: 'Δ',
+    /** board 16's 2 s effect while Overtake or Boost is on */
+    fxOvertake: 'OVERTAKE ON · +0.5 MJ',
+    fxBoost: 'BOOST · DEPLOYING',
     /** new: names of the HUD's parts for screen readers (from the prototype's labels) */
     labels: {
       timing: 'Lap timing',

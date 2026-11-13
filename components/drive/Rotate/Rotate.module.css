@@ -1,0 +1,190 @@
+/* Board 15 (390 × 844): the rotate screen. Always dark, like the stage it sits over. */
+
+.rotate {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drive);
+  display: flex;
+  flex-direction: column;
+  padding: max(var(--space-4), env(safe-area-inset-top)) var(--space-6) max(var(--space-6), env(safe-area-inset-bottom));
+  overflow-y: auto;
+  color: var(--white);
+  background: var(--drive-rotate-scrim), var(--carbon);
+  isolation: isolate;
+}
+
+/* the drive still, blurred, behind a dark scrim */
+.rotate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/images/drive-phone.webp') center / cover no-repeat;
+  filter: blur(var(--drive-rotate-blur));
+  transform: scale(1.1);
+  opacity: var(--drive-rotate-still);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.close {
+  width: var(--tap);
+  height: var(--tap);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--panel-dark-border);
+  color: var(--white);
+}
+
+.close svg {
+  width: var(--icon-s);
+  height: var(--icon-s);
+}
+
+.kicker {
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-label);
+}
+
+.h1 {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-3);
+  font-size: var(--fs-drive-rotate-h1);
+  line-height: var(--lh-h2);
+}
+
+.body {
+  margin-top: var(--space-4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-3-dark);
+}
+
+.lap {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+}
+
+.hint {
+  display: grid;
+  place-items: center;
+  margin-top: var(--space-8);
+}
+
+.phone {
+  width: var(--drive-rotate-phone);
+  height: auto;
+  animation: turn var(--dur-rotate-hint) var(--ease-out) infinite;
+}
+
+.body2 {
+  fill: var(--drive-glass);
+  stroke: var(--white);
+  stroke-width: 3;
+}
+
+.island {
+  fill: var(--white);
+}
+
+.stripe {
+  fill: var(--redline);
+}
+
+/* upright, a turn to the side, a pause, back */
+@keyframes turn {
+  0%,
+  20% {
+    transform: rotate(0deg);
+  }
+  45%,
+  80% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.turn {
+  margin-top: var(--space-6);
+  text-align: center;
+  letter-spacing: var(--tracking-hud-wide);
+  color: var(--white);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-8) 0 var(--space-8);
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--ink-3-dark);
+}
+
+.steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.n {
+  flex: none;
+  width: var(--drive-rotate-step);
+  height: var(--drive-rotate-step);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--carbon);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-small);
+}
+
+.status {
+  display: grid;
+  place-items: center;
+  min-height: var(--drive-rotate-status);
+  margin-top: auto;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--panel-dark-border);
+  background: var(--hud-keycap-bg);
+  font-weight: var(--fw-semibold);
+  color: var(--ink-3-dark);
+}
+
+.footnote {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-hud-chip);
+  text-align: center;
+  color: var(--hud-muted);
+}
+
+/* the steps and the status need room: on short screens, the steps sit tighter */
+@media (max-height: 699.98px) {
+  .hint,
+  .steps {
+    margin-top: var(--space-5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phone {
+    animation: none;
+    transform: rotate(-90deg);
+  }
+}
