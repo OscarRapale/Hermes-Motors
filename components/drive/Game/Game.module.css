@@ -210,6 +210,62 @@
   }
 }
 
+/* Board 16's compact layout (lib/drive/media.ts COMPACT_QUERY): the pause button beside the map, smaller
+   lamps under the dash pill, the banner and the lap's end sized for 844 × 390 */
+@media (max-width: 999.98px), (max-height: 499.98px) {
+  .pauseButton {
+    top: var(--hudc-inset);
+    right: max(var(--space-4), env(safe-area-inset-right));
+    width: var(--tap);
+    height: var(--tap);
+  }
+
+  .lights {
+    top: var(--hudc-lights-top);
+    gap: var(--space-2);
+    padding: var(--space-2-5) var(--space-4) var(--space-2);
+    border-radius: var(--radius-tile-l);
+  }
+
+  .lamps {
+    gap: var(--space-2-5);
+  }
+
+  .lamps i {
+    width: var(--hudc-lamp);
+    height: var(--hudc-lamp);
+  }
+
+  .caption {
+    font-size: var(--fs-hud-chip);
+  }
+
+  .banner {
+    bottom: max(var(--space-3), env(safe-area-inset-bottom));
+    font-size: var(--fs-hud-chip);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .finish {
+    top: var(--hudc-finish-top);
+    transform: translateX(-50%);
+    max-height: calc(100% - var(--hudc-finish-top) - var(--space-3));
+    overflow-y: auto;
+    gap: var(--space-2-5);
+    padding: var(--space-4) var(--space-5);
+    text-align: center;
+    align-items: center;
+  }
+
+  .finishTitle {
+    font-size: var(--fs-body);
+  }
+
+  .finishGap {
+    font-size: var(--fs-hudc-clock);
+  }
+}
+
 .loading {
   position: absolute;
   inset: 0;

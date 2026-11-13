@@ -17,7 +17,7 @@ export default defineConfig({
   },
   // ARCHITECTURE §2: desktop Chrome, Pixel 7, iPhone 14 landscape. The live 3D tests (*.webgl.spec.ts)
   // draw WebGL in software, seconds per frame: they run on desktop only, after the others, so they
-  // don't starve the timing of the rest.
+  // don't starve the timing of the rest, and one at a time, so they don't starve each other.
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] }, testIgnore: WEBGL },
     { name: 'pixel-7', use: { ...devices['Pixel 7'] }, testIgnore: WEBGL },
@@ -26,6 +26,7 @@ export default defineConfig({
       name: 'webgl',
       use: { ...devices['Desktop Chrome'] },
       testMatch: WEBGL,
+      workers: 1,
       dependencies: ['desktop', 'pixel-7', 'iphone-14-landscape'],
     },
   ],

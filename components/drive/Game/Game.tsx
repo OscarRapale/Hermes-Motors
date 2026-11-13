@@ -7,6 +7,7 @@ import { messenger } from '@/content/facts'
 import { driveCopy } from '@/content/copy/drive'
 import { hudView } from '@/lib/drive/hud'
 import { GAME_KEYS, PAUSE_KEY, inputFromKeys } from '@/lib/drive/keys'
+import { COMPACT_QUERY, ROTATE_QUERY, useMedia } from '@/lib/drive/media'
 import { frameAt, type Frame } from '@/lib/drive/pose'
 import { countAttempt, recordLap, type DriveRecord } from '@/lib/drive/storage'
 import { circuit } from '@/lib/game/circuit'
@@ -16,6 +17,7 @@ import { formatGap, formatLap, gapsToMessenger, type LapResult } from '@/lib/gam
 import { T } from '@/lib/game/tuning'
 import { ControlsKeyboard, ControlsList } from '../Controls/Controls'
 import { Hud, type HudHandle } from '../Hud/Hud'
+import { Rotate } from '../Rotate/Rotate'
 import styles from './Game.module.css'
 
 const DriveScene = dynamic(() => import('../DriveScene/DriveScene'), { ssr: false })
@@ -48,6 +50,8 @@ export function Game({ preview }: { preview: boolean }) {
   // the controls sheet: before the first start on this device, or from the pause sheet
   const [controls, setControls] = useState<'off' | 'first' | 'paused'>('off')
   const [keyboard, setKeyboard] = useState(false)
+  const rotate = useMedia(ROTATE_QUERY) // a phone held upright: the drive waits for landscape
+  const compact = useMedia(COMPACT_QUERY)
   const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, result: null })
   const [motion, setMotion] = useState(true)
   const [record, setRecord] = useState<DriveRecord>({ bestMs: null, attempts: 0 })
@@ -64,6 +68,7 @@ export function Game({ preview }: { preview: boolean }) {
   const taps = useRef(new Set<string>())
   const snap = useRef(0)
   const running = useRef(false) // ready and not paused: the loop advances
+  const forLandscape = useRef(false) // ready, held upright: the lights start once the phone turns
   const uiRef = useRef(ui)
   const hud = useRef<HudHandle>(null)
   const hudClock = useRef(0)
@@ -186,20 +191,32 @@ export function Game({ preview }: { preview: boolean }) {
   useEffect(() => {
     const d = pauseDialog.current
     if (!d) return
-    if (paused && !d.open) d.showModal()
-    if (!paused && d.open) d.close()
-  }, [paused])
+    const show = paused && !rotate
+    if (show && !d.open) d.showModal()
+    if (!show && d.open) d.close()
+  }, [paused, rotate])
+
+  // turned upright mid-lap: pause (the sheet waits behind the rotate screen); turned back before the start:
+  // the lights begin
+  useEffect(() => {
+    if (rotate) pause()
+    else if (forLandscape.current && status === 'ready') {
+      forLandscape.current = false
+      running.current = true
+    }
+  }, [rotate, status, pause])
 
   // while driving, the stage owns the screen: the header hides (it comes back on pause), no page scroll
   useEffect(() => {
     if (status === 'checking' || status === 'nowebgl') return
     const html = document.documentElement
     window.scrollTo(0, 0)
-    html.dataset.drive = paused || ui.result ? 'paused' : 'on'
+    // the rotate screen has its own home link and close button: the header stays away
+    html.dataset.drive = (paused || ui.result) && !rotate ? 'paused' : 'on'
     return () => {
       delete html.dataset.drive
     }
-  }, [status, paused, ui.result])
+  }, [status, paused, ui.result, rotate])
 
   // the controls sheet: a modal dialog (over the pause sheet when opened from it)
   useEffect(() => {
@@ -225,6 +242,7 @@ export function Game({ preview }: { preview: boolean }) {
     setRecord(record)
     // the first time on this device, with a keyboard, the controls come first; the lights wait for Start
     if (hasKeyboard() && record.attempts <= 1) setControls('first')
+    else if (window.matchMedia(ROTATE_QUERY).matches) forLandscape.current = true
     else running.current = true
   }, [])
 
@@ -237,131 +255,134 @@ export function Game({ preview }: { preview: boolean }) {
   const gaps = result ? gapsToMessenger(result) : null
 
   return (
-    <div className={styles.stage} data-status={status} data-phase={ui.phase}>
-      <div className={styles.sky} aria-hidden="true" />
-      {status !== 'checking' && (
-        <DriveScene
-          frame={frame}
-          onFrame={onFrame}
-          reducedMotion={!motion}
-          snap={snap}
-          onReady={onReady}
-          ghostTag={ghostTag}
-          paused={paused}
-          label={driveCopy.sceneLabel}
-        />
-      )}
-
-      {preview && <p className={`label ${styles.banner}`}>{driveCopy.previewBanner}</p>}
-
-      {status === 'ready' && <Hud ref={hud} attempt={Math.max(1, record.attempts)} bestMs={record.bestMs} tagRef={ghostTag} />}
-
-      <button type="button" className={styles.pauseButton} onClick={pause} aria-label={driveCopy.pause.button}>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 5h4v14H7zM13 5h4v14h-4z" />
-        </svg>
-      </button>
-
-      {status === 'ready' && (ui.phase === 'grid' || ui.go) && (
-        <div className={styles.lights} data-go={ui.phase !== 'grid' ? '' : undefined} role="status" aria-label={driveCopy.lightsLabel(ui.lit)}>
-          <span className={styles.lamps} aria-hidden="true">
-            {Array.from({ length: T.lightsCount }, (_, i) => (
-              <i key={i} data-on={ui.phase === 'grid' && i < ui.lit ? '' : undefined} />
-            ))}
-          </span>
-          <span className={`label ${styles.caption}`}>{ui.phase === 'grid' ? driveCopy.lights.wait : driveCopy.lights.go}</span>
-        </div>
-      )}
-
-      <p className={styles.keys} aria-hidden="true">
-        {driveCopy.keys.map((k) => (
-          <span key={k.label} className={styles.key}>
-            {k.keys.map((key) => (
-              <kbd key={key}>{key}</kbd>
-            ))}
-            {k.label}
-          </span>
-        ))}
-      </p>
-
-      {status !== 'ready' && <p className={`label ${styles.loading}`}>{driveCopy.loading}</p>}
-
-      <dialog
-        ref={controlsDialog}
-        className={`${styles.sheet} ${styles.controls}`}
-        aria-labelledby="drive-controls"
-        onCancel={(e) => (e.preventDefault(), closeControls())}
-      >
-        {controls === 'first' && <p className={`label ${styles.title}`}>{driveCopy.controls.kicker}</p>}
-        <h2 id="drive-controls" className={`display ${styles.sheetTitle}`}>
-          {driveCopy.controls.title}
-        </h2>
-        {controls !== 'off' && (
-          <>
-            <ControlsKeyboard />
-            <ControlsList />
-          </>
+    <>
+      <div className={styles.stage} data-status={status} data-phase={ui.phase} data-compact={compact ? '' : undefined} inert={rotate}>
+        <div className={styles.sky} aria-hidden="true" />
+        {status !== 'checking' && (
+          <DriveScene
+            frame={frame}
+            onFrame={onFrame}
+            reducedMotion={!motion}
+            snap={snap}
+            onReady={onReady}
+            ghostTag={ghostTag}
+            paused={paused}
+            label={driveCopy.sceneLabel}
+          />
         )}
-        <p className={styles.tip}>{driveCopy.controls.tip}</p>
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={closeControls} autoFocus>
-            {controls === 'paused' ? driveCopy.controls.back : driveCopy.controls.start}
-          </button>
-          {controls === 'first' && (
-            <Link href="/" className={styles.secondary}>
-              {driveCopy.pause.exit}
-            </Link>
-          )}
-        </div>
-      </dialog>
 
-      <dialog ref={pauseDialog} className={styles.sheet} aria-labelledby="drive-paused" onCancel={(e) => (e.preventDefault(), resume())}>
-        <h2 id="drive-paused" className={`display ${styles.sheetTitle}`}>
-          {driveCopy.pause.title}
-        </h2>
-        <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={resume} autoFocus>
-            {driveCopy.pause.resume}
-          </button>
-          <button type="button" className={styles.secondary} onClick={restart}>
-            {driveCopy.pause.restart}
-          </button>
-          {keyboard && (
-            <button type="button" className={styles.secondary} onClick={() => setControls('paused')}>
-              {driveCopy.pause.controls}
-            </button>
-          )}
-          <Link href="/" className={styles.secondary}>
-            {driveCopy.pause.exit}
-          </Link>
-        </div>
-      </dialog>
+        {preview && <p className={`label ${styles.banner}`}>{driveCopy.previewBanner}</p>}
 
-      {result && gaps && (
-        <section className={`${styles.panel} ${styles.finish}`} aria-labelledby="drive-finish" aria-live="polite">
-          <p className={`label ${styles.title}`}>{driveCopy.finish.complete}</p>
-          <h2 id="drive-finish" className={`display ${styles.finishTitle}`}>
-            {(gaps.lapMs < 0 ? driveCopy.finish.won : driveCopy.finish.lost).map((line) => (
-              <span key={line}>{line}</span>
-            ))}
+        {status === 'ready' && <Hud ref={hud} attempt={Math.max(1, record.attempts)} bestMs={record.bestMs} tagRef={ghostTag} compact={compact} />}
+
+        <button type="button" className={styles.pauseButton} onClick={pause} aria-label={driveCopy.pause.button}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 5h4v14H7zM13 5h4v14h-4z" />
+          </svg>
+        </button>
+
+        {status === 'ready' && (ui.phase === 'grid' || ui.go) && (
+          <div className={styles.lights} data-go={ui.phase !== 'grid' ? '' : undefined} role="status" aria-label={driveCopy.lightsLabel(ui.lit)}>
+            <span className={styles.lamps} aria-hidden="true">
+              {Array.from({ length: T.lightsCount }, (_, i) => (
+                <i key={i} data-on={ui.phase === 'grid' && i < ui.lit ? '' : undefined} />
+              ))}
+            </span>
+            <span className={`label ${styles.caption}`}>{ui.phase === 'grid' ? driveCopy.lights.wait : driveCopy.lights.go}</span>
+          </div>
+        )}
+
+        <p className={styles.keys} aria-hidden="true">
+          {driveCopy.keys.map((k) => (
+            <span key={k.label} className={styles.key}>
+              {k.keys.map((key) => (
+                <kbd key={key}>{key}</kbd>
+              ))}
+              {k.label}
+            </span>
+          ))}
+        </p>
+
+        {status !== 'ready' && <p className={`label ${styles.loading}`}>{driveCopy.loading}</p>}
+
+        <dialog
+          ref={controlsDialog}
+          className={`${styles.sheet} ${styles.controls}`}
+          aria-labelledby="drive-controls"
+          onCancel={(e) => (e.preventDefault(), closeControls())}
+        >
+          {controls === 'first' && <p className={`label ${styles.title}`}>{driveCopy.controls.kicker}</p>}
+          <h2 id="drive-controls" className={`display ${styles.sheetTitle}`}>
+            {driveCopy.controls.title}
           </h2>
-          <p className={`tnum ${styles.finishGap}`} data-ahead={gaps.lapMs < 0 ? '' : undefined}>
-            {formatGap(gaps.lapMs)} S
-          </p>
-          <p className={`label tnum ${styles.row}`}>
-            {driveCopy.finish.you} {formatLap(result.totalMs)} · {driveCopy.finish.messenger} {formatLap(messenger.lapMs)}
-          </p>
-          {result.penaltyMs > 0 && <p className={`label ${styles.row}`}>{driveCopy.finish.jumpStart}</p>}
+          {controls !== 'off' && (
+            <>
+              <ControlsKeyboard />
+              <ControlsList />
+            </>
+          )}
+          <p className={styles.tip}>{driveCopy.controls.tip}</p>
           <div className={styles.actions}>
-            <button ref={runItBack} type="button" className={styles.primary} onClick={restart}>
-              {driveCopy.finish.runItBack}
+            <button type="button" className={styles.primary} onClick={closeControls} autoFocus>
+              {controls === 'paused' ? driveCopy.controls.back : driveCopy.controls.start}
             </button>
+            {controls === 'first' && (
+              <Link href="/" className={styles.secondary}>
+                {driveCopy.pause.exit}
+              </Link>
+            )}
+          </div>
+        </dialog>
+
+        <dialog ref={pauseDialog} className={styles.sheet} aria-labelledby="drive-paused" onCancel={(e) => (e.preventDefault(), resume())}>
+          <h2 id="drive-paused" className={`display ${styles.sheetTitle}`}>
+            {driveCopy.pause.title}
+          </h2>
+          <div className={styles.actions}>
+            <button type="button" className={styles.primary} onClick={resume} autoFocus>
+              {driveCopy.pause.resume}
+            </button>
+            <button type="button" className={styles.secondary} onClick={restart}>
+              {driveCopy.pause.restart}
+            </button>
+            {keyboard && (
+              <button type="button" className={styles.secondary} onClick={() => setControls('paused')}>
+                {driveCopy.pause.controls}
+              </button>
+            )}
             <Link href="/" className={styles.secondary}>
               {driveCopy.pause.exit}
             </Link>
           </div>
-        </section>
-      )}
-    </div>
+        </dialog>
+
+        {result && gaps && (
+          <section className={`${styles.panel} ${styles.finish}`} aria-labelledby="drive-finish" aria-live="polite">
+            <p className={`label ${styles.title}`}>{driveCopy.finish.complete}</p>
+            <h2 id="drive-finish" className={`display ${styles.finishTitle}`}>
+              {(gaps.lapMs < 0 ? driveCopy.finish.won : driveCopy.finish.lost).map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </h2>
+            <p className={`tnum ${styles.finishGap}`} data-ahead={gaps.lapMs < 0 ? '' : undefined}>
+              {formatGap(gaps.lapMs)} S
+            </p>
+            <p className={`label tnum ${styles.row}`}>
+              {driveCopy.finish.you} {formatLap(result.totalMs)} · {driveCopy.finish.messenger} {formatLap(messenger.lapMs)}
+            </p>
+            {result.penaltyMs > 0 && <p className={`label ${styles.row}`}>{driveCopy.finish.jumpStart}</p>}
+            <div className={styles.actions}>
+              <button ref={runItBack} type="button" className={styles.primary} onClick={restart}>
+                {driveCopy.finish.runItBack}
+              </button>
+              <Link href="/" className={styles.secondary}>
+                {driveCopy.pause.exit}
+              </Link>
+            </div>
+          </section>
+        )}
+      </div>
+      {rotate && status !== "checking" && <Rotate />}
+    </>
   )
 }

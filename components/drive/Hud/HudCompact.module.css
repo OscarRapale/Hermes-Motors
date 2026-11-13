@@ -1,0 +1,193 @@
+/* Board 16's compact HUD (844 × 390, prototype TestDrive-Phone): timing top left, one pill for the LEDs,
+   speed, gear and delta, the map beside the pause button. Also small windows (lib/drive/media.ts). */
+
+.hud {
+  --local-left: max(var(--space-4), env(safe-area-inset-left));
+  --local-right: max(var(--space-4), env(safe-area-inset-right));
+}
+
+.timing {
+  top: var(--hudc-inset);
+  left: var(--local-left);
+  width: var(--hudc-timing-width);
+  padding: var(--space-2-5) var(--space-3-5);
+  border-radius: var(--radius-tile-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.top {
+  display: flex;
+  gap: var(--space-1-5);
+  font-size: var(--fs-hudc-top);
+  letter-spacing: var(--tracking-hud-tight);
+  white-space: nowrap;
+  color: var(--red-on-dark);
+}
+
+.clockRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.clock {
+  font-size: var(--fs-hudc-clock);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.best {
+  font-size: var(--fs-hud-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--hud-live-ink);
+  white-space: nowrap;
+}
+
+.aeroRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.chip {
+  width: auto;
+  padding: var(--space-0-5) var(--space-2);
+}
+
+.ers {
+  position: relative;
+  width: var(--hudc-ers-width);
+  height: var(--hudc-led-h);
+  border-radius: calc(var(--hudc-led-h) / 2);
+  background: var(--hud-track);
+  overflow: hidden;
+}
+
+.ers i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--local-level, 0%);
+  background: var(--white);
+}
+
+/* LEDs, speed, gear, delta */
+.dash {
+  top: var(--hudc-inset);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-2) var(--space-4) var(--space-2-5);
+  border-radius: var(--radius-tile-l);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1-5);
+}
+
+.leds {
+  gap: var(--space-1);
+}
+
+.leds i {
+  flex: none;
+  width: var(--hudc-led-w);
+  height: var(--hudc-led-h);
+}
+
+.dashRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.reading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.speed {
+  min-width: var(--hudc-speed-width);
+  font-size: var(--fs-hudc-speed);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: right;
+}
+
+.gear {
+  width: var(--hudc-gear);
+  height: var(--hudc-gear);
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-keycap);
+  background: var(--white);
+  color: var(--carbon);
+  font-family: var(--font-display);
+  font-size: var(--fs-hudc-gear);
+}
+
+.divider {
+  width: 1px;
+  height: var(--space-5);
+  margin: 0 var(--space-1);
+  background: var(--hud-chip-border);
+}
+
+.delta {
+  min-width: var(--hudc-delta-width);
+  font-size: var(--fs-hudc-delta);
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--hud-k);
+}
+
+/* the map, beside the pause button */
+.map {
+  top: var(--hudc-inset);
+  right: calc(var(--local-right) + var(--tap) + var(--space-2));
+  width: var(--hudc-map-width);
+  padding: var(--space-1-5) var(--space-2);
+  border-radius: var(--radius-tile);
+}
+
+.mapOutline {
+  stroke-width: 14;
+}
+
+.mapTrace {
+  stroke-width: 7;
+}
+
+.mapGhost {
+  stroke-width: 3.5;
+  stroke-dasharray: 5 3;
+}
+
+.mapMe {
+  stroke-width: 4;
+}
+
+/* board 16's 2 s effect: a Redline pill under the dash while Overtake or Boost is on */
+.fx {
+  position: absolute;
+  top: var(--hudc-fx-top);
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  height: var(--hudc-fx-height);
+  padding: 0 var(--space-3-5);
+  border-radius: var(--radius-pill);
+  background: var(--redline);
+  box-shadow: var(--hudc-fx-shadow);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-hud-chip);
+  white-space: nowrap;
+}
+
+.fx[data-show='true'] {
+  display: flex;
+}
