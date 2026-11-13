@@ -59,12 +59,47 @@ export const driveCopy = {
   },
 
   keys: [
-    { keys: ['W'], label: 'Throttle' },
-    { keys: ['S'], label: 'Brake' },
+    { keys: ['W', 'R SHIFT'], label: 'Throttle' },
+    { keys: ['S', 'R CTRL'], label: 'Brake' },
     { keys: ['A', 'D'], label: 'Steer' },
     { keys: ['SPACE'], label: 'Overtake' },
-    { keys: ['SHIFT'], label: 'Boost' },
+    { keys: ['E'], label: 'Boost' },
   ],
+
+  /** new: the controls sheet, before the first start on a device and from the pause sheet (Oscar, 2026-11-12) */
+  controls: {
+    kicker: 'BEFORE THE LIGHTS',
+    title: 'THE CONTROLS.',
+    keyboardLabel: 'A keyboard with the keys that drive the car highlighted',
+    /** what a highlighted key says on the drawing */
+    keycaps: {
+      KeyW: 'W',
+      KeyA: 'A',
+      KeyS: 'S',
+      KeyD: 'D',
+      ArrowUp: '↑',
+      ArrowDown: '↓',
+      ArrowLeft: '←',
+      ArrowRight: '→',
+      KeyE: 'E',
+      ShiftRight: 'SHIFT',
+      ControlRight: 'CTRL',
+      Space: 'SPACE',
+      Escape: 'ESC',
+    } as Record<string, string>,
+    items: {
+      throttle: { label: 'Throttle', keys: 'W, ↑ or Right Shift' },
+      brake: { label: 'Brake', keys: 'S, ↓ or Right Ctrl' },
+      steer: { label: 'Steer', keys: 'A and D, or ← and →' },
+      overtake: { label: 'Overtake', keys: 'Space', note: 'Within 1 s of the messenger, once a lap' },
+      boost: { label: 'Boost', keys: 'E', note: 'Spends energy; braking earns it back' },
+      pause: { label: 'Pause', keys: 'Esc' },
+    },
+    tip: 'Brake at the 3 board before each tight corner. 2 and 1 count down to the turn.',
+    start: 'Start',
+    /** back to the pause sheet */
+    back: 'Back',
+  },
 
   pause: {
     /** new: the pause button's name */
@@ -72,6 +107,8 @@ export const driveCopy = {
     title: 'Paused',
     resume: 'Resume',
     restart: 'Restart',
+    /** new: opens the controls sheet */
+    controls: 'Controls',
     exit: 'Exit',
   },
 

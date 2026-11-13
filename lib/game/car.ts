@@ -25,6 +25,9 @@ export type CarState = {
   v: number
   /** The steering actually applied, −1…1 (follows the input at a limited rate) */
   steer: number
+  /** The pedals actually applied, 0…1: a keyboard press squeezes them in over a moment */
+  throttle: number
+  brake: number
   /** Stored energy, J */
   energy: number
   boosting: boolean
@@ -47,14 +50,16 @@ export function brakeDecel(v: number): number {
 }
 
 export function createCar(s: number): CarState {
-  return { s, d: 0, psi: 0, v: 0, steer: 0, energy: T.storeJ * T.startCharge, boosting: false, offTrack: false, wallHits: 0 }
+  return { s, d: 0, psi: 0, v: 0, steer: 0, throttle: 0, brake: 0, energy: T.storeJ * T.startCharge, boosting: false, offTrack: false, wallHits: 0 }
 }
 
 export const NO_INPUT: CarInput = { throttle: 0, brake: 0, steer: 0, boost: false }
 
 export function stepCar(c: Circuit, car: CarState, input: CarInput, dt: number): CarState {
-  const throttle = clamp(input.throttle, 0, 1)
-  const brake = clamp(input.brake, 0, 1)
+  // the pedals follow the input: in over a moment, out quickly (keyboards are on/off)
+  const pedal = (now: number, want: number, rise: number) => now + clamp(want - now, -T.pedalRelease * dt, rise * dt)
+  const throttle = pedal(car.throttle, clamp(input.throttle, 0, 1), T.throttleRise)
+  const brake = pedal(car.brake, clamp(input.brake, 0, 1), T.brakeRise)
   const want = clamp(input.steer, -1, 1)
 
   // the steering follows the input, back to centre faster than out to lock
@@ -65,7 +70,11 @@ export function stepCar(c: Circuit, car: CarState, input: CarInput, dt: number):
   // longitudinal
   const boosting = input.boost && throttle > 0 && car.energy > 0
   const power = T.powerW + (boosting ? T.boostW : 0)
-  const drive = throttle * Math.min(power / (T.massKg * Math.max(car.v, 1)), T.driveMaxAccel)
+  // the tyres' one budget (friction circle): the more the car is cornering, the less drive it can put down,
+  // none at the limit, so a car held flat through a corner keeps its line instead of running wide
+  const cornering = car.v > 1 ? Math.min(1, (Math.abs(steer) * maxYawRate(car.v) * car.v) / lateralGrip(car.v)) : 0
+  const traction = T.frictionCircle ? Math.sqrt(1 - cornering * cornering) : 1
+  const drive = throttle * traction * Math.min(power / (T.massKg * Math.max(car.v, 1)), T.driveMaxAccel)
   const drag =
     T.dragK * (car.offTrack ? T.offTrackDrag : 1) * car.v * car.v + (car.v > 0 ? T.rollingDecel + (car.offTrack ? T.offTrackDecel : 0) : 0)
   const v = Math.max(0, car.v + (drive - drag - brake * brakeDecel(car.v)) * dt)
@@ -106,6 +115,8 @@ export function stepCar(c: Circuit, car: CarState, input: CarInput, dt: number):
     psi,
     v: speed,
     steer,
+    throttle,
+    brake,
     energy,
     boosting,
     offTrack: Math.abs(d) > HALF_WIDTH + T.offTrackMargin,

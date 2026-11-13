@@ -12,7 +12,7 @@ import { ContactShadows } from '@react-three/drei'
 import { HermesCar } from '@/components/hermes/HermesCar'
 import { GhostCar, HORIZON, Track, TrackEnvironment, makeTrackCurve, trackStrip } from '@/components/hermes/ProvingGround'
 import { HALF_WIDTH, RUNOFF, circuit } from '@/lib/game/circuit'
-import { circuitLayout, forBuilder } from '@/lib/game/layout'
+import { brakingBoards, circuitLayout, forBuilder } from '@/lib/game/layout'
 import type { Frame } from '@/lib/drive/pose'
 
 const CHASE = { back: 5.3, up: 1.55, lookAhead: 10, lookUp: 0.9, follow: 8 }
@@ -27,6 +27,7 @@ function sceneColours() {
     glass: token('--drive-glass'),
     red: token('--redline'),
     far: token('--drive-far'),
+    board: token('--gallery-white'),
     shadow: token('--carbon'),
   }
 }
@@ -51,6 +52,12 @@ function sceneCircuit(): SceneCircuit {
   return built
 }
 
+const BOARD_OFFSET = 3 // metres past the road's edge
+const BOARD_W = 2.6
+const BOARD_H = 1.8
+const BOARD_Y = 2.3 // the panel's centre: above the walls, at the camera's eye line
+const STRIPE_ANGLE = (14 * Math.PI) / 180 // the brand's 14°
+
 function Scenery() {
   const { runoff, curve } = sceneCircuit()
   const colours = useMemo(() => sceneColours(), [])
@@ -61,6 +68,7 @@ function Scenery() {
       glass: new THREE.MeshLambertMaterial({ color: colours.glass }),
       red: new THREE.MeshLambertMaterial({ color: colours.red }),
       far: new THREE.MeshLambertMaterial({ color: colours.far, side: THREE.DoubleSide }),
+      board: new THREE.MeshLambertMaterial({ color: colours.board }),
     }),
     [colours],
   )
@@ -79,8 +87,32 @@ function Scenery() {
     return { x: centre.x, z: centre.z, r: box.getSize(new THREE.Vector3()).length() / 2 + 260 }
   }, [curve])
 
+  // braking boards, 3-2-1 before each tight corner, on the outside verge, facing the approaching car
+  const boards = useMemo(() => {
+    const c = circuit()
+    return brakingBoards(c).map((b) => {
+      const p = c.toWorld(b.s, (b.side === 'left' ? 1 : -1) * (HALF_WIDTH + BOARD_OFFSET))
+      return { ...b, x: p.x, z: p.z, heading: c.frameAt(b.s).heading }
+    })
+  }, [])
+
   return (
     <group>
+      {boards.map((b) => (
+        <group key={b.s} position={[b.x, 0, b.z]} rotation-y={b.heading}>
+          <mesh position={[0, (BOARD_Y - BOARD_H / 2) / 2, 0]} material={m.glass}>
+            <boxGeometry args={[0.14, BOARD_Y - BOARD_H / 2, 0.14]} />
+          </mesh>
+          <mesh position={[0, BOARD_Y, 0]} material={m.board}>
+            <boxGeometry args={[BOARD_W, BOARD_H, 0.06]} />
+          </mesh>
+          {Array.from({ length: b.stripes }, (_, i) => (
+            <mesh key={i} position={[(i - (b.stripes - 1) / 2) * 0.62, BOARD_Y, 0]} rotation-z={-STRIPE_ANGLE} material={m.red}>
+              <boxGeometry args={[0.26, BOARD_H * 0.9, 0.08]} />
+            </mesh>
+          ))}
+        </group>
+      ))}
       {strips.map((g, i) => (
         <mesh key={i} geometry={g} material={m.runoff} />
       ))}

@@ -137,15 +137,17 @@ State per step: distance `s`, lateral offset `d`, heading error `ψ`, speed `v`;
 | Off-track | run-off ×3 drag; wall = lateral stop + 30% speed loss | |
 | Energy | 64% at start; harvest under braking, spend on Boost; Overtake adds 0.5 MJ when within 1 s of the messenger | from facts.md |
 
-**Tuning target:** a clean lap by a good player lands within ±0.4 s of 71.906; the prototype's "won" lap is 1:11.692 (−0.214). Record three reference input logs in `tests/unit/game/` and keep their lap times in CI.
+**Tuning target (Decision D28):** a careful lap (centre line, early braking, no Boost) lands just behind 71.906, and a clean lap on the racing line beats it by 2–5 s, so the messenger is beatable with practice. (The first target, a clean lap within ±0.4 s, made the car too hard to drive on a keyboard.) The prototype's examples are 1:11.692 (−0.214) and +0.152. Record three reference input logs in `tests/unit/game/` and keep their lap times in CI.
 
 **As tuned (M3, `tuning.ts`):**
-- Grip is the starting values × 0.58, the messenger's own envelope: about 1.2 g at 110 km/h and 1.75 g at 200.
-- Boost adds 160 kW, which reaches the HM‑27's 352 km/h. 0–100 km/h takes 2.6 s.
+- Grip is the starting values × 0.7: a 60 m corner at about 102 km/h.
+- Friction circle: the harder the car corners, the less drive it puts down (none at the limit), so a car held flat through a corner keeps its line. Braking is unaffected.
+- Pedals and steering follow a keyboard's on/off: the brake squeezes in over 0.25 s, the throttle over 0.17 s, both let go in 0.1 s; steering at 4.5/s, back at 6/s. Brakes peak at 34 m/s² (22 below 100 km/h).
+- Boost adds 160 kW, which reaches the HM‑27's 352 km/h. 0–100 km/h takes 2.6 s flat out.
 - No turning standing still: the tightest turn is 7 m.
 - Off the road also costs 4 m/s², and scraping along a wall 8 m/s², so neither is ever a faster line. A slow touch slides along without a hit.
 - Harvest under braking is 150 kW; the store is game tuning, shown as a percentage. Overtake works once per lap.
-- Reference laps (`npm run laps:record`): clean 1:11.636 (a racing line at 97% of the limit), careful 1:17.006, wall 1:12.303 with two hits.
+- Reference laps (`npm run laps:record`): careful 1:12.058, clean 1:08.424 (a racing line at 97% of the limit), wall 1:09.822 with a hit.
 
 ### 7.4 Flow and HUD
 

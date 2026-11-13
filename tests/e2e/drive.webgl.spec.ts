@@ -1,6 +1,7 @@
 import { expect, test } from './test'
 import { driveCopy } from '@/content/copy/drive'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
+import { expectNoAxeViolations } from './axe'
 
 // The test drive with WebGL (ARCHITECTURE §7): runs in the "webgl" project (desktop, after the others).
 // Software rendering takes seconds per frame and the physics catches up at most 0.25 s a frame, so the
@@ -29,10 +30,31 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   await expect(page.locator('html')).toHaveAttribute('data-drive', 'on')
   await expect(page.getByRole('banner')).toBeHidden()
 
+  // the first time on this device (a keyboard and a mouse), the controls come first: the lights wait for Start
+  const controls = page.getByRole('dialog', { name: driveCopy.controls.title })
+  await expect(controls).toBeVisible()
+  await expect(controls.getByRole('img', { name: driveCopy.controls.keyboardLabel })).toBeVisible()
+  await expect(controls.locator('svg [data-control]')).toHaveCount(13)
+  await expect(controls.getByText(driveCopy.controls.items.brake.keys)).toBeVisible()
+  await expect(controls.getByRole('button', { name: driveCopy.controls.start })).toBeFocused()
+  await expectNoAxeViolations(page)
+  await page.waitForTimeout(1500)
+  await expect(page.getByText(driveCopy.lights.wait)).toBeVisible()
+  await expect(page.locator('[aria-label="1 of 5 red lights on"]')).toHaveCount(0)
+  await controls.getByRole('button', { name: driveCopy.controls.start }).click()
+  await expect(controls).toBeHidden()
+
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()
   await expect(page.getByRole('button', { name: driveCopy.pause.resume })).toBeFocused()
   await expect(page.getByRole('banner')).toBeVisible()
+  // the controls again, from the pause sheet: Back returns to it
+  await page.getByRole('button', { name: driveCopy.pause.controls }).click()
+  await expect(controls).toBeVisible()
+  await expect(controls.getByText(driveCopy.controls.kicker)).toHaveCount(0)
+  await controls.getByRole('button', { name: driveCopy.controls.back }).click()
+  await expect(controls).toBeHidden()
+  await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()
   await page.getByRole('button', { name: driveCopy.pause.resume }).click()
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeHidden()
 

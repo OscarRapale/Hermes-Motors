@@ -1,0 +1,105 @@
+/* The controls sheet (Oscar, 2026-11-12): keys coloured as the HUD colours its pedals and chips */
+
+.keyboard {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.keyboard rect {
+  fill: var(--hud-keycap-bg);
+  stroke: var(--hud-keycap-border);
+  stroke-width: 1;
+}
+
+.keyboard text {
+  font-family: var(--font-mono);
+  font-size: var(--drive-keyboard-legend);
+  letter-spacing: var(--tracking-hud-chip);
+  fill: var(--white);
+}
+
+.keyboard [data-control='throttle'] rect,
+.item[data-control='throttle'] i {
+  fill: var(--white);
+  background: var(--white);
+  stroke: var(--white);
+}
+
+.keyboard [data-control='throttle'] text {
+  fill: var(--carbon);
+}
+
+.keyboard [data-control='brake'] rect,
+.item[data-control='brake'] i {
+  fill: var(--redline);
+  background: var(--redline);
+  stroke: var(--redline);
+}
+
+.keyboard [data-control='steer'] rect,
+.item[data-control='steer'] i {
+  fill: transparent;
+  stroke: var(--white);
+  stroke-width: 2;
+  border: 2px solid var(--white);
+}
+
+.keyboard [data-control='overtake'] rect,
+.keyboard [data-control='boost'] rect,
+.item[data-control='overtake'] i,
+.item[data-control='boost'] i {
+  fill: var(--hud-ot-ready);
+  background: var(--hud-ot-ready);
+  stroke: var(--red-on-dark);
+  stroke-width: 2;
+  border: 2px solid var(--red-on-dark);
+}
+
+.keyboard [data-control='pause'] rect,
+.item[data-control='pause'] i {
+  stroke: var(--hud-tick);
+  border: 1px solid var(--hud-tick);
+  background: var(--hud-keycap-bg);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+}
+
+.item dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--fw-semibold);
+  color: var(--white);
+}
+
+.item i {
+  flex: none;
+  width: var(--hud-legend-dot);
+  height: var(--hud-legend-dot);
+  border-radius: var(--radius-swatch);
+  box-sizing: border-box;
+}
+
+.keys,
+.note {
+  margin: var(--space-1) 0 0 calc(var(--hud-legend-dot) + var(--space-2));
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-small);
+  letter-spacing: var(--tracking-hud-chip);
+  color: var(--hud-k);
+}
+
+.note {
+  color: var(--hud-muted);
+}
+
+@media (max-width: 639.98px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

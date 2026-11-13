@@ -31,8 +31,13 @@ describe('the reference laps', () => {
     expect(end.car.wallHits).toBe(expected.wallHits)
   })
 
-  it('the clean lap lands within ±0.4 s of the messenger (the tuning target)', () => {
-    expect(Math.abs(lap('clean').expected.lapMs - messenger.lapMs)).toBeLessThanOrEqual(400)
+  it('a careful lap lands just behind the messenger, a clean one beats him by 2–5 s (the tuning target, D28)', () => {
+    const careful = lap('careful').expected.lapMs - messenger.lapMs
+    expect(careful).toBeGreaterThanOrEqual(0)
+    expect(careful).toBeLessThanOrEqual(800)
+    const clean = messenger.lapMs - lap('clean').expected.lapMs
+    expect(clean).toBeGreaterThanOrEqual(2000)
+    expect(clean).toBeLessThanOrEqual(5000)
   })
 
   it('a careful lap is slower, and so is one that hits the wall', () => {

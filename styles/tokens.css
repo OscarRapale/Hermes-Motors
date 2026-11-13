@@ -48,6 +48,10 @@
   --drive-lights-top: 92px; /* under the delta pill */
   --drive-lamp: 44px;
   --drive-keycap: 24px;
+  --drive-controls-width: 760px; /* the controls sheet before the first start */
+  --drive-keyboard-legend: 12px; /* key legends, in the keyboard drawing's units (a key is 40) */
+  --radius-swatch: 3px;
+  --drive-keys-narrow: 450px; /* the key bar in two rows on laptops: pedals, then steer and the buttons */
   --radius-keycap: 8px;
   --fs-drive-clock: 44px;
   --drive-locked-width: 720px;

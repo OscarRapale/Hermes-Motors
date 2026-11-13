@@ -177,10 +177,36 @@
   color: var(--white);
 }
 
-/* The bar needs ~520 px between the map and the dashboard */
+/* One row needs ~690 px between the map and the dashboard; under 1480 px wide it takes two */
+@media (max-width: 1479.98px) {
+  .keys {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: var(--space-1-5);
+    max-width: min(
+      var(--drive-keys-narrow),
+      calc(100% - var(--hud-side-width) - var(--hud-dash-width) - 4 * var(--drive-inset))
+    );
+    border-radius: var(--radius-tile-l);
+  }
+
+  .key {
+    white-space: nowrap;
+  }
+
+  .banner {
+    bottom: calc(var(--drive-inset) + var(--hud-pill-height) + var(--drive-keycap) + var(--space-1-5) + var(--space-3));
+  }
+}
+
+/* Two rows need ~450 px between the map and the dashboard */
 @media (max-width: 1239.98px), (hover: none) {
   .keys {
     display: none;
+  }
+
+  .banner {
+    bottom: calc(var(--drive-inset) + var(--hud-pill-height) + var(--space-3));
   }
 }
 
@@ -216,6 +242,29 @@
 .sheetTitle {
   font-size: var(--fs-card-title);
   margin-bottom: var(--space-6);
+}
+
+/* The controls sheet before the first start: the keyboard, what each control does, a braking tip */
+.controls {
+  width: min(var(--drive-controls-width), calc(100% - 2 * var(--drive-inset)));
+  max-width: none;
+  -webkit-backdrop-filter: var(--panel-dark-blur);
+  backdrop-filter: var(--panel-dark-blur);
+}
+
+.controls[open] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.controls .sheetTitle {
+  margin: calc(-1 * var(--space-3)) 0 0;
+}
+
+.tip {
+  font-size: var(--fs-small);
+  color: var(--hud-k);
 }
 
 .actions {

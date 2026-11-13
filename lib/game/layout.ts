@@ -139,3 +139,36 @@ export function forBuilder(layout: CircuitLayout, builderLength: number, length:
   const scale = (spans: Span[]) => spans.map((s) => ({ ...s, from: s.from * k, to: s.to * k }))
   return { ...layout, kerbs: scale(layout.kerbs), runoff: scale(layout.runoff) }
 }
+
+export type BrakingBoard = {
+  /** Metres along the lap */
+  s: number
+  /** The verge it stands on: the outside of the approach */
+  side: Side
+  /** 3, 2, 1: counting down to the corner */
+  stripes: 3 | 2 | 1
+}
+
+/** Boards before a corner never sit closer together than this */
+const MIN_BOARD_RUN_M = 45
+
+/**
+ * Braking boards (3-2-1) before each tight corner: "3" where the messenger starts to slow (his last speed
+ * peak before the corner's slowest point), then "2" and "1" counting down to where the corner begins.
+ */
+export function brakingBoards(c: Circuit, list = corners(c)): BrakingBoard[] {
+  const speedAt = (s: number) => ghostSpeed(c, c.ghostTimeAt(Math.min(c.length, Math.max(0, s))))
+  return list
+    .filter((k) => k.apex)
+    .flatMap((k) => {
+      // his slowest point in the corner, then back to where he was still speeding up
+      let slowest = k.from
+      for (let s = k.from; s <= k.to; s += 2) if (speedAt(s) < speedAt(slowest)) slowest = s
+      let peak = slowest
+      while (peak > 2 && speedAt(peak - 2) >= speedAt(peak)) peak -= 2
+      const first = Math.min(peak, k.from - MIN_BOARD_RUN_M)
+      const step = (k.from - first) / 3
+      const side = other(k.turns)
+      return ([3, 2, 1] as const).map((stripes, i) => ({ s: first + i * step, side, stripes }))
+    })
+}
