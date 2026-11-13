@@ -1,6 +1,7 @@
 import { expect, test } from './test'
 import { driveCopy } from '@/content/copy/drive'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
+import { expectNoAxeViolations } from './axe'
 
 // The test drive with WebGL (ARCHITECTURE §7): runs in the "webgl" project (desktop, after the others).
 // Software rendering takes seconds per frame and the physics catches up at most 0.25 s a frame, so the
@@ -28,6 +29,20 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   expect(await page.evaluate(() => localStorage.getItem('hermes.drive.v1'))).toContain('"attempts":1')
   await expect(page.locator('html')).toHaveAttribute('data-drive', 'on')
   await expect(page.getByRole('banner')).toBeHidden()
+
+  // the controls come first (a keyboard and a mouse): the lights wait for Start
+  const controls = page.getByRole('dialog', { name: driveCopy.controls.title })
+  await expect(controls).toBeVisible()
+  await expect(controls.getByRole('img', { name: driveCopy.controls.keyboardLabel })).toBeVisible()
+  await expect(controls.locator('svg [data-control]')).toHaveCount(13)
+  await expect(controls.getByText(driveCopy.controls.items.brake.keys)).toBeVisible()
+  await expect(controls.getByRole('button', { name: driveCopy.controls.start })).toBeFocused()
+  await expectNoAxeViolations(page)
+  await page.waitForTimeout(1500)
+  await expect(page.getByText(driveCopy.lights.wait)).toBeVisible()
+  await expect(page.locator('[aria-label="1 of 5 red lights on"]')).toHaveCount(0)
+  await controls.getByRole('button', { name: driveCopy.controls.start }).click()
+  await expect(controls).toBeHidden()
 
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()

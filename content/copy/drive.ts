@@ -66,6 +66,39 @@ export const driveCopy = {
     { keys: ['L SHIFT'], label: 'Boost' },
   ],
 
+  /** new: the controls sheet before the first start (Oscar, 2026-11-12) */
+  controls: {
+    kicker: 'BEFORE THE LIGHTS',
+    title: 'THE CONTROLS.',
+    keyboardLabel: 'A keyboard with the keys that drive the car highlighted',
+    /** what a highlighted key says on the drawing */
+    keycaps: {
+      KeyW: 'W',
+      KeyA: 'A',
+      KeyS: 'S',
+      KeyD: 'D',
+      ArrowUp: '↑',
+      ArrowDown: '↓',
+      ArrowLeft: '←',
+      ArrowRight: '→',
+      ShiftLeft: 'SHIFT',
+      ShiftRight: 'SHIFT',
+      ControlRight: 'CTRL',
+      Space: 'SPACE',
+      Escape: 'ESC',
+    } as Record<string, string>,
+    items: {
+      throttle: { label: 'Throttle', keys: 'W, ↑ or Right Shift' },
+      brake: { label: 'Brake', keys: 'S, ↓ or Right Ctrl' },
+      steer: { label: 'Steer', keys: 'A and D, or ← and →' },
+      overtake: { label: 'Overtake', keys: 'Space', note: 'Within 1 s of the messenger, once a lap' },
+      boost: { label: 'Boost', keys: 'Left Shift', note: 'Spends energy; braking earns it back' },
+      pause: { label: 'Pause', keys: 'Esc' },
+    },
+    tip: 'Brake at the 3 board before each tight corner. 2 and 1 count down to the turn.',
+    start: 'Start',
+  },
+
   pause: {
     /** new: the pause button's name */
     button: 'Pause',

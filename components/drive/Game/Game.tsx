@@ -14,6 +14,7 @@ import { advance, startLoop, type Loop } from '@/lib/game/loop'
 import { createRace, lightsLit, type Phase } from '@/lib/game/race'
 import { formatGap, formatLap, gapsToMessenger, type LapResult } from '@/lib/game/timing'
 import { T } from '@/lib/game/tuning'
+import { ControlsKeyboard, ControlsList } from '../Controls/Controls'
 import { Hud, type HudHandle } from '../Hud/Hud'
 import styles from './Game.module.css'
 
@@ -21,6 +22,8 @@ const DriveScene = dynamic(() => import('../DriveScene/DriveScene'), { ssr: fals
 
 const GO_SHOWN_S = 1.2 // "LIGHTS OUT AND AWAY" stays up this long
 const newSeed = () => Math.floor(Math.random() * 2 ** 31)
+/** A keyboard and a mouse: the controls sheet shows the keys first (phones get their own controls) */
+const hasKeyboard = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const hasWebgl2 = () => {
   try {
@@ -42,6 +45,7 @@ export function Game({ preview }: { preview: boolean }) {
   const c = circuit()
   const [status, setStatus] = useState<'checking' | 'nowebgl' | 'loading' | 'ready'>('checking')
   const [paused, setPaused] = useState(false)
+  const [controls, setControls] = useState(false) // the controls sheet, before the first start
   const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, result: null })
   const [motion, setMotion] = useState(true)
   const [record, setRecord] = useState<DriveRecord>({ bestMs: null, attempts: 0 })
@@ -63,6 +67,7 @@ export function Game({ preview }: { preview: boolean }) {
   const hudClock = useRef(0)
   const ghostTag = useRef<HTMLDivElement>(null)
   const pauseDialog = useRef<HTMLDialogElement>(null)
+  const controlsDialog = useRef<HTMLDialogElement>(null)
   const runItBack = useRef<HTMLButtonElement>(null)
 
   // device checks after hydration
@@ -139,7 +144,7 @@ export function Game({ preview }: { preview: boolean }) {
     const down = (e: KeyboardEvent) => {
       if (e.code === PAUSE_KEY) {
         // the same Escape would cancel the sheet it just opened
-        if (!pauseDialog.current?.open) {
+        if (!pauseDialog.current?.open && !controlsDialog.current?.open) {
           e.preventDefault()
           pause()
         }
@@ -193,6 +198,19 @@ export function Game({ preview }: { preview: boolean }) {
     }
   }, [status, paused, ui.result])
 
+  // the controls sheet: a modal dialog, open until the driver starts
+  useEffect(() => {
+    const d = controlsDialog.current
+    if (!d) return
+    if (controls && !d.open) d.showModal()
+    if (!controls && d.open) d.close()
+  }, [controls])
+
+  const start = useCallback(() => {
+    setControls(false)
+    running.current = true
+  }, [])
+
   useEffect(() => {
     if (ui.result) runItBack.current?.focus()
   }, [ui.result])
@@ -200,7 +218,9 @@ export function Game({ preview }: { preview: boolean }) {
   const onReady = useCallback(() => {
     setStatus('ready')
     setRecord(countAttempt()) // the first attempt starts with the lights
-    running.current = true
+    // with a keyboard, the controls come first; the lights wait for Start
+    if (hasKeyboard()) setControls(true)
+    else running.current = true
   }, [])
 
 
@@ -260,6 +280,33 @@ export function Game({ preview }: { preview: boolean }) {
       </p>
 
       {status !== 'ready' && <p className={`label ${styles.loading}`}>{driveCopy.loading}</p>}
+
+      <dialog
+        ref={controlsDialog}
+        className={`${styles.sheet} ${styles.controls}`}
+        aria-labelledby="drive-controls"
+        onCancel={(e) => (e.preventDefault(), start())}
+      >
+        <p className={`label ${styles.title}`}>{driveCopy.controls.kicker}</p>
+        <h2 id="drive-controls" className={`display ${styles.sheetTitle}`}>
+          {driveCopy.controls.title}
+        </h2>
+        {controls && (
+          <>
+            <ControlsKeyboard />
+            <ControlsList />
+          </>
+        )}
+        <p className={styles.tip}>{driveCopy.controls.tip}</p>
+        <div className={styles.actions}>
+          <button type="button" className={styles.primary} onClick={start} autoFocus>
+            {driveCopy.controls.start}
+          </button>
+          <Link href="/" className={styles.secondary}>
+            {driveCopy.pause.exit}
+          </Link>
+        </div>
+      </dialog>
 
       <dialog ref={pauseDialog} className={styles.sheet} aria-labelledby="drive-paused" onCancel={(e) => (e.preventDefault(), resume())}>
         <h2 id="drive-paused" className={`display ${styles.sheetTitle}`}>

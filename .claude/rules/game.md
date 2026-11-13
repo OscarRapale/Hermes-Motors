@@ -34,7 +34,7 @@ Behaviour is in ARCHITECTURE §7 and the screens in `docs/design/04-test-drive.m
 
 ## Controls and access
 
-- Desktop: W/↑/Right Shift throttle, S/↓/Right Ctrl brake, A/D or ←/→ steer, Space = Overtake (only within 1 s of the messenger), Left Shift = Boost, Esc = pause (right-hand pedals: Oscar, 2026-11-12, over board 13's key bar). Show the key bar from the spec.
+- Desktop: W/↑/Right Shift throttle, S/↓/Right Ctrl brake, A/D or ←/→ steer, Space = Overtake (only within 1 s of the messenger), Left Shift = Boost, Esc = pause (right-hand pedals: Oscar, 2026-11-12, over board 13's key bar). Show the key bar from the spec, and with a keyboard and mouse, a controls sheet (a keyboard with the game keys lit) before the first start; the lights wait for Start.
 - Phone: landscape only, thumb controls from board 16; portrait shows the rotate screen (board 15). Haptics via `navigator.vibrate` only on lights out and finish, never required.
 - Pause on `visibilitychange` and on blur. Reduced motion: no camera sway, no zoom blur, no screen shake.
 - The page has a text summary of the lap for screen readers (sector results, final gap) announced at the finish.

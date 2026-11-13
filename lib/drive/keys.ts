@@ -15,6 +15,22 @@ const BOOST = ['ShiftLeft']
 export const GAME_KEYS: ReadonlySet<string> = new Set([...THROTTLE, ...BRAKE, ...LEFT, ...RIGHT, ...OVERTAKE, ...BOOST])
 export const PAUSE_KEY = 'Escape'
 
+/** What each control is bound to, in the order the controls sheet lists them */
+export const CONTROLS = [
+  { id: 'throttle', codes: THROTTLE },
+  { id: 'brake', codes: BRAKE },
+  { id: 'steer', codes: [...LEFT, ...RIGHT] },
+  { id: 'overtake', codes: OVERTAKE },
+  { id: 'boost', codes: BOOST },
+  { id: 'pause', codes: [PAUSE_KEY] },
+] as const
+
+export type ControlId = (typeof CONTROLS)[number]['id']
+
+/** The control a key is bound to, if any */
+export const controlFor = (code: string): ControlId | null =>
+  CONTROLS.find((c) => (c.codes as readonly string[]).includes(code))?.id ?? null
+
 const any = (held: ReadonlySet<string>, keys: string[]) => keys.some((k) => held.has(k))
 
 /** The input for the keys held now; both steering directions at once cancel out. */
