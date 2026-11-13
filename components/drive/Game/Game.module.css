@@ -122,6 +122,15 @@
   color: var(--white);
 }
 
+/* a jump start (Decision D9): said at once, in red, until the lights panel goes */
+.lights[data-jump] {
+  border-color: var(--red-on-dark);
+}
+
+.lights[data-jump] .caption {
+  color: var(--red-on-dark);
+}
+
 /* The key bar (board 13), desktop only: phones get thumb controls (M3 PR 5) */
 .keys {
   bottom: var(--drive-inset);

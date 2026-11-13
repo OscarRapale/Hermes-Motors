@@ -50,7 +50,7 @@ const buzz = (pattern: number | number[]) => {
 
 const HUD_INTERVAL_S = 1 / 30 // the HUD's DOM is written at 30 Hz, as in the prototype
 
-type Ui = { lit: number; phase: Phase; go: boolean; result: LapResult | null }
+type Ui = { lit: number; phase: Phase; go: boolean; jump: boolean; result: LapResult | null }
 
 /**
  * The test drive (ARCHITECTURE §7, board 13): the full-screen stage, the fixed-step loop, the keys, the
@@ -66,7 +66,7 @@ export function Game({ preview }: { preview: boolean }) {
   const rotate = useMedia(ROTATE_QUERY) // a phone held upright: the drive waits for landscape
   const compact = useMedia(COMPACT_QUERY)
   const touch = useMedia(TOUCH_QUERY) // board 16's thumb controls
-  const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, result: null })
+  const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, jump: false, result: null })
   const [motion, setMotion] = useState(true)
   const [record, setRecord] = useState<DriveRecord>({ bestMs: null, attempts: 0 })
 
@@ -106,7 +106,7 @@ export function Game({ preview }: { preview: boolean }) {
 
   const pushUi = useCallback((next: Ui) => {
     const prev = uiRef.current
-    if (prev.lit === next.lit && prev.phase === next.phase && prev.go === next.go && prev.result === next.result) return
+    if (prev.lit === next.lit && prev.phase === next.phase && prev.go === next.go && prev.jump === next.jump && prev.result === next.result) return
     uiRef.current = next
     setUi(next)
     if (prev.phase === 'grid' && next.phase === 'running') buzz(40) // lights out
@@ -143,6 +143,7 @@ export function Game({ preview }: { preview: boolean }) {
       }
       pushUi({
         lit: lightsLit(s),
+        jump: s.jumpStart,
         phase: s.phase,
         go: s.phase !== 'grid' && s.clock - s.lightsOutAt < GO_SHOWN_S,
         result: s.result,
@@ -176,7 +177,7 @@ export function Game({ preview }: { preview: boolean }) {
     pads.current.clear()
     padTaps.current.clear()
     boostUntil.current = 0
-    uiRef.current = { lit: 0, phase: 'grid', go: false, result: null }
+    uiRef.current = { lit: 0, phase: 'grid', go: false, jump: false, result: null }
     setUi(uiRef.current)
     hud.current?.update(hudView(c, loop.current.state, inputFromKeys(held.current)))
     setRecord(countAttempt())
@@ -329,13 +330,19 @@ export function Game({ preview }: { preview: boolean }) {
         </button>
 
         {status === 'ready' && (ui.phase === 'grid' || ui.go) && (
-          <div className={styles.lights} data-go={ui.phase !== 'grid' ? '' : undefined} role="status" aria-label={driveCopy.lightsLabel(ui.lit)}>
+          <div
+            className={styles.lights}
+            data-go={ui.phase !== 'grid' ? '' : undefined}
+            data-jump={ui.jump ? '' : undefined}
+            role="status"
+            aria-label={[driveCopy.lightsLabel(ui.lit), ui.jump ? driveCopy.jumpLabel(T.jumpPenaltyS) : ''].join(' ').trim()}
+          >
             <span className={styles.lamps} aria-hidden="true">
               {Array.from({ length: T.lightsCount }, (_, i) => (
                 <i key={i} data-on={ui.phase === 'grid' && i < ui.lit ? '' : undefined} />
               ))}
             </span>
-            <span className={`label ${styles.caption}`}>{ui.phase === 'grid' ? driveCopy.lights.wait : driveCopy.lights.go}</span>
+            <span className={`label ${styles.caption}`}>{ui.jump ? driveCopy.lights.jump(T.jumpPenaltyS) : ui.phase === 'grid' ? driveCopy.lights.wait : driveCopy.lights.go}</span>
           </div>
         )}
 
@@ -368,6 +375,7 @@ export function Game({ preview }: { preview: boolean }) {
               <ControlsList />
             </>
           )}
+          <p className={styles.tip}>{driveCopy.controls.startTip(T.jumpPenaltyS)}</p>
           <p className={styles.tip}>{driveCopy.controls.tip}</p>
           <div className={styles.actions}>
             <button type="button" className={styles.primary} onClick={closeControls} autoFocus>

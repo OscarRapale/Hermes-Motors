@@ -23,7 +23,7 @@ Behaviour is in ARCHITECTURE §7 and the screens in `docs/design/04-test-drive.m
 - The messenger's lap is **1:11.906**; sectors 19.420, 26.411, 26.075 s. These live in `content/facts.ts`, not in game code.
 - Sector and lap gaps are computed **on times rounded to the millisecond**, so the three shown sector gaps add up to the shown lap gap.
 - Colours: purple `#C9A0FF` = faster than the messenger in that sector, yellow `#F2C94C` = slower, green `#5BE58F` = the live delta when ahead, red-on-dark `#FF5A63` when behind.
-- Lights: five lights, one per second, then lights out after a random 0.2–1.0 s. A jump start is a 5 s penalty, shown on the finish screen (placeholder until Decision D9).
+- Lights: five lights, one per second, then lights out after a random 0.2–1.0 s. A jump start (throttle at 50% or more from the first light) is a 5 s penalty (Decision D9): the lights caption turns red at once ("JUMP START · +5 S"), the controls sheet and the rotate screen say so before the start, and the finish screen and card include it.
 
 ## Share cards (no accounts, no database)
 

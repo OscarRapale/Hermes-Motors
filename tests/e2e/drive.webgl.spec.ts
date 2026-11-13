@@ -58,9 +58,15 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   await page.getByRole('button', { name: driveCopy.pause.resume }).click()
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeHidden()
 
+  // throttle while the lights are on: a jump start, said at once (Decision D9)
+  const lights = page.locator('[role="status"][aria-label*="red lights on"]')
+  await expect(lights).toBeAttached({ timeout: 150_000 })
+  await page.keyboard.down('KeyW')
+  await expect(page.getByText(driveCopy.lights.jump(5))).toBeVisible({ timeout: 60_000 })
+  await expect(page.locator('[role="status"][aria-label*="Jump start"]')).toBeAttached()
+
   // lights out, then full throttle carries the car to the line and the lap clock starts
   await expect(stage).toHaveAttribute('data-phase', 'running', { timeout: 150_000 })
-  await page.keyboard.down('KeyW')
   await expect(page.getByRole('timer', { name: driveCopy.hud.labels.clock })).toHaveText(/^0:0\d\.\d{3}$/, { timeout: 120_000 })
   // on the lap: sector 1 live, the signed gap to the messenger, the dial reading
   await expect(page.getByRole('region', { name: driveCopy.hud.labels.sectorTimes }).getByText(driveCopy.hud.live)).toBeVisible()

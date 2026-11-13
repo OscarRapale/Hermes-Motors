@@ -10,7 +10,8 @@ export const driveCopy = {
   rotate: {
     turn: 'TURN YOUR PHONE TO DRIVE',
     steps: [
-      'Five red lights. Go when they go out.',
+      // changed from the board (Decision D9): the rule, before the start
+      'Five red lights. Go when they go out. Going early costs 5 s.',
       'Get within one second of the messenger and Overtake unlocks.',
       'Finish the lap, then share your card.',
     ],
@@ -31,9 +32,12 @@ export const driveCopy = {
   /** new: the 3D layer's name for screen readers */
   sceneLabel: 'The Proving Ground: your car on the grid, the messenger’s ghost ahead',
 
-  lights: { wait: 'WAIT FOR LIGHTS OUT', go: 'LIGHTS OUT AND AWAY' },
+  /** new `jump`: shown the moment the throttle goes down too early (Decision D9) */
+  lights: { wait: 'WAIT FOR LIGHTS OUT', go: 'LIGHTS OUT AND AWAY', jump: (s: number) => `JUMP START · +${s} S` },
   /** new: what the lights say to a screen reader */
   lightsLabel: (lit: number) => (lit === 0 ? 'Lights out' : `${lit} of 5 red lights on`),
+  /** new: added to the lights' label after a jump start */
+  jumpLabel: (s: number) => `Jump start: ${s} seconds will be added to your lap.`,
 
   hud: {
     title: 'BEAT THE MESSENGER',
@@ -150,6 +154,8 @@ export const driveCopy = {
       pause: { label: 'Pause', keys: 'Esc' },
     },
     tip: 'Brake at the 3 board before each tight corner. 2 and 1 count down to the turn.',
+    /** new (Decision D9) */
+    startTip: (s: number) => `Wait for the lights to go out: throttle before then costs ${s} s.`,
     start: 'Start',
     /** back to the pause sheet */
     back: 'Back',
