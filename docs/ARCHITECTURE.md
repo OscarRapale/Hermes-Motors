@@ -156,7 +156,8 @@ Grid → five lights (1 s apart) → lights out after random 0.2–1.0 s → liv
 ### 7.5 Finish and share
 
 - Finish screen (boards 14, 17): headline won/lost, gap, lap, sector chips, card previews, "Share your card" / "Run it back".
-- Share link: `/drive/r?lap=<ms>&s=<s1>.<s2>.<s3>&a=<attempt>`. Validate: integers, lap 60,000–180,000 ms, |Σs − lap| ≤ 3 ms, attempt 1–999. Invalid → 404.
+- Share link: `/drive/r?lap=<ms>&s=<s1>.<s2>.<s3>&a=<attempt>[&j=1]`. Validate: integers, lap 60,000–180,000 ms, |Σs − lap| ≤ 3 ms, attempt 1–999, each key once. Invalid → 404. After a jump start, `j=1`: `lap` stays the lap as driven (its sectors add up to it) and the 5 s penalty is added to what counts (Decision D30). Codec: `lib/game/share.ts`.
+- Cards (`/api/card`, Node runtime): drawn from the validated numbers only, with Michroma and Geist Mono TTFs from `assets/fonts/`, the car from `assets/card/card-car.png` (`npm run assets`), and colours read from `styles/tokens.css`. Both carry the car credit and the fictional-team line. Cached `immutable`.
 - `/drive/r` renders the result (no game) with `generateMetadata` pointing OG/Twitter images to `/api/card?…&format=link`.
 - "Share your card": Web Share API with the story PNG (`format=story`) when `navigator.canShare({ files })`, otherwise download + copy link.
 - Best lap and attempts in `localStorage` (`hermes.drive.v1`).

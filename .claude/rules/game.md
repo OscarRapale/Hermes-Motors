@@ -27,7 +27,7 @@ Behaviour is in ARCHITECTURE §7 and the screens in `docs/design/04-test-drive.m
 
 ## Share cards (no accounts, no database)
 
-- The result is encoded in the URL (`/drive/r?lap=71692&s=19842.26323.25527&a=4`): integers only, validated against ranges (a lap between 60 and 180 s, sectors summing to the lap within 3 ms). Anything else → 404.
+- The result is encoded in the URL (`/drive/r?lap=71692&s=19842.26323.25527&a=4`, plus `&j=1` after a jump start): integers only, validated against ranges (a lap between 60 and 180 s, sectors summing to the lap within 3 ms). Anything else → 404.
 - Cards are drawn by `app/api/card/route.tsx` with `ImageResponse`: `format=link` 1200 × 630, `format=story` 1080 × 1920. Text comes only from the validated numbers and fixed copy, never from query strings.
 - Cards that show the car carry the CC BY credit in small type.
 - Best lap and attempt count live in `localStorage` (`hermes.drive.v1`), wrapped in try/catch; the game works without it.

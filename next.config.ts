@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   reactStrictMode: true,
   poweredByHeader: false,
+  // the share cards read their fonts, the car still and the colour tokens at request time
+  outputFileTracingIncludes: { '/api/card': ['./assets/fonts/*.ttf', './assets/card/*.png', './styles/tokens.css'] },
   experimental: {
     // CSS inlined into the HTML: one request fewer before first paint. On slow 4G that brings
     // the landing's LCP (the hero still, painted with the first frame) from 2.7 s to 2.2 s (D18).

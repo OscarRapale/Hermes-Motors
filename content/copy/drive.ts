@@ -15,8 +15,8 @@ export const driveCopy = {
       'Finish the lap, then share your card.',
     ],
     status: 'Waiting for landscape',
-    /** changed from the board: no game audio is planned */
-    footnote: 'No sign-up. Your time lives on the card.',
+    /** changed from the board: no game audio; never a word about sign-up or databases (Oscar) */
+    footnote: 'Your time lives on the card.',
     /** new: the close button's name */
     close: 'Leave the test drive',
   },
@@ -86,6 +86,21 @@ export const driveCopy = {
     { keys: ['SPACE'], label: 'Overtake' },
     { keys: ['E'], label: 'Boost' },
   ],
+
+  /** The share cards (copy.md → Card text; board 14 previews). The numbers come from the validated link */
+  card: {
+    won: ['I BEAT THE', 'MESSENGER BY'],
+    lost: ['I CHASED THE', 'MESSENGER TO'],
+    unit: 'S',
+    tag: 'PROVING GROUND · BEAT THE MESSENGER',
+    /** "YOU 1:11.692 · MESSENGER 1:11.906" (the story card puts them on two lines) */
+    you: (lap: string) => `YOU ${lap}`,
+    messenger: (lap: string) => `MESSENGER ${lap}`,
+    /** new: after a jump start (Decision D9) */
+    jumpStart: (s: number) => `INCLUDES ${s} S JUMP-START PENALTY`,
+    /** the car's credit (docs/legal/credits.md): every card shows the car */
+    credit: '3D model based on “2026 F1 CAR” by Abu Saif, CC BY 4.0, modified.',
+  },
 
   /** Board 16's thumb controls (copy.md: "BRAKE", "THROTTLE", "OT", "BST"; caption changed from the board) */
   touch: {
