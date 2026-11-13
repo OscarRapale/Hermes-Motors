@@ -9,8 +9,8 @@ test.use({ webgl: true, viewport: { width: 390, height: 844 }, hasTouch: true, i
 
 const SHOTS = process.env.DRIVE_SHOTS // a folder: save screenshots for review
 
-test('upright: the rotate screen, and the lights wait; turned: the compact HUD and the start', async ({ page }) => {
-  test.setTimeout(420_000)
+test('upright: the rotate screen, and the lights wait; turned: the compact HUD, the start, the thumb controls', async ({ page }) => {
+  test.setTimeout(540_000)
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   const at = DAY_ONE_MS + 60_000
@@ -66,6 +66,29 @@ test('upright: the rotate screen, and the lights wait; turned: the compact HUD a
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeHidden()
   await page.setViewportSize({ width: 844, height: 390 })
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()
+  await page.getByRole('button', { name: driveCopy.pause.resume }).click()
+
+  // board 16's thumb controls: every pad at least 44 px, axe passes
+  const touch = driveCopy.touch.labels
+  for (const name of Object.values(touch)) {
+    const box = (await page.getByRole('button', { name }).boundingBox())!
+    expect(Math.min(box.width, box.height)).toBeGreaterThanOrEqual(44)
+  }
+  await expectNoAxeViolations(page)
+
+  // hold THROTTLE through lights out: the lap clock starts; a BST tap deploys Boost (with the throttle down)
+  const stageEl = page.locator('[data-status="ready"]')
+  await expect(stageEl).toHaveAttribute('data-phase', 'running', { timeout: 150_000 })
+  const throttle = (await page.getByRole('button', { name: touch.throttle }).boundingBox())!
+  await page.mouse.move(throttle.x + throttle.width / 2, throttle.y + throttle.height / 2)
+  await page.mouse.down()
+  await expect(page.getByRole('button', { name: touch.throttle })).toHaveAttribute('data-pressed', '')
+  await expect(page.getByRole('timer', { name: driveCopy.hud.labels.clock })).toHaveText(/^0:0\d\.\d{3}$/, { timeout: 120_000 })
+  await page.getByRole('button', { name: touch.boost }).dispatchEvent('pointerdown', { pointerId: 7, bubbles: true })
+  await expect(page.getByText(driveCopy.hud.fxBoost)).toBeVisible({ timeout: 60_000 })
+  await page.mouse.up()
+  await expect(page.getByRole('button', { name: touch.throttle })).not.toHaveAttribute('data-pressed')
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/touch-844.png` })
   expect(errors).toEqual([])
 })
 

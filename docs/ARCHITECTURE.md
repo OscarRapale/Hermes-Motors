@@ -166,6 +166,8 @@ Grid → five lights (1 s apart) → lights out after random 0.2–1.0 s → liv
 
 Desktop: keyboard (rules file). Phone: landscape, thumb controls; portrait → rotate screen (board 15). No WebGL2 → a static screen with the messenger's lap time and a link back. Pause on blur.
 
+As built (M3): touch screens get board 16's compact HUD and thumb pads, read by pointer so both thumbs work and one can slide between ‹ and ›. A thumb on THROTTLE can't hold BST, so a BST tap deploys Boost for 2 s, another tap adds 2 s, and braking cancels it (Decision D29). The compact HUD is also used in windows under 1000 × 500. `lib/drive/media.ts` holds the media queries; the CSS repeats them.
+
 ## 8. Pages
 
 | Page | Board | Data |

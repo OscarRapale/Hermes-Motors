@@ -1,0 +1,165 @@
+/* Board 16's thumb controls (844 × 390, prototype TestDrive-Phone): glass pads, the throttle in Redline */
+
+.touch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  font-family: var(--font-mono);
+}
+
+.left,
+.right {
+  position: absolute;
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  display: flex;
+  pointer-events: auto;
+}
+
+.left {
+  left: max(var(--space-4), env(safe-area-inset-left));
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.right {
+  right: max(var(--space-4), env(safe-area-inset-right));
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.caption {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--hud-glass-bg);
+  border: 1px solid var(--hud-glass-border);
+  font-size: var(--fs-hudc-top);
+  letter-spacing: var(--tracking-hud-tight);
+  color: var(--hud-k);
+}
+
+.steer {
+  display: flex;
+  gap: var(--space-3);
+  touch-action: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.buttons {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: 0;
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
+  color: var(--white);
+  font: inherit;
+  font-size: var(--fs-hud-chip);
+  letter-spacing: var(--tracking-hud);
+  touch-action: none;
+  transition: transform var(--dur-press) var(--ease-out);
+}
+
+.pad svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pad[data-pressed] {
+  transform: scale(0.94);
+  border-color: var(--white);
+}
+
+.round {
+  width: var(--touch-steer);
+  height: var(--touch-steer);
+  border-radius: 50%;
+}
+
+.round svg {
+  width: var(--icon-l);
+  height: var(--icon-l);
+}
+
+.bst {
+  width: var(--touch-bst);
+  height: var(--touch-bst);
+  border-radius: 50%;
+}
+
+.ot {
+  width: var(--touch-ot);
+  height: var(--touch-ot);
+  border-radius: 50%;
+  font-size: var(--fs-hud-k);
+}
+
+/* Overtake ready within 1 s of the messenger, on for 2 s after the press; Boost while it deploys */
+.touch[data-ot='ready'] .ot {
+  background: var(--hud-ot-ready);
+  border: 1.5px solid var(--red-on-dark);
+}
+
+.touch[data-ot='active'] .ot,
+.touch[data-boost='on'] .bst {
+  background: var(--redline);
+  border-color: var(--redline);
+}
+
+.brake {
+  width: var(--touch-brake-w);
+  height: var(--touch-brake-h);
+  border-radius: var(--radius-touch-brake);
+}
+
+.brake svg {
+  width: var(--icon-m);
+  height: var(--icon-m);
+}
+
+.throttle {
+  width: var(--touch-throttle-w);
+  height: var(--touch-throttle-h);
+  border-radius: var(--radius-touch-throttle);
+  background: var(--redline);
+  border-color: var(--touch-throttle-border);
+  box-shadow: var(--touch-throttle-shadow);
+}
+
+.throttle svg {
+  width: var(--icon-m);
+  height: var(--icon-m);
+}
+
+.throttle[data-pressed] {
+  border-color: var(--white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pad {
+    transition: none;
+  }
+}

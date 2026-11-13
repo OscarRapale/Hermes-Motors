@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M3 PR 5a, phone layout (boards 15, 16). **Next:** PR 5b, thumb controls + haptics.
+**Now:** M3 done (PR 5b, thumb controls). **Next:** M4, finish screens and share cards (plan first).
 ## Milestones
 
 ### M0 Foundation
@@ -27,7 +27,7 @@
 - [x] Circuit from PTS (3,119 m), kerbs, walls, gantry
 - [x] Messenger ghost from SPD (sums to 71.906 s)
 - [x] Physics + tuning + three reference laps in tests
-- [ ] HUD, lights, sectors, delta, map; desktop keys; phone controls; rotate; pause; no-WebGL state
+- [x] HUD, lights, sectors, delta, map; desktop keys; phone controls; rotate; pause; no-WebGL state
 
 ### M4 Finish and share
 - [ ] Finish screens (14, 17); `/drive/r` + validation; `/api/card` link + story
@@ -70,9 +70,9 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-13 · Phone layout (PR 5a): rotate screen (board 15; lights wait for landscape, upright mid-lap pauses), compact HUD (board 16) for landscape phones and small windows; WebGL e2e run one at a time.
+- 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15; lights wait for landscape, upright pauses), compact HUD (board 16) on touch screens and small windows, thumb pads (both thumbs, slide to steer), BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
-- 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, full-screen stage, package scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device; fixed Esc, missed key taps, start-line drift.
+- 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, stage, scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device.
 - 2026-11-11 · Circuit + physics (PRs #17–#18): `lib/game` circuit (3,119 m; sector lines at his times), ghost, kerbs/run-off; arcade car, race flow, fixed step, input logs; grip × 0.58; three reference laps replayed in CI.
 - 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (frame stack + zoom, callouts, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB gz.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition once per session, HP/kW, hotspots → `/#specs-2|3|5`), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).

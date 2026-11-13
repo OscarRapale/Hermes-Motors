@@ -4,6 +4,7 @@ import { driveCopy } from '@/content/copy/drive'
 import { KEYBOARD, KEYBOARD_H, KEYBOARD_W } from '@/lib/drive/keyboard'
 import { CONTROLS, GAME_KEYS, PAUSE_KEY, controlFor, inputFromKeys } from '@/lib/drive/keys'
 import { frameAt } from '@/lib/drive/pose'
+import { BOOST_TAP_S, boostTap, withTouch, type Pad } from '@/lib/drive/touch'
 import { circuit } from '@/lib/game/circuit'
 import { GHOST_HIDDEN_S } from '@/lib/game/ghost'
 import { createRace, step, IDLE, type RaceState } from '@/lib/game/race'
@@ -109,5 +110,27 @@ describe('the run-up (Decision D26)', () => {
     for (let k = 0; k < 60; k++) s = step(c, s, { ...IDLE, throttle: 1, steer: 1 }, DT)
     expect(s.lapStart).not.toBeNull()
     expect(s.car.d).toBeGreaterThan(0)
+  })
+})
+
+describe('the thumb controls (board 16, Decision D29)', () => {
+  const pads = (...p: Pad[]) => new Set<Pad>(p)
+
+  it('drives with the pads as with the keys; the keys still work alongside', () => {
+    expect(withTouch(IDLE, pads('throttle', 'left'), 0, 10)).toEqual({ ...IDLE, throttle: 1, steer: 1 })
+    expect(withTouch(IDLE, pads('brake', 'right'), 0, 10)).toMatchObject({ brake: 1, steer: -1 })
+    expect(withTouch(IDLE, pads('left', 'right'), 0, 10).steer).toBe(0)
+    expect(withTouch({ ...IDLE, steer: -1 }, pads('left'), 0, 10).steer).toBe(-1)
+    expect(withTouch(IDLE, pads('overtake'), 0, 10).overtake).toBe(true)
+  })
+
+  it('deploys Boost for 2 s a tap, extends it with another, and cancels it on the brake', () => {
+    const until = boostTap(0, 10)
+    expect(until).toBe(10 + BOOST_TAP_S)
+    expect(withTouch(IDLE, pads('throttle'), until, 11.9).boost).toBe(true)
+    expect(withTouch(IDLE, pads('throttle'), until, 12).boost).toBe(false)
+    expect(boostTap(until, 11)).toBe(14) // from the end of the burst, not from now
+    expect(boostTap(until, 20)).toBe(22)
+    expect(withTouch(IDLE, pads('brake'), until, 11).boost).toBe(false)
   })
 })
