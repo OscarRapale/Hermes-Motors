@@ -30,7 +30,7 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   await expect(page.locator('html')).toHaveAttribute('data-drive', 'on')
   await expect(page.getByRole('banner')).toBeHidden()
 
-  // the controls come first (a keyboard and a mouse): the lights wait for Start
+  // the first time on this device (a keyboard and a mouse), the controls come first: the lights wait for Start
   const controls = page.getByRole('dialog', { name: driveCopy.controls.title })
   await expect(controls).toBeVisible()
   await expect(controls.getByRole('img', { name: driveCopy.controls.keyboardLabel })).toBeVisible()
@@ -48,6 +48,13 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()
   await expect(page.getByRole('button', { name: driveCopy.pause.resume })).toBeFocused()
   await expect(page.getByRole('banner')).toBeVisible()
+  // the controls again, from the pause sheet: Back returns to it
+  await page.getByRole('button', { name: driveCopy.pause.controls }).click()
+  await expect(controls).toBeVisible()
+  await expect(controls.getByText(driveCopy.controls.kicker)).toHaveCount(0)
+  await controls.getByRole('button', { name: driveCopy.controls.back }).click()
+  await expect(controls).toBeHidden()
+  await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()
   await page.getByRole('button', { name: driveCopy.pause.resume }).click()
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeHidden()
 

@@ -66,7 +66,7 @@ export const driveCopy = {
     { keys: ['L SHIFT'], label: 'Boost' },
   ],
 
-  /** new: the controls sheet before the first start (Oscar, 2026-11-12) */
+  /** new: the controls sheet, before the first start on a device and from the pause sheet (Oscar, 2026-11-12) */
   controls: {
     kicker: 'BEFORE THE LIGHTS',
     title: 'THE CONTROLS.',
@@ -97,6 +97,8 @@ export const driveCopy = {
     },
     tip: 'Brake at the 3 board before each tight corner. 2 and 1 count down to the turn.',
     start: 'Start',
+    /** back to the pause sheet */
+    back: 'Back',
   },
 
   pause: {
@@ -105,6 +107,8 @@ export const driveCopy = {
     title: 'Paused',
     resume: 'Resume',
     restart: 'Restart',
+    /** new: opens the controls sheet */
+    controls: 'Controls',
     exit: 'Exit',
   },
 

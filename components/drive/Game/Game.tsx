@@ -45,7 +45,9 @@ export function Game({ preview }: { preview: boolean }) {
   const c = circuit()
   const [status, setStatus] = useState<'checking' | 'nowebgl' | 'loading' | 'ready'>('checking')
   const [paused, setPaused] = useState(false)
-  const [controls, setControls] = useState(false) // the controls sheet, before the first start
+  // the controls sheet: before the first start on this device, or from the pause sheet
+  const [controls, setControls] = useState<'off' | 'first' | 'paused'>('off')
+  const [keyboard, setKeyboard] = useState(false)
   const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, result: null })
   const [motion, setMotion] = useState(true)
   const [record, setRecord] = useState<DriveRecord>({ bestMs: null, attempts: 0 })
@@ -75,6 +77,7 @@ export function Game({ preview }: { preview: boolean }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- a one-time device check after hydration
     setStatus(hasWebgl2() ? 'loading' : 'nowebgl')
     setMotion(!reducedMotion())
+    setKeyboard(hasKeyboard())
   }, [])
 
   const pushUi = useCallback((next: Ui) => {
@@ -198,18 +201,19 @@ export function Game({ preview }: { preview: boolean }) {
     }
   }, [status, paused, ui.result])
 
-  // the controls sheet: a modal dialog, open until the driver starts
+  // the controls sheet: a modal dialog (over the pause sheet when opened from it)
   useEffect(() => {
     const d = controlsDialog.current
     if (!d) return
-    if (controls && !d.open) d.showModal()
-    if (!controls && d.open) d.close()
+    if (controls !== 'off' && !d.open) d.showModal()
+    if (controls === 'off' && d.open) d.close()
   }, [controls])
 
-  const start = useCallback(() => {
-    setControls(false)
-    running.current = true
-  }, [])
+  // Start (the first time), or Back to the pause sheet
+  const closeControls = useCallback(() => {
+    if (controls === 'first') running.current = true
+    setControls('off')
+  }, [controls])
 
   useEffect(() => {
     if (ui.result) runItBack.current?.focus()
@@ -217,9 +221,10 @@ export function Game({ preview }: { preview: boolean }) {
 
   const onReady = useCallback(() => {
     setStatus('ready')
-    setRecord(countAttempt()) // the first attempt starts with the lights
-    // with a keyboard, the controls come first; the lights wait for Start
-    if (hasKeyboard()) setControls(true)
+    const record = countAttempt() // the first attempt starts with the lights
+    setRecord(record)
+    // the first time on this device, with a keyboard, the controls come first; the lights wait for Start
+    if (hasKeyboard() && record.attempts <= 1) setControls('first')
     else running.current = true
   }, [])
 
@@ -285,13 +290,13 @@ export function Game({ preview }: { preview: boolean }) {
         ref={controlsDialog}
         className={`${styles.sheet} ${styles.controls}`}
         aria-labelledby="drive-controls"
-        onCancel={(e) => (e.preventDefault(), start())}
+        onCancel={(e) => (e.preventDefault(), closeControls())}
       >
-        <p className={`label ${styles.title}`}>{driveCopy.controls.kicker}</p>
+        {controls === 'first' && <p className={`label ${styles.title}`}>{driveCopy.controls.kicker}</p>}
         <h2 id="drive-controls" className={`display ${styles.sheetTitle}`}>
           {driveCopy.controls.title}
         </h2>
-        {controls && (
+        {controls !== 'off' && (
           <>
             <ControlsKeyboard />
             <ControlsList />
@@ -299,12 +304,14 @@ export function Game({ preview }: { preview: boolean }) {
         )}
         <p className={styles.tip}>{driveCopy.controls.tip}</p>
         <div className={styles.actions}>
-          <button type="button" className={styles.primary} onClick={start} autoFocus>
-            {driveCopy.controls.start}
+          <button type="button" className={styles.primary} onClick={closeControls} autoFocus>
+            {controls === 'paused' ? driveCopy.controls.back : driveCopy.controls.start}
           </button>
-          <Link href="/" className={styles.secondary}>
-            {driveCopy.pause.exit}
-          </Link>
+          {controls === 'first' && (
+            <Link href="/" className={styles.secondary}>
+              {driveCopy.pause.exit}
+            </Link>
+          )}
         </div>
       </dialog>
 
@@ -319,6 +326,11 @@ export function Game({ preview }: { preview: boolean }) {
           <button type="button" className={styles.secondary} onClick={restart}>
             {driveCopy.pause.restart}
           </button>
+          {keyboard && (
+            <button type="button" className={styles.secondary} onClick={() => setControls('paused')}>
+              {driveCopy.pause.controls}
+            </button>
+          )}
           <Link href="/" className={styles.secondary}>
             {driveCopy.pause.exit}
           </Link>
