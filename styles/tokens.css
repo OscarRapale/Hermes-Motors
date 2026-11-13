@@ -69,6 +69,19 @@
   --hudc-lamp: 30px;
   --hudc-lights-top: 82px;
   --hudc-finish-top: 96px; /* the lap result, under the dash pill (prototype) */
+  /* the thumb controls (board 16) */
+  --touch-steer: 66px;
+  --touch-bst: 46px;
+  --touch-ot: 54px;
+  --touch-brake-w: 64px;
+  --touch-brake-h: 84px;
+  --touch-throttle-w: 70px;
+  --touch-throttle-h: 120px;
+  --radius-touch-brake: 22px;
+  --radius-touch-throttle: 24px;
+  --touch-throttle-border: rgba(255, 255, 255, 0.3);
+  --touch-throttle-shadow: 0 14px 30px -12px rgba(213, 18, 30, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  --dur-press: 80ms;
   /* the rotate screen (board 15) */
   --drive-rotate-scrim: linear-gradient(180deg, rgba(40, 41, 46, 0.9) 0%, rgba(14, 15, 17, 0.96) 100%);
   --drive-rotate-blur: 18px;
@@ -225,6 +238,8 @@
   --btn-knob-xs: 34px; /* in a 44 px pill */
   --icon: 18px;
   --icon-s: 16px;
+  --icon-m: 20px;
+  --icon-l: 24px;
   --icon-xs: 15px;
   --icon-stroke: 1.6;
   --icon-stroke-bold: 2;

@@ -212,7 +212,7 @@
 
 /* Board 16's compact layout (lib/drive/media.ts COMPACT_QUERY): the pause button beside the map, smaller
    lamps under the dash pill, the banner and the lap's end sized for 844 × 390 */
-@media (max-width: 999.98px), (max-height: 499.98px) {
+@media (max-width: 999.98px), (max-height: 499.98px), (hover: none) and (pointer: coarse) {
   .pauseButton {
     top: var(--hudc-inset);
     right: max(var(--space-4), env(safe-area-inset-right));

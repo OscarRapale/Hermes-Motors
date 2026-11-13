@@ -87,6 +87,24 @@ export const driveCopy = {
     { keys: ['E'], label: 'Boost' },
   ],
 
+  /** Board 16's thumb controls (copy.md: "BRAKE", "THROTTLE", "OT", "BST"; caption changed from the board) */
+  touch: {
+    caption: 'STEER WITH THE BUTTONS',
+    brake: 'BRAKE',
+    throttle: 'THROTTLE',
+    overtake: 'OT',
+    boost: 'BST',
+    /** new: the buttons' names (each includes its visible text: WCAG 2.5.3) */
+    labels: {
+      left: 'Steer left',
+      right: 'Steer right',
+      brake: 'Brake',
+      throttle: 'Throttle',
+      overtake: 'OT, Overtake',
+      boost: 'BST, Boost for 2 seconds',
+    },
+  },
+
   /** new: the controls sheet, before the first start on a device and from the pause sheet (Oscar, 2026-11-12) */
   controls: {
     kicker: 'BEFORE THE LIGHTS',

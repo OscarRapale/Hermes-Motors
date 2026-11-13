@@ -7,8 +7,9 @@ import { messenger } from '@/content/facts'
 import { driveCopy } from '@/content/copy/drive'
 import { hudView } from '@/lib/drive/hud'
 import { GAME_KEYS, PAUSE_KEY, inputFromKeys } from '@/lib/drive/keys'
-import { COMPACT_QUERY, ROTATE_QUERY, useMedia } from '@/lib/drive/media'
+import { COMPACT_QUERY, ROTATE_QUERY, TOUCH_QUERY, useMedia } from '@/lib/drive/media'
 import { frameAt, type Frame } from '@/lib/drive/pose'
+import { boostTap, withTouch, type Pad } from '@/lib/drive/touch'
 import { countAttempt, recordLap, type DriveRecord } from '@/lib/drive/storage'
 import { circuit } from '@/lib/game/circuit'
 import { advance, startLoop, type Loop } from '@/lib/game/loop'
@@ -18,6 +19,7 @@ import { T } from '@/lib/game/tuning'
 import { ControlsKeyboard, ControlsList } from '../Controls/Controls'
 import { Hud, type HudHandle } from '../Hud/Hud'
 import { Rotate } from '../Rotate/Rotate'
+import { TouchControls, type TouchHandle } from '../TouchControls/TouchControls'
 import styles from './Game.module.css'
 
 const DriveScene = dynamic(() => import('../DriveScene/DriveScene'), { ssr: false })
@@ -32,6 +34,15 @@ const hasWebgl2 = () => {
     return document.createElement('canvas').getContext('webgl2') !== null
   } catch {
     return false
+  }
+}
+
+/** Haptics (rules/game.md): only at lights out and the finish, never needed; phones without it ignore it */
+const buzz = (pattern: number | number[]) => {
+  try {
+    navigator.vibrate?.(pattern)
+  } catch {
+    // not allowed here: fine
   }
 }
 
@@ -52,6 +63,7 @@ export function Game({ preview }: { preview: boolean }) {
   const [keyboard, setKeyboard] = useState(false)
   const rotate = useMedia(ROTATE_QUERY) // a phone held upright: the drive waits for landscape
   const compact = useMedia(COMPACT_QUERY)
+  const touch = useMedia(TOUCH_QUERY) // board 16's thumb controls
   const [ui, setUi] = useState<Ui>({ lit: 0, phase: 'grid', go: false, result: null })
   const [motion, setMotion] = useState(true)
   const [record, setRecord] = useState<DriveRecord>({ bestMs: null, attempts: 0 })
@@ -66,6 +78,11 @@ export function Game({ preview }: { preview: boolean }) {
   const held = useRef(new Set<string>())
   // keys pressed since the last step: a quick tap (down and up between two frames) still counts once
   const taps = useRef(new Set<string>())
+  // the thumb controls, the same way, and when a BST tap's Boost ends (race clock)
+  const pads = useRef(new Set<Pad>())
+  const padTaps = useRef(new Set<Pad>())
+  const boostUntil = useRef(0)
+  const touchPads = useRef<TouchHandle>(null)
   const snap = useRef(0)
   const running = useRef(false) // ready and not paused: the loop advances
   const forLandscape = useRef(false) // ready, held upright: the lights start once the phone turns
@@ -90,24 +107,37 @@ export function Game({ preview }: { preview: boolean }) {
     if (prev.lit === next.lit && prev.phase === next.phase && prev.go === next.go && prev.result === next.result) return
     uiRef.current = next
     setUi(next)
+    if (prev.phase === 'grid' && next.phase === 'running') buzz(40) // lights out
     // a finished lap: keep it if it's the best on this device
-    if (next.result && !prev.result) setRecord(recordLap(next.result.totalMs))
+    if (next.result && !prev.result) {
+      setRecord(recordLap(next.result.totalMs))
+      buzz([60, 40, 60])
+    }
   }, [])
 
   // One rendered frame: advance the physics at its fixed step, then what the scene and the clock show.
   const onFrame = useCallback(
     (dt: number) => {
       if (!running.current) return
-      const input = inputFromKeys(taps.current.size ? new Set([...held.current, ...taps.current]) : held.current)
+      const keys = inputFromKeys(taps.current.size ? new Set([...held.current, ...taps.current]) : held.current)
+      const onPads = padTaps.current.size ? new Set([...pads.current, ...padTaps.current]) : pads.current
+      const input = withTouch(keys, onPads, boostUntil.current, loop.current.state.clock)
+      if (input.brake > 0) boostUntil.current = 0 // braking cancels a BST tap's Boost
       const { loop: next, alpha } = advance(c, loop.current, input, dt)
-      if (next.state !== loop.current.state) taps.current.clear() // a step has seen them
+      if (next.state !== loop.current.state) {
+        // a step has seen them
+        taps.current.clear()
+        padTaps.current.clear()
+      }
       loop.current = next
       frame.current = frameAt(c, next.prev, next.state, alpha)
       const s = next.state
       hudClock.current += dt
       if (hudClock.current >= HUD_INTERVAL_S || s.phase !== uiRef.current.phase) {
         hudClock.current = 0
-        hud.current?.update(hudView(c, s, input))
+        const view = hudView(c, s, input)
+        hud.current?.update(view)
+        touchPads.current?.update(view)
       }
       pushUi({
         lit: lightsLit(s),
@@ -124,6 +154,9 @@ export function Game({ preview }: { preview: boolean }) {
     running.current = false
     held.current.clear()
     taps.current.clear()
+    pads.current.clear()
+    padTaps.current.clear()
+    boostUntil.current = 0
     setPaused(true)
   }, [])
 
@@ -138,6 +171,9 @@ export function Game({ preview }: { preview: boolean }) {
     snap.current += 1
     held.current.clear()
     taps.current.clear()
+    pads.current.clear()
+    padTaps.current.clear()
+    boostUntil.current = 0
     uiRef.current = { lit: 0, phase: 'grid', go: false, result: null }
     setUi(uiRef.current)
     hud.current?.update(hudView(c, loop.current.state, inputFromKeys(held.current)))
@@ -274,6 +310,15 @@ export function Game({ preview }: { preview: boolean }) {
         {preview && <p className={`label ${styles.banner}`}>{driveCopy.previewBanner}</p>}
 
         {status === 'ready' && <Hud ref={hud} attempt={Math.max(1, record.attempts)} bestMs={record.bestMs} tagRef={ghostTag} compact={compact} />}
+
+        {status === 'ready' && touch && (
+          <TouchControls
+            ref={touchPads}
+            held={pads}
+            taps={padTaps}
+            onBoost={() => (boostUntil.current = boostTap(boostUntil.current, loop.current.state.clock))}
+          />
+        )}
 
         <button type="button" className={styles.pauseButton} onClick={pause} aria-label={driveCopy.pause.button}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
