@@ -63,7 +63,7 @@ export const driveCopy = {
     { keys: ['S', 'R CTRL'], label: 'Brake' },
     { keys: ['A', 'D'], label: 'Steer' },
     { keys: ['SPACE'], label: 'Overtake' },
-    { keys: ['L SHIFT'], label: 'Boost' },
+    { keys: ['E'], label: 'Boost' },
   ],
 
   /** new: the controls sheet, before the first start on a device and from the pause sheet (Oscar, 2026-11-12) */
@@ -81,7 +81,7 @@ export const driveCopy = {
       ArrowDown: '↓',
       ArrowLeft: '←',
       ArrowRight: '→',
-      ShiftLeft: 'SHIFT',
+      KeyE: 'E',
       ShiftRight: 'SHIFT',
       ControlRight: 'CTRL',
       Space: 'SPACE',
@@ -92,7 +92,7 @@ export const driveCopy = {
       brake: { label: 'Brake', keys: 'S, ↓ or Right Ctrl' },
       steer: { label: 'Steer', keys: 'A and D, or ← and →' },
       overtake: { label: 'Overtake', keys: 'Space', note: 'Within 1 s of the messenger, once a lap' },
-      boost: { label: 'Boost', keys: 'Left Shift', note: 'Spends energy; braking earns it back' },
+      boost: { label: 'Boost', keys: 'E', note: 'Spends energy; braking earns it back' },
       pause: { label: 'Pause', keys: 'Esc' },
     },
     tip: 'Brake at the 3 board before each tight corner. 2 and 1 count down to the turn.',

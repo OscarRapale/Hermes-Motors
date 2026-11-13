@@ -32,7 +32,8 @@ describe('the controls sheet (before the first start)', () => {
     }
     expect(controlFor('ShiftRight')).toBe('throttle')
     expect(controlFor('ControlRight')).toBe('brake')
-    expect(controlFor('ShiftLeft')).toBe('boost')
+    expect(controlFor('KeyE')).toBe('boost')
+    expect(controlFor('ShiftLeft')).toBeNull()
     expect(controlFor('KeyQ')).toBeNull()
     expect(CONTROLS.map((c) => c.id)).toEqual(Object.keys(driveCopy.controls.items))
   })
@@ -58,7 +59,7 @@ describe('the controls sheet (before the first start)', () => {
 describe('desktop keys (rules/game.md)', () => {
   const keys = (...codes: string[]) => inputFromKeys(new Set(codes))
 
-  it('maps W/↑/Right Shift, S/↓/Right Ctrl, A/D and ←/→, Space and Left Shift', () => {
+  it('maps W/↑/Right Shift, S/↓/Right Ctrl, A/D and ←/→, Space and E', () => {
     expect(keys('KeyW')).toEqual({ throttle: 1, brake: 0, steer: 0, boost: false, overtake: false })
     expect(keys('ArrowUp').throttle).toBe(1)
     expect(keys('KeyS').brake).toBe(1)
@@ -68,7 +69,7 @@ describe('desktop keys (rules/game.md)', () => {
     expect(keys('Space').overtake).toBe(true)
     expect(keys('ShiftRight')).toEqual({ throttle: 1, brake: 0, steer: 0, boost: false, overtake: false })
     expect(keys('ControlRight').brake).toBe(1)
-    expect(keys('ShiftLeft').boost).toBe(true)
+    expect(keys('KeyE').boost).toBe(true)
     expect(keys('ControlLeft')).toEqual(IDLE) // Ctrl+key browser shortcuts stay with the left hand
   })
 
