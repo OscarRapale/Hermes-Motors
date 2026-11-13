@@ -69,6 +69,10 @@
   --hudc-lamp: 30px;
   --hudc-lights-top: 82px;
   --hudc-finish-top: 96px; /* the lap result, under the dash pill (prototype) */
+  /* the share cards (/api/card draws them with lib/card/palette.ts, which mirrors these) */
+  --card-top: #23252b;
+  --card-grid: rgba(255, 255, 255, 0.045);
+  --card-meta: rgba(255, 255, 255, 0.45);
   /* the thumb controls (board 16) */
   --touch-steer: 66px;
   --touch-bst: 46px;

@@ -38,6 +38,8 @@ Michroma (Vernon Adams), Geist and Geist Mono (Vercel) — all under the SIL Ope
 - Michroma: Copyright 2011 The Michroma Project Authors (https://github.com/googlefonts/Michroma-font). SIL OFL 1.1.
 - Geist and Geist Mono: Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font). SIL OFL 1.1.
 
+The share cards (`/api/card`) draw with static copies in `assets/fonts/`, since `next/font` gives no files and the card renderer reads TTF only: Michroma Regular (from google/fonts) and Geist Mono Regular and Medium (from the `geist` npm package 1.9.2, which licenses them as Copyright 2023 Vercel, in collaboration with basement.studio, SIL OFL 1.1). Each licence file sits beside its font. Added in M4 (13 Nov 2026).
+
 ## Facts and data
 
 Rule figures and the 2027 calendar come from the public sources listed in `docs/content/facts.md`; the Credits page links them.

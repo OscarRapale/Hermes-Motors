@@ -101,6 +101,17 @@ for (const [name, body] of Object.entries(marks)) {
   written.push(join(PUBLIC, 'brand', name))
 }
 
+// ── 8. The share cards' car (/api/card): the day hero still, trimmed to the car, transparent PNG ──
+// (the card renderer reads PNG; assets/ is read by the route, not served)
+await mkdir(join(ROOT, 'assets', 'card'), { recursive: true })
+const cardCar = join(ROOT, 'assets', 'card', 'card-car.png')
+await sharp(join(ASSETS, 'images', 'hero-day.png'))
+  .trim()
+  .resize({ width: 1100, withoutEnlargement: true })
+  .png({ compressionLevel: 9, palette: true, quality: 90 })
+  .toFile(cardCar)
+written.push(cardCar)
+
 // ── Budgets (ARCHITECTURE §10) ──────────────────────────────────────────────────────────
 const problems = []
 for (const stem of helmets) {
@@ -116,7 +127,7 @@ if (specsTotal > 2.5 * 1024 * KB) problems.push(`specs frames total ${(specsTota
 
 const rel = (p) => p.slice(ROOT.length + 1).replaceAll('\\', '/')
 console.log(`Wrote ${written.length} files.`)
-for (const f of written.filter((p) => /hero-|drivers|brand/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
+for (const f of written.filter((p) => /hero-|drivers|brand|card-car/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
 console.log(`  specs frames: ${(specsTotal / 1024 / KB).toFixed(2)} MB total`)
 if (problems.length) {
   console.warn(`\nOver budget:\n  ${problems.join('\n  ')}`)

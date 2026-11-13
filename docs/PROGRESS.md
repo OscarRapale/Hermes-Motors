@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M3 done (PR 5b, thumb controls). **Next:** M4, finish screens and share cards (plan first).
+**Now:** M4 PR 1, share link + cards. **Next:** PR 2, finish screens (boards 14, 17), `/drive/r`, sharing.
 ## Milestones
 
 ### M0 Foundation
@@ -48,7 +48,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 | # | Decision | Placeholder | Notes |
 | --- | --- | --- | --- |
-| D1 | Day One date | Sun 14 Feb 2027 | Opener in Bahrain is 12–14 Mar 2027, so race day = D+28. Feb 14 is Valentine's Day; alt. Fri 12 Feb (D+28 = opener weekend) or the go-live day |
+| D1 | Day One date | Sun 14 Feb 2027 | Opener in Bahrain is 12–14 Mar 2027, so race day = D+28. Feb 14 is Valentine's Day; alt. Fri 12 Feb or the go-live day |
 | D2 | Proving Ground time zone | America/Puerto_Rico | UTC−4, no daylight saving |
 | D3 | Preview unlocks the drive before Day One | Yes, with a "Preview" banner | Otherwise recruiters can't play until Day One |
 | D4 | Drivers | Lena Brandt #9 (GER), Mateo Ríos #19 (PUR) | Fictional; helmets only, no faces. Numbers are drawn at runtime, but the helmet stills show 9 and 19: re-render them if the numbers change |
@@ -61,15 +61,16 @@ Placeholders are in the code until he answers. Never present them as final.
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | preview URL needs a Vercel protection-bypass secret; revisit in M6 |
 | D12–14 | Token gaps; Preview/Play labels flip (no `aria-pressed`); header 900–1199 px mark only, 44 px pills | as flagged | PRs #3–#5 |
 | D15–18 | JS, hero stills, countdown, LCP | **Decided:** first-party JS < 40 KB gz; `<picture>` + head preload; "96 DAYS" over 100 h; LCP with real throttling | PRs #8–#12 |
-| D19–23 | Specs | **Decided:** sealed at night (Before Dawn livery, sealed figures); night frames rendered; ch 5 at night "THE NUMBER / ARRIVES AT / 06:00."; total JS on `/` < 206 KB gz; no effects in the specs scene | PRs #13–#14, ARCH §6, §10 |
-| D24–25 | Specs text that scrolls | **Decided:** on phones (ARCH §6 over the prototype) and on screens under 830 px tall, the text scrolls under/beside the pinned car; landscape phones: car right, text left | PRs #15–#16 |
-| D26 | The start | **Decided 2026-11-11:** grid 65 m behind the line, lap and ghost start at the line; the car holds the centre line until it | his is a flying lap. `tuning.ts` `gridBehindM` |
-| D27 | three.js on `/` before scroll | **Decided 2026-11-12:** the specs load their car one viewport away only after the first scroll (or at once if the page opens on them) | ARCH §10; rules/three.md updated; WebGL e2e guards it |
-| D28 | Test drive difficulty | careful lap just behind him (+0.15), clean racing line −3.5 s; grip ×0.7, friction circle, pedal ramps, brakes 34/22 | after Oscar's playtest (hard to turn under power, harsh brakes); ARCH §7.3. Confirm after driving it |
+| D19–23 | Specs | **Decided:** sealed at night; night frames; ch 5 night headline; JS on `/` < 206 KB gz; no effects in the specs scene | PRs #13–#14, ARCH §6, §10 |
+| D24–25 | Specs text that scrolls | **Decided:** on phones and screens under 830 px tall the text scrolls under/beside the pinned car | PRs #15–#16 |
+| D26–27 | Start; three.js before scroll | **Decided:** grid 65 m behind the line, lap and ghost start at it, car on the centre line until then; specs load their car only after the first scroll | `gridBehindM`; ARCH §10, rules/three.md |
+| D28 | Test drive difficulty | careful lap just behind him (+0.15), clean racing line −3.5 s; grip ×0.7, friction circle, pedal ramps, brakes 34/22 | after Oscar's playtests; ARCH §7.3. Confirm after driving it |
 | D29 | Phone drive | **Decided 2026-11-13:** compact HUD as board 16, no sector bars; BST tap = 2 s of Boost (again extends, brake cancels) | PR 5a/5b |
+| D30 | Finish and share | **Decided 2026-11-13:** jump start = `j=1` (lap as driven + 5 s); summary with figures; finish works in landscape; `/drive/r` CTA "Beat the messenger"; never mention sign-up or databases | M4 |
 
 ## Log
 
+- 2026-11-13 · Share link + cards (M4 PR 1): `lib/game/share.ts` codec; `/api/card` link 1200 × 630 + story 1080 × 1920 (OFL fonts in `assets/fonts`), immutable, else 404.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15; lights wait for landscape, upright pauses), compact HUD (board 16) on touch screens and small windows, thumb pads (both thumbs, slide to steer), BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
 - 2026-11-12 · `/drive` + HUD (PRs #19–#20): locked page, stage, scene on our circuit, keys, lights, pause, no-WebGL; board 13 HUD (ghost tag projected from 3D), best + attempts on device.
