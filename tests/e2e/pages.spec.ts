@@ -1,5 +1,7 @@
 import { expect, test, type Page } from './test'
 import { creditsCopy, notFoundCopy, privacyCopy } from '@/content/copy/pages/legal'
+import { seasonCopy } from '@/content/copy/pages/season'
+import { teamCopy } from '@/content/copy/pages/team'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
 import { expectNoAxeViolations } from './axe'
 
@@ -37,6 +39,42 @@ for (const theme of THEMES) {
       await expect(page.getByText(privacyCopy.intro)).toBeVisible()
       await expect(page.locator('main')).not.toContainText(/sign[- ]?up|database/i)
       await expectNoAxeViolations(page)
+    })
+
+    test('team: three traits and the Proving Ground, with the way to the drive', async ({ page }, info) => {
+      await open(page, '/team', theme.at)
+      const h1 = page.getByRole('heading', { level: 1 })
+      for (const line of teamCopy.headline) await expect(h1).toContainText(line)
+      // the header nav (phones keep it in the menu)
+      if ((page.viewportSize()?.width ?? 0) >= 900)
+        await expect(page.getByRole('banner').getByRole('link', { name: 'Team', exact: true })).toHaveAttribute('aria-current', 'page')
+      for (const t of teamCopy.traits) await expect(page.getByRole('heading', { level: 2, name: t.title })).toBeVisible()
+      await expect(page.getByRole('img', { name: teamCopy.track.alt })).toBeVisible()
+      const lap = page.getByRole('link', { name: teamCopy.track.cta })
+      await expect(lap).toHaveAttribute('href', '/drive')
+      expect((await lap.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+      await expectNoAxeViolations(page)
+      if (SHOTS) await page.screenshot({ path: `${SHOTS}/team-${theme.name}-${info.project.name}.png`, fullPage: true })
+    })
+
+    test('season: 24 rounds, ten Sprints, the opener and the finale tagged, the source note', async ({ page }, info) => {
+      await open(page, '/season', theme.at)
+      const grid = page.getByRole('region', { name: seasonCopy.gridLabel })
+      const rounds = grid.getByRole('listitem')
+      await expect(rounds).toHaveCount(24)
+      await expect(rounds.first()).toContainText('Bahrain')
+      await expect(rounds.first()).toContainText(seasonCopy.opener)
+      await expect(rounds.last()).toContainText('Abu Dhabi')
+      await expect(rounds.last()).toContainText(seasonCopy.finale)
+      await expect(grid.getByText(seasonCopy.sprint, { exact: true })).toHaveCount(10)
+      await expect(page.getByText(seasonCopy.note)).toBeVisible()
+      const stats = page.getByLabel(seasonCopy.statsLabel)
+      await expect(stats).toContainText('24')
+      await expect(stats).toContainText('10')
+      const columns = await grid.locator('ol').evaluate((ol) => getComputedStyle(ol).gridTemplateColumns.split(' ').length)
+      expect(columns).toBe((page.viewportSize()?.width ?? 0) < 700 ? 2 : (page.viewportSize()?.width ?? 0) < 1200 ? 4 : 6)
+      await expectNoAxeViolations(page)
+      if (SHOTS) await page.screenshot({ path: `${SHOTS}/season-${theme.name}-${info.project.name}.png`, fullPage: true })
     })
 
     test('404: off the racing line, a real 404, the way back', async ({ page }, info) => {

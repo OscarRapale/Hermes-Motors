@@ -18,6 +18,11 @@ export const seo = {
     title: 'Beat the messenger · Hermes Motors',
     description: "One flying lap of the Proving Ground against the test driver's ghost. His time is 1:11.906.",
   },
+  team: { title: 'Team · Hermes Motors', description: 'Built for a first day: precise, quietly audacious, swift.' },
+  season: {
+    title: 'Season 2027 · Hermes Motors',
+    description: '24 rounds, Bahrain to Abu Dhabi: our first season, race by race.',
+  },
   // new: no rows in seo.md for these
   credits: {
     title: 'Credits · Hermes Motors',

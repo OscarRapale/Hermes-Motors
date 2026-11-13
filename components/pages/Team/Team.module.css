@@ -1,0 +1,129 @@
+/* Board 27, page 1 (Team): trait cards, then a Carbon card with the Proving Ground still fading into it */
+
+.team {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--page-pad-x) var(--space-16);
+}
+
+.traits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.trait {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3-5);
+  min-height: var(--trait-h);
+  padding: var(--space-7) var(--space-7) var(--space-8);
+  border-radius: var(--radius-glass);
+  background: var(--surface-raised);
+  border: 1px solid var(--page-card-border);
+  color: var(--ink);
+}
+
+.n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label-wide);
+  color: var(--accent-text);
+}
+
+.traitTitle {
+  font-size: var(--fs-card-title);
+  line-height: var(--lh-h2);
+}
+
+.traitBody {
+  font-size: var(--fs-card-body);
+  line-height: var(--lh-body);
+  color: var(--body);
+}
+
+.feathers {
+  width: var(--trait-mark-w);
+  height: auto;
+  margin-top: auto;
+  fill: var(--redline);
+}
+
+/* the Proving Ground: Carbon in both themes */
+.track {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  min-height: var(--track-card-h);
+  overflow: hidden;
+  border-radius: var(--radius-glass);
+  background: var(--carbon);
+  color: var(--gallery-white);
+}
+
+.still {
+  position: relative;
+  overflow: hidden;
+}
+
+.still::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--track-fade);
+}
+
+.img {
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+
+.trackText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-10) var(--space-12);
+}
+
+.trackEyebrow {
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.trackTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-track-title);
+  line-height: var(--lh-h2);
+}
+
+.trackBody {
+  font-size: var(--fs-card-body);
+  line-height: var(--lh-body);
+  color: var(--hud-k);
+}
+
+@media (max-width: 899.98px) {
+  .traits,
+  .track {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .trait {
+    min-height: 0;
+  }
+
+  .still {
+    height: var(--track-still-h-s);
+  }
+
+  .still::after {
+    background: var(--track-fade-s);
+  }
+
+  .trackText {
+    padding: var(--space-6) var(--space-5) var(--space-8);
+  }
+}
