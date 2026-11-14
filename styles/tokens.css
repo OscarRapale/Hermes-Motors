@@ -206,6 +206,18 @@
   --page-hero-top: 80px; /* board 27: the eyebrow sits 80 px under the header */
   --page-hero-top-s: 40px;
   --page-intro-w: 460px;
+  --page-pad-x: 28px; /* board 27: modules 28 px inside the page card */
+  --fs-card-body: 16px;
+  --trait-h: 230px;
+  --trait-mark-w: 96px;
+  --track-card-h: 400px;
+  --fs-track-title: 32px;
+  --track-fade: linear-gradient(90deg, rgba(14, 15, 17, 0) 55%, rgba(14, 15, 17, 1) 100%);
+  --track-fade-s: linear-gradient(180deg, rgba(14, 15, 17, 0) 55%, rgba(14, 15, 17, 1) 100%);
+  --track-still-h-s: 220px;
+  --fs-stat: 34px;
+  --round-h: 120px;
+  --fs-round-gp: 16px;
   --fs-small: 14px;
   --fs-button: 15px;
   --fs-label: 11px;
@@ -528,6 +540,9 @@
     --frame-pad: 8px;
     --radius-page: 28px;
     --space-section-x: 20px;
+    --page-pad-x: 12px;
+    --fs-track-title: 26px;
+    --fs-stat: 28px;
     --space-card-inset: 12px;
 
     --header-inset: 12px;
@@ -614,6 +629,10 @@
   --dim: rgba(244, 244, 245, 0.42);
   --dim-specs-scroll: var(--dim);
   --dim-page: var(--dim); /* page headlines (board 27) */
+  --page-card-bg: var(--graphite);
+  --page-card-border: rgba(255, 255, 255, 0.08);
+  --tag-border: rgba(255, 90, 99, 0.45);
+  --opener-border: rgba(213, 18, 30, 0.6);
   --rule: rgba(255, 255, 255, 0.1);
   --accent-text: var(--red-on-dark);
 
@@ -677,6 +696,10 @@
   --dim-specs-scroll: rgba(14, 15, 17, 0.5);
   /* 42% fails 3:1 on the page card's grey (2.7:1); 50% passes (3.4:1) */
   --dim-page: rgba(14, 15, 17, 0.5);
+  --page-card-bg: rgba(255, 255, 255, 0.72);
+  --page-card-border: rgba(14, 15, 17, 0.07);
+  --tag-border: rgba(177, 15, 25, 0.45);
+  --opener-border: var(--carbon);
   --rule: rgba(14, 15, 17, 0.1);
   --accent-text: var(--red-on-light);
 
