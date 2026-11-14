@@ -252,6 +252,30 @@
   --news-feathers-w: 140px;
   --article-art-ratio: 16 / 9;
   --article-art-w: 1100px;
+  /* Manifesto (board 28) */
+  --wipe-edge: 4px; /* the text wipe's Redline edge (11-motion) */
+  --wipe-skew: calc(-1 * var(--angle));
+  --dur-feather: 900ms;
+  --manifesto-open-h: 640px;
+  --manifesto-pad-x: 96px;
+  --manifesto-band-x: 56px;
+  --manifesto-band-inset: 40px;
+  --manifesto-feather-top: 60px; /* level with the eyebrow: its thin tip passes above the headline */
+  --manifesto-feather-w: min(48vw, 700px);
+  --manifesto-section-fluid: 3.5vw; /* desktop: the statements keep their two lines down to laptop widths */
+  /* the feather comes in along 14°: 120 px across, 30 px up (tan 14° ≈ 0.25) */
+  --manifesto-feather-from-x: 120px;
+  --manifesto-feather-from-y: -30px;
+  --fs-manifesto-sub: 34px;
+  --manifesto-myth-w: 640px;
+  --manifesto-band: linear-gradient(90deg, #0b0c0e 0%, #1e1113 34%, #7a1e25 64%, #d9dce1 69.5%, #f4f4f5 100%);
+  --manifesto-band-s: linear-gradient(180deg, #0b0c0e 0%, #1e1113 30%, #7a1e25 60%, #d9dce1 66%, #f4f4f5 100%);
+  --fs-manifesto-beat: 18px;
+  --fs-manifesto-word: 30px;
+  --manifesto-lap-h: 600px;
+  --fs-manifesto-lap: 34px;
+  --manifesto-car-w: 1080px;
+  --manifesto-mark-w: 96px;
   /* Partners and Store (board 27, pages 3 and 4) */
   --slot-h: 168px;
   --seal: 54px;
@@ -595,6 +619,14 @@
     --radius-page: 28px;
     --space-section-x: 20px;
     --page-pad-x: 12px;
+    --manifesto-pad-x: 20px;
+    --manifesto-band-x: 12px;
+    --manifesto-band-inset: 8px;
+    --manifesto-feather-w: 240px;
+    --manifesto-feather-top: 8px; /* above the eyebrow on phones */
+    --fs-manifesto-sub: 22px;
+    --fs-manifesto-word: 24px;
+    --fs-manifesto-lap: 24px;
     --fs-news-featured: 26px;
     --fs-driver-name: 30px;
     --fs-driver-number: 160px;
@@ -691,6 +723,10 @@
   --page-card-border: rgba(255, 255, 255, 0.08);
   --tag-border: rgba(255, 90, 99, 0.45);
   --opener-border: rgba(213, 18, 30, 0.6);
+  --manifesto-glow: radial-gradient(90% 640px at 70% 0%, rgba(38, 23, 26, 1) 0%, rgba(18, 19, 23, 0) 100%);
+  --manifesto-lap-bg: radial-gradient(60% 50% at 50% 84%, rgba(213, 18, 30, 0.34) 0%, rgba(213, 18, 30, 0.06) 52%, rgba(213, 18, 30, 0) 76%),
+    linear-gradient(180deg, #16171a 0%, #08090b 100%);
+  --manifesto-outline: rgba(244, 244, 245, 0.55);
   --rule: rgba(255, 255, 255, 0.1);
   --accent-text: var(--red-on-dark);
 
@@ -758,6 +794,9 @@
   --page-card-border: rgba(14, 15, 17, 0.07);
   --tag-border: rgba(177, 15, 25, 0.45);
   --opener-border: var(--carbon);
+  --manifesto-glow: radial-gradient(90% 640px at 70% 0%, #ffffff 0%, rgba(238, 240, 243, 0) 100%);
+  --manifesto-lap-bg: radial-gradient(70% 70% at 50% 70%, #ffffff 0%, #e3e5e9 70%, #cdd1d7 100%);
+  --manifesto-outline: rgba(14, 15, 17, 0.5);
   --rule: rgba(14, 15, 17, 0.1);
   --accent-text: var(--red-on-light);
 

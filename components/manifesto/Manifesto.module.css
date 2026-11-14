@@ -1,0 +1,316 @@
+/* Board 28 (1440 wide): five statements. Follows the theme; the band and the lap card keep their own
+   colours, as on the board. */
+
+.manifesto {
+  overflow: hidden;
+  background: var(--manifesto-glow);
+}
+
+/* 1 · No trophies */
+.open {
+  position: relative;
+  min-height: var(--manifesto-open-h);
+  padding: var(--space-16) var(--manifesto-pad-x) var(--space-16);
+}
+
+.feather {
+  position: absolute;
+  top: var(--manifesto-feather-top);
+  right: 0;
+  width: var(--manifesto-feather-w);
+  height: auto;
+  fill: var(--redline);
+  animation: feather var(--dur-feather) var(--ease-out) both;
+}
+
+/* in along 14° from the right edge */
+@keyframes feather {
+  from {
+    opacity: 0;
+    transform: translate(var(--manifesto-feather-from-x), var(--manifesto-feather-from-y));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.eyebrow {
+  color: var(--accent-text);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.openTitle {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-6);
+  font-size: var(--fs-manifesto-open);
+  line-height: var(--lh-display);
+  color: var(--ink);
+}
+
+.openSub {
+  margin-top: var(--space-6);
+  font-size: var(--fs-manifesto-sub);
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+/* 2 · A first day: the statement, the myth, the band from night to daylight */
+.firstDay {
+  padding: 0 var(--manifesto-band-x) var(--space-16);
+}
+
+.sectionTitle {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--manifesto-band-inset);
+  font-size: var(--fs-manifesto-section);
+  line-height: var(--lh-h2);
+  color: var(--ink);
+}
+
+.dimSecond > span:nth-child(2) {
+  color: var(--dim-page);
+}
+
+.myth {
+  max-width: var(--manifesto-myth-w);
+  margin-top: var(--space-5);
+  padding: 0 var(--manifesto-band-inset);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--muted);
+}
+
+.band {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--radius-glass);
+  background: var(--manifesto-band);
+  color: var(--gallery-white);
+  overflow: hidden;
+}
+
+.beat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-5) var(--space-8);
+}
+
+/* the last third is daylight: dark ink there */
+.beat[data-light] {
+  color: var(--carbon);
+}
+
+.time {
+  font-family: var(--font-mono);
+  font-size: var(--fs-figure-l);
+  font-weight: var(--fw-medium);
+  line-height: 1;
+  letter-spacing: var(--tracking-number);
+}
+
+.when {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+  color: var(--red-on-dark);
+}
+
+.beat[data-light] .when {
+  color: var(--red-on-light);
+}
+
+.beatMyth {
+  font-size: var(--fs-small);
+}
+
+.beatLine {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-2);
+  font-size: var(--fs-manifesto-beat);
+  line-height: 1.25;
+}
+
+/* 3 · How we build */
+.build {
+  padding: 0 var(--manifesto-pad-x) var(--space-16);
+}
+
+.build .sectionTitle {
+  padding: 0;
+}
+
+.words {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.word {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+
+.word[data-last] {
+  border-top-color: var(--redline);
+}
+
+.wordTitle {
+  font-size: var(--fs-manifesto-word);
+  color: var(--ink);
+}
+
+.word[data-last] .wordTitle {
+  color: var(--accent-text);
+}
+
+.wordLine {
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--muted);
+}
+
+/* 4 · One lap at a time: the car for the hour on its own ground */
+.lap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--manifesto-lap-h);
+  margin: 0 var(--page-pad-x);
+  padding: var(--space-12) var(--space-10) var(--space-8);
+  border-radius: var(--radius-card-l);
+  background: var(--manifesto-lap-bg);
+  overflow: hidden;
+}
+
+.lapText {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.lapTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-manifesto-lap);
+  line-height: var(--lh-h2);
+  color: var(--ink);
+}
+
+.lapAnswer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: var(--fs-card-body);
+  line-height: 1.3;
+  color: var(--dim-page);
+  text-align: right;
+}
+
+.car {
+  width: var(--manifesto-car-w);
+  max-width: 100%;
+  height: auto;
+  margin: auto auto 0;
+}
+
+/* 5 · Close */
+.close {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-16) var(--manifesto-pad-x);
+  text-align: center;
+}
+
+.mark {
+  width: var(--manifesto-mark-w);
+  height: auto;
+}
+
+.markH {
+  fill: var(--ink);
+}
+
+.markFeathers {
+  fill: var(--redline);
+}
+
+.statement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: var(--fs-manifesto-close);
+  line-height: var(--lh-display);
+  color: var(--ink);
+}
+
+/* "THE" in outline */
+.statement > span:nth-child(2) {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--manifesto-outline);
+}
+
+@media (min-width: 900px) {
+  .sectionTitle {
+    font-size: min(var(--fs-manifesto-section), var(--manifesto-section-fluid));
+  }
+
+  .sectionTitle > span {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 899.98px) {
+  .open {
+    min-height: 0;
+    padding-top: var(--space-12);
+  }
+
+  .band,
+  .words {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .band {
+    background: var(--manifesto-band-s);
+  }
+
+  .lapText {
+    flex-direction: column;
+  }
+
+  .lapAnswer {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .lap {
+    min-height: 0;
+    padding: var(--space-8) var(--space-5);
+  }
+
+  .car {
+    margin-top: var(--space-8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feather {
+    animation: none;
+  }
+}
