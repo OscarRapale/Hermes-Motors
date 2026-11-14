@@ -12,6 +12,11 @@ import styles from './HelmetBox.module.css'
 // three.js only loads with the live helmet, never with the page (rules/three.md)
 const DriverHelmet = dynamic(() => import('./DriverHelmet').then((m) => m.DriverHelmet), { ssr: false })
 
+// The chin number is drawn in Michroma once document.fonts has it. Only the real face: next/font's family
+// list also names a fallback built from local("Arial"), and loading that rejects where Arial isn't
+// installed (Linux), an unhandled error from inside the package.
+const NUMBER_FONT = michroma.style.fontFamily.split(',')[0].trim()
+
 export type HelmetView = {
   /** the poster still, rendered from the live helmet's own camera (HELMET_FRAME) */
   still: string
@@ -81,7 +86,7 @@ export function HelmetBox({ day, night, className = '' }: { day: HelmetView; nig
             number={view.number}
             facing={view.facing}
             night={view.night}
-            fontFamily={michroma.style.fontFamily}
+            fontFamily={NUMBER_FONT}
             onReady={() => setDrawn(key)}
           />
         </div>
