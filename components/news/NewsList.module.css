@@ -1,0 +1,260 @@
+/* Board 26: filter pills under the hero, the lead story (image 58%), then three columns of cards */
+
+.pending {
+  min-height: var(--news-pending-h);
+}
+
+.news {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-bottom: var(--space-16);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0 var(--space-section-x) var(--space-2);
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--page-card-border);
+  background: var(--page-card-bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+}
+
+.filter small {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  color: var(--muted);
+}
+
+.filter[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+
+.filter[aria-pressed='true'] small {
+  color: var(--surface);
+}
+
+/* a card is one link: the title's link covers it */
+.featured,
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-glass);
+  background: var(--surface-raised);
+  border: 1px solid var(--page-card-border);
+  color: var(--ink);
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.cover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.featured:has(.cover:focus-visible),
+.card:has(.cover:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.cover:focus-visible {
+  outline: none;
+}
+
+.featured {
+  display: flex;
+  min-height: var(--news-featured-h);
+  margin: 0 var(--page-pad-x);
+}
+
+.featuredArt {
+  position: relative;
+  flex: 0 0 58%;
+}
+
+.latest {
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-6);
+  padding: var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--redline);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+}
+
+.featuredText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-10) var(--space-10) var(--space-10);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+  color: var(--muted);
+}
+
+.meta b {
+  font-weight: var(--fw-regular);
+  color: var(--accent-text);
+}
+
+.featuredTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-news-featured);
+  line-height: var(--lh-h2);
+}
+
+.featuredTitle .cover {
+  display: flex;
+  flex-direction: column;
+}
+
+.dek,
+.cardDek {
+  font-size: var(--fs-card-body);
+  line-height: var(--lh-body);
+  color: var(--body);
+}
+
+.read {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+}
+
+.arrow {
+  width: var(--news-arrow);
+  height: var(--news-arrow);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.arrow svg {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0 var(--page-pad-x);
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cardArt {
+  height: var(--news-card-art-h);
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2-5);
+  padding: var(--space-6) var(--space-6) var(--space-7);
+}
+
+.cardTitle {
+  font-size: var(--fs-news-card);
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+}
+
+/* before the first beat, without preview */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0 var(--page-pad-x) var(--space-16);
+  padding: var(--space-10);
+  border-radius: var(--radius-glass);
+  background: var(--surface-raised);
+  border: 1px solid var(--page-card-border);
+}
+
+.emptyTitle {
+  font-size: var(--fs-card-title);
+  line-height: var(--lh-h2);
+  color: var(--ink);
+}
+
+.emptyBody {
+  max-width: var(--article-w);
+  font-size: var(--fs-card-body);
+  line-height: var(--lh-body);
+  color: var(--body);
+}
+
+@media (max-width: 1099.98px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 899.98px) {
+  .featured {
+    flex-direction: column;
+  }
+
+  .featuredArt {
+    height: var(--news-card-art-h);
+  }
+
+  .featuredText {
+    padding: var(--space-6);
+  }
+}
+
+@media (max-width: 699.98px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .empty {
+    padding: var(--space-6);
+  }
+}

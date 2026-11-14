@@ -1,3 +1,4 @@
+import createMDX from '@next/mdx'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
@@ -14,4 +15,7 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+// News stories are MDX (content/news/*.mdx, ARCHITECTURE §8), imported by their pages; no MDX routes.
+const withMDX = createMDX({})
+
+export default withMDX(nextConfig)
