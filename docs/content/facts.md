@@ -34,6 +34,7 @@ Shown on the First Light dashboard. They are plausible for the class but belong 
 | Top speed | 352 km/h |
 | Model wheelbase | exactly 3,400 mm (the 3D model is scaled to it) |
 | Overall size of the model | 5.54 × 1.88 × 1.15 m; wheel radius 0.332 m |
+| Scale model (the Store) | 1:18 die-cast, 31 cm long (5.54 m ÷ 18 = 30.8 cm) |
 
 ## C. The test drive
 

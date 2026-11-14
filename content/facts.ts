@@ -34,6 +34,10 @@ export const rules = {
 export const hm27 = {
   zeroToHundredS: 2.6,
   topSpeedKmh: 352,
+  /** Overall length of the model, mm (§B: 5.54 m) */
+  lengthMm: 5540,
+  /** The Store's die-cast: 1:18, 31 cm long (§B) */
+  scaleModel: { scale: 18, lengthCm: 31 },
 } as const
 
 /** §C The test drive: the messenger (the test driver's ghost). Times in milliseconds. */
