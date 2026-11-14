@@ -1,0 +1,146 @@
+/* Board 27, page 4 (Store): three 520 px tiles, the model on light, the cap on Carbon, the tee on white.
+   The tiles are product shots: they keep their colours in both themes. */
+
+.store {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  padding: 0 var(--page-pad-x) var(--space-16);
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: var(--store-tile-h);
+  padding: var(--space-5) var(--space-6) var(--space-6);
+  overflow: hidden;
+  border-radius: var(--radius-glass);
+  border: 1px solid var(--store-tile-border);
+  color: var(--carbon);
+}
+
+.model {
+  background: var(--store-model-bg);
+}
+
+.cap {
+  background: var(--carbon);
+  /* at night the page is Carbon too: the card edge keeps the tile */
+  border-color: var(--page-card-border);
+  color: var(--gallery-white);
+}
+
+.cap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--store-cap-glow);
+  pointer-events: none;
+}
+
+.tee {
+  background: var(--white);
+}
+
+.n {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+  color: var(--ink-2-light);
+}
+
+.cap .n {
+  color: var(--ink-3-dark);
+}
+
+.art {
+  position: relative;
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+
+.car {
+  width: 100%;
+  height: auto;
+}
+
+.mark {
+  width: var(--store-mark-w);
+  height: auto;
+}
+
+.h {
+  fill: var(--gallery-white);
+}
+
+.feathers {
+  fill: var(--redline);
+}
+
+.line {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-store-line);
+  line-height: 1.15;
+}
+
+.line > span:nth-child(2) {
+  color: var(--store-tee-dim);
+}
+
+.teeFeathers {
+  position: absolute;
+  right: 0;
+  bottom: var(--space-2);
+  width: var(--store-tee-mark-w);
+  height: auto;
+  fill: var(--redline);
+}
+
+.title {
+  position: relative;
+  font-size: var(--fs-store-title);
+}
+
+.body {
+  position: relative;
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--ink-2-light);
+}
+
+.cap .body {
+  color: var(--hud-k);
+}
+
+.tag {
+  position: relative;
+  align-self: flex-start;
+  margin-top: var(--space-1-5);
+  padding: var(--space-1) var(--space-2-5);
+  border-radius: var(--radius-pill);
+  background: var(--carbon);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-chip);
+  letter-spacing: var(--tracking-label-tight);
+}
+
+.cap .tag {
+  background: var(--gallery-white);
+  color: var(--carbon);
+}
+
+@media (max-width: 899.98px) {
+  .store {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tile {
+    height: var(--store-tile-h-s);
+  }
+}

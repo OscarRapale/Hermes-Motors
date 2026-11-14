@@ -1,6 +1,8 @@
 import { expect, test, type Page } from './test'
 import { creditsCopy, notFoundCopy, privacyCopy } from '@/content/copy/pages/legal'
+import { partnersCopy } from '@/content/copy/pages/partners'
 import { seasonCopy } from '@/content/copy/pages/season'
+import { storeCopy } from '@/content/copy/pages/store'
 import { teamCopy } from '@/content/copy/pages/team'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
 import { expectNoAxeViolations } from './axe'
@@ -75,6 +77,33 @@ for (const theme of THEMES) {
       expect(columns).toBe((page.viewportSize()?.width ?? 0) < 700 ? 2 : (page.viewportSize()?.width ?? 0) < 1200 ? 4 : 6)
       await expectNoAxeViolations(page)
       if (SHOTS) await page.screenshot({ path: `${SHOTS}/season-${theme.name}-${info.project.name}.png`, fullPage: true })
+    })
+
+    test('partners: eight sealed seats, the title seat first, and the band', async ({ page }, info) => {
+      await open(page, '/partners', theme.at)
+      const slots = page.getByRole('list', { name: partnersCopy.slotsLabel }).getByRole('listitem')
+      await expect(slots).toHaveCount(8)
+      await expect(slots.first()).toHaveText(partnersCopy.title)
+      await expect(slots.nth(7)).toHaveText(partnersCopy.sealed)
+      await expect(page.getByRole('heading', { level: 2, name: partnersCopy.cta.title })).toBeVisible()
+      const cta = page.getByRole('link', { name: partnersCopy.cta.button })
+      expect((await cta.boundingBox())!.height).toBeGreaterThanOrEqual(44)
+      await expectNoAxeViolations(page)
+      if (SHOTS) await page.screenshot({ path: `${SHOTS}/partners-${theme.name}-${info.project.name}.png`, fullPage: true })
+    })
+
+    test('store: three pieces, "opens on Day One" before it and a lookbook after', async ({ page }, info) => {
+      await open(page, '/store', theme.at)
+      const tiles = page.getByRole('region', { name: storeCopy.label }).getByRole('article')
+      await expect(tiles).toHaveCount(3)
+      for (const p of storeCopy.products) await expect(page.getByRole('heading', { level: 2, name: p.title })).toBeVisible()
+      await expect(page.getByRole('img', { name: storeCopy.products[0].alt })).toBeVisible()
+      const [shown, hidden] = theme.name === 'night' ? [storeCopy.opens, storeCopy.lookbook] : [storeCopy.lookbook, storeCopy.opens]
+      await expect(page.getByText(shown, { exact: true })).toHaveCount(3)
+      for (const el of await page.getByText(shown, { exact: true }).all()) await expect(el).toBeVisible()
+      for (const el of await page.getByText(hidden, { exact: true }).all()) await expect(el).toBeHidden()
+      await expectNoAxeViolations(page)
+      if (SHOTS) await page.screenshot({ path: `${SHOTS}/store-${theme.name}-${info.project.name}.png`, fullPage: true })
     })
 
     test('404: off the racing line, a real 404, the way back', async ({ page }, info) => {
