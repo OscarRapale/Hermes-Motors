@@ -25,6 +25,7 @@ export const seo = {
   },
   partners: { title: 'Partners · Hermes Motors', description: 'Founding partners, sealed until Day One.' },
   store: { title: 'Store · Hermes Motors', description: 'Team kit and a 1:18 HM‑27.' },
+  drivers: { title: 'Drivers · Hermes Motors', description: 'Two seats, two rookies, and a test driver nobody has named.' },
   // new: no rows in seo.md for these
   credits: {
     title: 'Credits · Hermes Motors',

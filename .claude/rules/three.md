@@ -17,7 +17,7 @@ The car package is in `vendor/hermes-hm27/` (README there: props, conventions, p
 
 - Every scene is a client component loaded with `dynamic(() => import(...), { ssr: false })`. Nothing 3D runs on the server or blocks the hero.
 - The landing hero is a still image. The live car appears only in the specs section (when it scrolls near) and on `/drive`.
-- The Drivers page paints the helmet stills first; the live helmets (`DriverHelmet`) mount after that, only with WebGL2 and data saver off. Call `preloadHermesHelmet()` when the Drivers link is hovered or in view.
+- The Drivers page paints the helmet stills first; the live helmets (`DriverHelmet`) mount after that, only with WebGL2 and data saver off. Call `preloadHermesHelmet()` on intent: the first hover, focus or touch of a link to `/drivers` (`DrivePreload`), not on view, since the header's link is on every page. On `/drivers` the live helmets mount 300 px before their card is in view (`components/drivers/HelmetBox`).
 - `preloadHermesCar('game')` on intent: the first hover, focus or touch of a link to `/drive` (the header's button is visible on every page). The specs section loads its car one viewport away, but only after the first scroll, or at once if the page opens on the section: the landing page loads no three.js before scroll (ARCHITECTURE §10, Decision D27).
 - Before mounting a canvas, check WebGL2. No WebGL2 → the specs section uses its frame fallback, `/drive` shows the "your device can't run the test drive" state from the spec.
 

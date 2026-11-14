@@ -1,0 +1,266 @@
+/* Board 25: two 680 px cards (driver 9 on white, driver 19 on Carbon; both Graphite before Day One), then the
+   messenger's Carbon card. Each card sets its own inks (--local-*), since the cards don't follow the page. */
+
+.drivers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--page-pad-x) var(--space-16);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.card {
+  --local-ink: var(--gallery-white);
+  --local-body: var(--ink-2-dark);
+  --local-meta: var(--ink-3-dark);
+  --local-rule: var(--driver-rule-dark);
+  --local-bar: var(--driver-bar);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: var(--driver-card-h);
+  overflow: hidden;
+  border-radius: var(--radius-card-l);
+  background: var(--driver-night-glow), var(--graphite);
+  border: 1px solid var(--driver-night-border);
+  color: var(--local-ink);
+}
+
+/* by day: driver 9 on white, driver 19 on Carbon */
+:global([data-theme='day']) .card[data-card='light'] {
+  --local-ink: var(--carbon);
+  --local-body: var(--ink-2-light);
+  --local-meta: var(--ink-3-light);
+  --local-rule: var(--driver-rule-light);
+  background: var(--driver-light-bg);
+  border-color: var(--driver-light-border);
+}
+
+:global([data-theme='day']) .card[data-card='dark'] {
+  background: var(--driver-dark-glow), var(--carbon);
+  border-color: var(--carbon);
+}
+
+.number {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-7);
+  z-index: -1;
+  font-size: var(--fs-driver-number);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--local-rule);
+}
+
+.helmet {
+  --local-helmet-w: var(--driver-helmet-w);
+  margin-top: var(--space-4);
+}
+
+.text {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding: 0 var(--space-8) var(--space-7);
+}
+
+.seat {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label-wide);
+  color: var(--local-meta);
+}
+
+.name {
+  font-size: var(--fs-driver-name);
+  line-height: var(--lh-h2);
+}
+
+.name > span:first-child > span {
+  display: block;
+}
+
+/* before 06:00: two rounded bars where the names will be */
+.sealed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sealed i {
+  display: block;
+  height: 0.75em;
+  border-radius: var(--radius-keycap);
+  background: var(--local-bar);
+}
+
+.sealed i:first-child {
+  width: var(--driver-bar-1);
+}
+
+.sealed i:last-child {
+  width: var(--driver-bar-2);
+  max-width: 100%;
+}
+
+.bio {
+  max-width: var(--driver-bio-w);
+  font-size: var(--fs-card-body);
+  line-height: var(--lh-body);
+  color: var(--local-body);
+}
+
+.stats {
+  display: flex;
+  gap: var(--space-9);
+  margin: 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--local-rule);
+}
+
+.stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.stats dd {
+  margin: 0;
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-card-title);
+  line-height: 1;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+  color: var(--local-meta);
+}
+
+/* the messenger: Carbon in both themes, a red glow on the left */
+.messenger {
+  display: grid;
+  grid-template-columns: var(--messenger-helmet-w) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-8) var(--space-10);
+  border-radius: var(--radius-card-l);
+  background: var(--messenger-glow), var(--carbon);
+  border: 1px solid var(--driver-night-border);
+  color: var(--gallery-white);
+}
+
+.messengerHelmet {
+  --local-helmet-w: var(--messenger-helmet-w);
+}
+
+.messengerText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.messengerEyebrow {
+  color: var(--red-on-dark);
+  letter-spacing: var(--tracking-label-wide);
+}
+
+.messengerTitle {
+  font-size: var(--fs-messenger-title);
+  line-height: var(--lh-h2);
+}
+
+.messengerBody {
+  max-width: var(--driver-bio-w);
+  font-size: var(--fs-card-body);
+  line-height: var(--lh-body);
+  color: var(--ink-2-dark);
+}
+
+.lap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.lapTime {
+  font-family: var(--font-mono);
+  font-size: var(--fs-figure-l);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--timing-purple);
+}
+
+.lapLabel {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-hud-k);
+  letter-spacing: var(--tracking-label);
+  color: var(--ink-2-dark);
+}
+
+/* "Opens at 06:00": the drive is locked before Day One (it still leads to its locked page) */
+.locked {
+  color: var(--ink-2-dark);
+}
+
+@media (max-width: 1099.98px) {
+  .messenger {
+    grid-template-columns: var(--messenger-helmet-w-s) minmax(0, 1fr);
+  }
+
+  .messengerHelmet {
+    --local-helmet-w: var(--messenger-helmet-w-s);
+  }
+
+  .lap {
+    grid-column: 1 / -1;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 899.98px) {
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card {
+    min-height: 0;
+  }
+
+  .helmet {
+    --local-helmet-w: var(--driver-helmet-w-s);
+  }
+
+  .text {
+    padding: var(--space-4) var(--space-5) var(--space-6);
+  }
+
+  .stats {
+    gap: var(--space-6);
+  }
+
+  .messenger {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-6) var(--space-5);
+    justify-items: start;
+  }
+
+  .messengerHelmet {
+    justify-self: center;
+  }
+}

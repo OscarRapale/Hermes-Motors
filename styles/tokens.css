@@ -217,6 +217,28 @@
   --track-still-h-s: 220px;
   --fs-stat: 34px;
   --round-h: 120px;
+  /* Drivers (board 25): the cards keep their own colours in both themes */
+  --driver-card-h: 680px;
+  --driver-night-glow: radial-gradient(70% 55% at 50% 40%, rgba(213, 18, 30, 0.16) 0%, rgba(213, 18, 30, 0) 70%);
+  --driver-night-border: rgba(255, 255, 255, 0.08);
+  --driver-light-bg: radial-gradient(70% 55% at 50% 38%, #ffffff 0%, #eef0f3 60%, #e3e5e9 100%);
+  --driver-light-border: rgba(14, 15, 17, 0.08);
+  --driver-dark-glow: radial-gradient(70% 55% at 50% 38%, rgba(213, 18, 30, 0.2) 0%, rgba(213, 18, 30, 0) 70%);
+  --driver-rule-dark: rgba(255, 255, 255, 0.1);
+  --driver-rule-light: rgba(14, 15, 17, 0.1);
+  --driver-bar: rgba(255, 255, 255, 0.14);
+  --fs-driver-number: 220px;
+  --driver-helmet-w: 400px;
+  --driver-helmet-w-s: 320px;
+  --fs-driver-name: 40px;
+  --driver-bar-1: 210px;
+  --driver-bar-2: 290px;
+  --driver-bio-w: 470px;
+  --messenger-helmet-w: 360px;
+  --messenger-helmet-w-s: 240px;
+  --messenger-glow: radial-gradient(50% 120% at 12% 50%, rgba(213, 18, 30, 0.22) 0%, rgba(213, 18, 30, 0) 70%);
+  --fs-messenger-title: 34px;
+  --dur-helmet-fade: 200ms; /* the still gives way to the live helmet (05-drivers) */
   /* Partners and Store (board 27, pages 3 and 4) */
   --slot-h: 168px;
   --seal: 54px;
@@ -282,6 +304,7 @@
   --space-6: 24px;
   --space-7: 28px;
   --space-8: 32px;
+  --space-9: 36px;
   --space-10: 40px;
   --space-12: 48px;
   --space-14: 56px;
@@ -559,6 +582,9 @@
     --radius-page: 28px;
     --space-section-x: 20px;
     --page-pad-x: 12px;
+    --fs-driver-name: 30px;
+    --fs-driver-number: 160px;
+    --fs-messenger-title: 26px;
     --fs-track-title: 26px;
     --fs-stat: 28px;
     --space-card-inset: 12px;

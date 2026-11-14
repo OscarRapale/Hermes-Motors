@@ -1,4 +1,9 @@
-// /store (board 27, page 4; copy.md → Pages → Store). A lookbook, no cart (Decision D7).
+// /store (board 27, page 4; copy.md → Pages → Store). A lookbook, no cart (Decision D7). The model's
+// scale and length come from facts.md §B.
+
+import { hm27 } from '@/content/facts'
+
+const model = hm27.scaleModel
 
 export const storeCopy = {
   eyebrow: 'STORE · TEAM KIT',
@@ -9,8 +14,8 @@ export const storeCopy = {
   products: [
     {
       n: '01 · SCALE MODEL',
-      title: 'HM‑27 · 1:18',
-      body: 'Die-cast, First Light livery, 31 cm long.',
+      title: `HM‑27 · 1:${model.scale}`,
+      body: `Die-cast, First Light livery, ${model.lengthCm} cm long.`,
       alt: 'The HM‑27 scale model in the First Light livery',
     },
     {

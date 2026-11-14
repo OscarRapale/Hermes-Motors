@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { footerCopy } from '@/content/copy/shared'
-import { messenger } from '@/content/facts'
+import { hm27, messenger } from '@/content/facts'
 import { formatLapTime } from '@/lib/format/lapTime'
 
 describe('the messenger (facts.md §C)', () => {
@@ -20,5 +20,11 @@ describe('formatLapTime', () => {
     expect(formatLapTime(71_692)).toBe('1:11.692')
     expect(formatLapTime(125_007)).toBe('2:05.007')
     expect(formatLapTime(9_050)).toBe('0:09.050')
+  })
+})
+
+describe('the HM‑27 scale model (facts.md §B)', () => {
+  it('is the model at 1:18, rounded to the centimetre', () => {
+    expect(Math.round(hm27.lengthMm / hm27.scaleModel.scale / 10)).toBe(hm27.scaleModel.lengthCm)
   })
 })
