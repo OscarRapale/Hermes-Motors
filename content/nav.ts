@@ -7,7 +7,7 @@ export type NavLink = { label: string; href: string }
  * Routes that exist today. Next prefetches links in view; links to routes from later milestones
  * (M3, M5) skip that, so production logs no 404s. Add a route here when its page lands.
  */
-export const BUILT_ROUTES: ReadonlySet<string> = new Set(['/', '/drive', '/credits', '/privacy', '/team', '/season', '/partners', '/store', '/drivers'])
+export const BUILT_ROUTES: ReadonlySet<string> = new Set(['/', '/drive', '/credits', '/privacy', '/team', '/season', '/partners', '/store', '/drivers', '/news'])
 export const prefetchFor = (href: string): false | undefined =>
   BUILT_ROUTES.has(href.split('#')[0] || '/') ? undefined : false
 

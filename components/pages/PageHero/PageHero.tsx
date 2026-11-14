@@ -8,7 +8,8 @@ type Words = {
 }
 
 type Props = Words & {
-  eyebrow: string
+  /** a string, or a live count (News) */
+  eyebrow: ReactNode
   /** Before Day One, if the page says something else then (Drivers): shown with the night theme */
   night?: Words
   /** Anything under the intro on the right: stats, a button */

@@ -239,6 +239,19 @@
   --messenger-glow: radial-gradient(50% 120% at 12% 50%, rgba(213, 18, 30, 0.22) 0%, rgba(213, 18, 30, 0) 70%);
   --fs-messenger-title: 34px;
   --dur-helmet-fade: 200ms; /* the still gives way to the live helmet (05-drivers) */
+  /* News (board 26) and the article */
+  --news-pending-h: 1200px; /* the list's room until it knows the visitor's time */
+  --news-featured-h: 430px;
+  --fs-news-featured: 34px;
+  --news-arrow: 36px;
+  --news-card-art-h: 250px;
+  --fs-news-card: 21px;
+  --news-light-ground: radial-gradient(70% 60% at 50% 50%, #ffffff 0%, #eef0f3 55%, #d9dce1 100%);
+  --news-night-ground: radial-gradient(70% 70% at 50% 62%, #2a1416 0%, #0e0f11 70%);
+  --news-mark-w: 150px;
+  --news-feathers-w: 140px;
+  --article-art-ratio: 16 / 9;
+  --article-art-w: 1100px;
   /* Partners and Store (board 27, pages 3 and 4) */
   --slot-h: 168px;
   --seal: 54px;
@@ -582,6 +595,7 @@
     --radius-page: 28px;
     --space-section-x: 20px;
     --page-pad-x: 12px;
+    --fs-news-featured: 26px;
     --fs-driver-name: 30px;
     --fs-driver-number: 160px;
     --fs-messenger-title: 26px;

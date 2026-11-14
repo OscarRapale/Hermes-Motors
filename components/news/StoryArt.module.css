@@ -1,0 +1,62 @@
+/* Board 26's image areas: always the art's own ground, in both themes */
+
+.art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.art[data-ground='light'] {
+  background: var(--news-light-ground);
+}
+
+.art[data-ground='drive'] {
+  background: var(--drive-sky-top);
+}
+
+.art[data-ground='night'] {
+  background: var(--news-night-ground);
+}
+
+.art[data-ground='carbon'] {
+  background: var(--carbon);
+}
+
+.art[data-ground='graphite'] {
+  background: var(--graphite);
+}
+
+.img[data-fit='cover'] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 62%;
+}
+
+.img[data-fit='contain'] {
+  width: 88%;
+  height: auto;
+}
+
+.mark {
+  width: var(--news-mark-w);
+  height: auto;
+}
+
+.h {
+  fill: var(--gallery-white);
+}
+
+.feathers {
+  fill: var(--redline);
+}
+
+.feathersArt {
+  width: var(--news-feathers-w);
+  height: auto;
+}
