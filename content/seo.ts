@@ -23,6 +23,8 @@ export const seo = {
     title: 'Season 2027 · Hermes Motors',
     description: '24 rounds, Bahrain to Abu Dhabi: our first season, race by race.',
   },
+  partners: { title: 'Partners · Hermes Motors', description: 'Founding partners, sealed until Day One.' },
+  store: { title: 'Store · Hermes Motors', description: 'Team kit and a 1:18 HM‑27.' },
   // new: no rows in seo.md for these
   credits: {
     title: 'Credits · Hermes Motors',

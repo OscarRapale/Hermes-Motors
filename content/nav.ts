@@ -7,7 +7,7 @@ export type NavLink = { label: string; href: string }
  * Routes that exist today. Next prefetches links in view; links to routes from later milestones
  * (M3, M5) skip that, so production logs no 404s. Add a route here when its page lands.
  */
-export const BUILT_ROUTES: ReadonlySet<string> = new Set(['/', '/drive', '/credits', '/privacy', '/team', '/season'])
+export const BUILT_ROUTES: ReadonlySet<string> = new Set(['/', '/drive', '/credits', '/privacy', '/team', '/season', '/partners', '/store'])
 export const prefetchFor = (href: string): false | undefined =>
   BUILT_ROUTES.has(href.split('#')[0] || '/') ? undefined : false
 
@@ -25,6 +25,9 @@ export const storeHref = '/store'
 /** Specs chapters on the landing page (the ids are set in M2). */
 export const specsChapterHref = (chapter: number) => `/#specs-${chapter}`
 export const driveHref = '/drive'
+// PLACEHOLDER — Decision D8 (press office / partners contact): no target yet. Footer Contact, Partner with us,
+// Write to us all point here until Oscar gives an address or asks for a form.
+export const contactHref = '#'
 
 export type NavColumn = { heading: string; links: readonly NavLink[] }
 
@@ -58,8 +61,7 @@ export const footerColumns: readonly NavColumn[] = [
     links: [
       { label: 'Partners', href: '/partners' },
       { label: 'Store', href: storeHref },
-      // PLACEHOLDER — Decision D8 (press office / partners contact): no target yet.
-      { label: 'Contact', href: '#' },
+      { label: 'Contact', href: contactHref },
     ],
   },
 ]

@@ -217,6 +217,24 @@
   --track-still-h-s: 220px;
   --fs-stat: 34px;
   --round-h: 120px;
+  /* Partners and Store (board 27, pages 3 and 4) */
+  --slot-h: 168px;
+  --seal: 54px;
+  --seal-mark: 26px;
+  --seal-bg: radial-gradient(circle at 35% 30%, #e8432e 0%, #d5121e 55%, #a30f1f 100%);
+  --seal-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25), 0 6px 14px -6px rgba(163, 15, 31, 0.6);
+  --fs-band-title: 26px;
+  --band-body-w: 620px;
+  --store-tile-h: 520px;
+  --store-tile-h-s: 420px;
+  --store-tile-border: rgba(14, 15, 17, 0.07);
+  --store-model-bg: radial-gradient(80% 60% at 50% 42%, #ffffff 0%, #eef0f3 55%, #dadde2 100%);
+  --store-cap-glow: radial-gradient(60% 50% at 50% 46%, rgba(213, 18, 30, 0.28) 0%, rgba(213, 18, 30, 0) 72%);
+  --store-mark-w: 210px;
+  --fs-store-line: 30px;
+  --store-tee-dim: rgba(14, 15, 17, 0.5); /* 42% is 2.8:1 on white; 50% passes 3:1 */
+  --store-tee-mark-w: 80px;
+  --fs-store-title: 22px;
   --fs-round-gp: 16px;
   --fs-small: 14px;
   --fs-button: 15px;

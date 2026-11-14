@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M5 PR 2 (Team, Season). **Next:** PR 3, Partners + Store.
+**Now:** M5 PR 3 (Partners, Store). **Next:** PR 4, Drivers.
 ## Milestones
 
 ### M0 Foundation
@@ -70,8 +70,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-13 · M5 PR 2: `/team` (traits, Proving Ground), `/season` (`content/season.ts`, checked against facts.md; opener = D+28 tested).
-- 2026-11-13 · M5 PR 1: `PageHero` (board 27) and `Doc`; `/credits`, `/privacy` (no sign-up line), 404; day `--dim-page` 50% (42% failed 3:1); unit guard on sign-up/database copy.
+- 2026-11-13 · M5 PRs 1–3: `PageHero`, `Doc`; `/credits`, `/privacy`, 404; `/team`, `/season` (data checked against facts.md, opener = D+28 tested); `/partners` (contact → `contactHref`, D8), `/store` (tag follows the theme). Day dims at 50% (42% failed 3:1). Unit guard on sign-up/database copy.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15), compact HUD (board 16), thumb pads, BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
