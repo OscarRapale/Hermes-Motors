@@ -1,0 +1,39 @@
+/* The helmet box (05-drivers): the still's aspect (1140 × 940), so the live view lines up pixel for pixel */
+
+.box {
+  position: relative;
+  width: var(--local-helmet-w);
+  max-width: 100%;
+  aspect-ratio: 1140 / 940;
+}
+
+.still {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity var(--dur-helmet-fade) var(--ease-out);
+}
+
+.box[data-drawn] .still {
+  opacity: 0;
+}
+
+.live {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--dur-helmet-fade) var(--ease-out);
+  /* a vertical swipe still scrolls the page; a sideways drag turns the helmet */
+  touch-action: pan-y;
+}
+
+.box[data-drawn] .live {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .still,
+  .live {
+    transition: none;
+  }
+}

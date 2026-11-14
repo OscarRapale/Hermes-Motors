@@ -1,5 +1,7 @@
 import { expect, test, type Page } from './test'
+import { driversCopy } from '@/content/copy/pages/drivers'
 import { creditsCopy, notFoundCopy, privacyCopy } from '@/content/copy/pages/legal'
+import { drivers } from '@/content/drivers'
 import { partnersCopy } from '@/content/copy/pages/partners'
 import { seasonCopy } from '@/content/copy/pages/season'
 import { storeCopy } from '@/content/copy/pages/store'
@@ -104,6 +106,36 @@ for (const theme of THEMES) {
       for (const el of await page.getByText(hidden, { exact: true }).all()) await expect(el).toBeHidden()
       await expectNoAxeViolations(page)
       if (SHOTS) await page.screenshot({ path: `${SHOTS}/store-${theme.name}-${info.project.name}.png`, fullPage: true })
+    })
+
+    test('drivers: names and liveries by day, sealed and dark before 06:00, the messenger', async ({ page }, info) => {
+      await open(page, '/drivers', theme.at)
+      const day = theme.name === 'day'
+      const words = day ? driversCopy.day : driversCopy.night
+      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
+      for (const line of words.headline) await expect(page.getByRole('heading', { level: 1 })).toContainText(line)
+      const cards = page.getByRole('region', { name: driversCopy.cardsLabel }).getByRole('article')
+      await expect(cards).toHaveCount(2)
+      for (const [i, d] of drivers.entries()) {
+        const card = cards.nth(i)
+        if (day) {
+          await expect(card.getByRole('heading', { level: 2 })).toHaveText(d.first + d.last)
+          await expect(card.getByText(driversCopy.seat(d))).toBeVisible()
+          await expect(card.getByRole('img', { name: driversCopy.helmetAlt(d) })).toBeVisible()
+          await expect(card.getByText(d.bio)).toBeVisible()
+        } else {
+          await expect(card.getByText(d.last)).toBeHidden()
+          await expect(card.getByRole('img', { name: driversCopy.sealedName })).toBeVisible()
+          await expect(card.getByText(driversCopy.seatNight(i))).toBeVisible()
+          await expect(card.getByRole('img', { name: driversCopy.helmetAltNight })).toBeVisible()
+        }
+      }
+      const messenger = page.getByRole('region', { name: driversCopy.messenger.title })
+      await expect(messenger.getByText('1:11.906')).toBeVisible()
+      await expect(messenger.getByRole('img', { name: driversCopy.messenger.helmetAlt })).toBeVisible()
+      await expect(messenger.getByRole('link', { name: day ? driversCopy.messenger.cta : driversCopy.messenger.ctaNight })).toBeVisible()
+      await expectNoAxeViolations(page)
+      if (SHOTS) await page.screenshot({ path: `${SHOTS}/drivers-${theme.name}-${info.project.name}.png`, fullPage: true })
     })
 
     test('404: off the racing line, a real 404, the way back', async ({ page }, info) => {
