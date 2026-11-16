@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "laps:record": "vitest run --mode record",
     "e2e": "playwright test",
-    "assets": "node scripts/assets.mjs"
+    "assets": "node scripts/assets.mjs",
+    "lighthouse": "lhci autorun --config=lighthouserc.cjs"
   },
   "dependencies": {
     "@mdx-js/loader": "3.1.1",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
+    "@lhci/cli": "0.15.1",
     "@playwright/test": "1.63.0",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",

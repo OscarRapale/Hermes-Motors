@@ -80,3 +80,16 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+      # ARCHITECTURE §10: desktop Lighthouse on /, /drive and /news; fails under 90 performance
+      - name: Lighthouse CI
+        timeout-minutes: 5
+        run: npm run lighthouse
+
+      - name: Upload Lighthouse reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse
+          path: .lighthouseci/
+          retention-days: 14
