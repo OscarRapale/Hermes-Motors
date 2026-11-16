@@ -75,7 +75,7 @@
 }
 
 /* SOUND (M7): beside HP/kW, pushed right with it */
-.sound {
+.top .sound {
   margin-left: auto;
   color: var(--ink-2-dark);
 }
@@ -163,7 +163,7 @@
     margin-top: calc(-1 * var(--space-1));
   }
 
-  .sound {
+  .top .sound {
     grid-area: sound;
     margin: calc(-1 * var(--space-1)) 0 0;
   }

@@ -47,7 +47,9 @@ Sound effects from Pixabay, under the Pixabay Content License (https://pixabay.c
 - `car-engine.mp3`: an engine starting. The dashboard's ignition, as delivered (`public/audio/ignition.mp3`).
 - `race-car.mp3`: a race car driving. Cut to 2.6 s of steady engine note (26.0–28.6 s), crossfaded into a loop, mono WAV (`public/audio/engine-loop.wav`, `npm run assets`); in the test drive its pitch follows the car's RPM.
 
-The licence doesn't allow redistributing the files on their own: they're served for the site to play, and aren't in the press kit.
+Music: "Hagion" by DJ Seduce, from Epidemic Sound (`ES_Hagion - DJ Seduce.mp3`), under Oscar's Epidemic Sound subscription, which covers use on websites (Decision D31, 16 Nov 2026). The test drive's soundtrack (`public/audio/soundtrack.mp3`, as delivered, streamed). Credited on /credits.
+
+The licences don't allow redistributing the files on their own: they're served for the site to play, and aren't in the press kit.
 
 ## Facts and data
 

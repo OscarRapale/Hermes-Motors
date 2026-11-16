@@ -1,6 +1,9 @@
 import { expect, test } from './test'
 import { driveCopy } from '@/content/copy/drive'
 import { DAY_ONE_MS } from '@/lib/clock/phase'
+import { soundCopy } from '@/content/copy/shared'
+import { SOUND_KEY } from '@/lib/audio/prefs'
+import { SOUNDS } from '@/lib/audio/sounds'
 import { expectNoAxeViolations } from './axe'
 
 // The test drive with WebGL (ARCHITECTURE §7): runs in the "webgl" project (desktop, after the others).
@@ -12,6 +15,8 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   test.setTimeout(300_000)
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
+  const audio: string[] = []
+  page.on('request', (r) => r.url().includes('/audio/') && audio.push(new URL(r.url()).pathname))
   const at = DAY_ONE_MS + 60_000
   await page.clock.setFixedTime(at)
   await page.route('**/api/now', (route) => route.fulfill({ json: { now: at } }))
@@ -34,7 +39,7 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   const controls = page.getByRole('dialog', { name: driveCopy.controls.title })
   await expect(controls).toBeVisible()
   await expect(controls.getByRole('img', { name: driveCopy.controls.keyboardLabel })).toBeVisible()
-  await expect(controls.locator('svg [data-control]')).toHaveCount(13)
+  await expect(controls.locator('svg [data-control]')).toHaveCount(14) // 13 driving keys and M
   await expect(controls.getByText(driveCopy.controls.items.brake.keys)).toBeVisible()
   await expect(controls.getByRole('button', { name: driveCopy.controls.start })).toBeFocused()
   await expectNoAxeViolations(page)
@@ -44,10 +49,23 @@ test('lights, pause with Esc (the header comes back), resume, and the clock star
   await controls.getByRole('button', { name: driveCopy.controls.start }).click()
   await expect(controls).toBeHidden()
 
+  // sound (ARCHITECTURE §7.7): Start is a click, so the engine loop and the soundtrack load; M and the
+  // HUD's wave button turn it off and on, for the whole site
+  const soundButton = stage.getByRole('button', { name: soundCopy.name })
+  await expect(soundButton).toHaveAttribute('aria-pressed', 'true')
+  await expect.poll(() => audio, { timeout: 60_000 }).toEqual(expect.arrayContaining([SOUNDS.engine, SOUNDS.music]))
+  await page.keyboard.press('KeyM')
+  await expect(soundButton).toHaveAttribute('aria-pressed', 'false')
+  expect(await page.evaluate((k) => localStorage.getItem(k), SOUND_KEY)).toBe('off')
+  await soundButton.click()
+  await expect(soundButton).toHaveAttribute('aria-pressed', 'true')
+
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog', { name: driveCopy.pause.title })).toBeVisible()
   await expect(page.getByRole('button', { name: driveCopy.pause.resume })).toBeFocused()
   await expect(page.getByRole('banner')).toBeVisible()
+  // the pause sheet has SOUND too
+  await expect(page.getByRole('dialog', { name: driveCopy.pause.title }).getByRole('button', { name: soundCopy.name })).toBeVisible()
   // the controls again, from the pause sheet: Back returns to it
   await page.getByRole('button', { name: driveCopy.pause.controls }).click()
   await expect(controls).toBeVisible()

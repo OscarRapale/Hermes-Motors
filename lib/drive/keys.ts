@@ -1,5 +1,5 @@
 // Desktop controls (rules/game.md): W/↑/Right Shift throttle, S/↓/Right Ctrl brake, A/D or ←/→ steer,
-// Space Overtake, E Boost (by the steering hand), Esc pause. The right-hand pedals let one hand steer on A/D while the
+// Space Overtake, E Boost (by the steering hand), Esc pause, M sound on/off (M7). The right-hand pedals let one hand steer on A/D while the
 // other works throttle and brake (Oscar's playtest, 2026-11-12). Keys are read by KeyboardEvent.code, so they sit in the same place on any layout.
 
 import type { Input } from '@/lib/game/race'
@@ -14,6 +14,8 @@ const BOOST = ['KeyE']
 /** Every key the game owns (the page mustn't scroll or act on them while driving) */
 export const GAME_KEYS: ReadonlySet<string> = new Set([...THROTTLE, ...BRAKE, ...LEFT, ...RIGHT, ...OVERTAKE, ...BOOST])
 export const PAUSE_KEY = 'Escape'
+/** Sound on or off, for the whole site (ARCHITECTURE §7.7); not a driving input */
+export const SOUND_KEY_CODE = 'KeyM'
 
 /** What each control is bound to, in the order the controls sheet lists them */
 export const CONTROLS = [
@@ -23,6 +25,7 @@ export const CONTROLS = [
   { id: 'overtake', codes: OVERTAKE },
   { id: 'boost', codes: BOOST },
   { id: 'pause', codes: [PAUSE_KEY] },
+  { id: 'sound', codes: [SOUND_KEY_CODE] },
 ] as const
 
 export type ControlId = (typeof CONTROLS)[number]['id']

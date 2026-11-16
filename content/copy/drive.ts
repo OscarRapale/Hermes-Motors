@@ -144,6 +144,7 @@ export const driveCopy = {
       ControlRight: 'CTRL',
       Space: 'SPACE',
       Escape: 'ESC',
+      KeyM: 'M',
     } as Record<string, string>,
     items: {
       throttle: { label: 'Throttle', keys: 'W, ↑ or Right Shift' },
@@ -152,6 +153,8 @@ export const driveCopy = {
       overtake: { label: 'Overtake', keys: 'Space', note: 'Within 1 s of the messenger, once a lap' },
       boost: { label: 'Boost', keys: 'E', note: 'Spends energy; braking earns it back' },
       pause: { label: 'Pause', keys: 'Esc' },
+      /** new (M7) */
+      sound: { label: 'Sound', keys: 'M', note: 'On or off, for the whole site' },
     },
     tip: 'Brake at the 3 board before each tight corner. 2 and 1 count down to the turn.',
     /** new (Decision D9) */

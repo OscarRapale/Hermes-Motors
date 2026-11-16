@@ -24,6 +24,7 @@ export type DocCopy = {
 
 const OFL = 'https://openfontlicense.org'
 const PIXABAY_LICENSE = 'https://pixabay.com/service/license-summary/'
+const EPIDEMIC_SOUND = 'https://www.epidemicsound.com'
 
 export const creditsCopy: DocCopy = {
   eyebrow: 'CREDITS · HERMES MOTORS',
@@ -101,6 +102,7 @@ export const creditsCopy: DocCopy = {
           { text: 'Pixabay Content License', href: PIXABAY_LICENSE },
           { text: ': an engine starting (the dashboard) and a race car (the test drive’s engine, cut to a loop and tuned to the car’s revs).' },
         ],
+        [{ text: 'Music in the test drive: “Hagion” by DJ Seduce, from ' }, { text: 'Epidemic Sound', href: EPIDEMIC_SOUND }, { text: '.' }],
       ],
     },
     {

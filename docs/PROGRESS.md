@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M7 PR 2 (dashboard sound, SOUND toggle). **Next:** PR 3, the test drive's engine and soundtrack. Open decisions: `docs/launch.md` §1.
+**Now:** M7 PR 3 (test drive sound); M7 done with it. **Next:** Oscar closes the open decisions (`docs/launch.md` §1), then the real-device pass.
 ## Milestones
 
 ### M0 Foundation
@@ -45,7 +45,7 @@
 ### M7 Sound (Oscar 2026-11-16, ARCH §7.7)
 - [x] `lib/audio` (context, buses, loops, sound preference), `public/audio`, credits, privacy
 - [x] Dashboard: ignition sound, SOUND toggle (label + live wave)
-- [ ] Test drive: engine by RPM, soundtrack, mute (HUD, M, pause)
+- [x] Test drive: engine by RPM, soundtrack, mute (HUD, M, pause)
 
 ## Decisions waiting on Oscar
 
@@ -72,8 +72,8 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-16 · M7 PR 2: ignition plays on the button (and the first ignition once the page has had a click); `SoundToggle` beside HP/kW (phones: under the big dial); `sound.spec.ts` (Playwright's DOM calls and trace count as a click in Chromium).
-- 2026-11-16 · M7 PR 1: `lib/audio` (one AudioContext after the first interaction, master/music/sfx, cached files, loops), engine loop cut by `npm run assets` (2.6 s, 163 KB WAV), ignition MP3 96 KB; sound credit, privacy line.
+- 2026-11-16 · M7 PR 3: engine loop rate = RPM / 9,500 (idles and revs on the grid; Boost +4%), soundtrack streamed (`track`, 40% under the engine; fades on pause and at the finish); M, a wave button under pause, SOUND on the pause sheet.
+- 2026-11-16 · M7 PRs 1–2: `lib/audio` (one AudioContext after the first interaction, buses, cached files, loops); engine loop cut by `npm run assets` (2.6 s WAV); sound credit, privacy line; ignition sound; `SoundToggle` (label + live wave) beside HP/kW. (Playwright clicks unlock audio in Chromium.)
 - 2026-11-16 · M6 PR 5: Firefox + WebKit e2e (`npm run e2e:engines`), `docs/launch.md`, `madeByHref`, D6 in docs.
 - 2026-11-16 · M6 PRs 1–3: canonical + a preview per route (`content/og.ts`), sitemap, robots; JS budget on `/` (154.3 KB, 25.1 ours), Lighthouse CI (100 ×4); `a11y.spec.ts` (axe every route × theme × device, focus rings, reflow 320, reduced motion, targets ≥ 24, one h1), `docs/audit/accessibility.md`.
 - 2026-11-13/16 · **M5 done** (PRs #28–#34): drivers, news (MDX, shown from its beat), team, season, partners, store, manifesto, press kit (8.4 MB zip), credits, privacy, 404 (`proxy.ts`).
