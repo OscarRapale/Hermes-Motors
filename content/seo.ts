@@ -31,6 +31,7 @@ export const seo = {
     title: 'Manifesto · Hermes Motors',
     description: 'We have no trophies. We have a first day, and we intend to use all of it.',
   },
+  press: { title: 'Press kit · Hermes Motors', description: 'Renders, the mark, the First Light film and the facts.' },
   // new: no rows in seo.md for these
   credits: {
     title: 'Credits · Hermes Motors',

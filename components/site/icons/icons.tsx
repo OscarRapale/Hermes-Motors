@@ -22,6 +22,8 @@ export const LockIcon = ({ className }: IconProps) =>
 
 export const ArrowIcon = ({ className }: IconProps) => svg(className, <path d="M5 12h13M13 6l6 6-6 6" />)
 
+export const DownloadIcon = ({ className }: IconProps) => svg(className, <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />)
+
 export const MenuIcon = ({ className }: IconProps) => svg(className, <path d="M4 8h16M4 16h16" />)
 
 export const CloseIcon = ({ className }: IconProps) => svg(className, <path d="M6 6l12 12M18 6L6 18" />)
