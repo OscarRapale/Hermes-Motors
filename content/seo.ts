@@ -27,6 +27,10 @@ export const seo = {
   store: { title: 'Store · Hermes Motors', description: 'Team kit and a 1:18 HM‑27.' },
   drivers: { title: 'Drivers · Hermes Motors', description: 'Two seats, two rookies, and a test driver nobody has named.' },
   news: { title: 'News · Hermes Motors', description: 'Every message from the Proving Ground, newest first.' },
+  manifesto: {
+    title: 'Manifesto · Hermes Motors',
+    description: 'We have no trophies. We have a first day, and we intend to use all of it.',
+  },
   // new: no rows in seo.md for these
   credits: {
     title: 'Credits · Hermes Motors',

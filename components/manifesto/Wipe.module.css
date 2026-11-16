@@ -1,0 +1,41 @@
+/* The text wipe (11-motion): the statement uncovers left to right behind a Redline edge leaning 14° */
+
+.wipe {
+  position: relative;
+}
+
+.wipe[data-state='armed'] .inner {
+  clip-path: inset(0 100% 0 0);
+}
+
+.wipe[data-state='in'] .inner {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--dur-wipe) var(--ease-out);
+}
+
+.wipe[data-state='in']::after {
+  content: '';
+  position: absolute;
+  top: -4%;
+  bottom: -4%;
+  left: 0;
+  width: var(--wipe-edge);
+  background: var(--redline);
+  transform: skewX(var(--wipe-skew));
+  animation: edge var(--dur-wipe) var(--ease-out) forwards;
+  pointer-events: none;
+}
+
+@keyframes edge {
+  from {
+    left: 0;
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    left: 100%;
+    opacity: 0;
+  }
+}
