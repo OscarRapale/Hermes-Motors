@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M6 PR 1 (SEO, link previews). **Next:** PR 2, budgets + Lighthouse CI.
+**Now:** M6 PR 2 (budgets, Lighthouse CI). **Next:** PR 3, accessibility audit.
 ## Milestones
 
 ### M0 Foundation
@@ -70,7 +70,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-16 · M6 PR 1: canonical + OG/Twitter per route (`opengraph-image.tsx` from `content/og.ts`, home night/day per request), sitemap, robots, WebSite data; home and drive in route groups so `/drive/r` keeps its card.
+- 2026-11-16 · M6 PRs 1–2: canonical + a preview per route (`content/og.ts`; home night/day), sitemap, robots, WebSite data (home and drive in route groups: `/drive/r` keeps its card); JS budget test on `/` (154.3 KB, 25.1 first-party; prefetch excluded), Lighthouse CI (100 ×4).
 - 2026-11-13/16 · **M5 done** (PRs #28–#34): `PageHero`, `Doc`; credits, privacy, 404, team, season, partners, store; drivers (stills, then live helmets); news (MDX; shown from its beat, all while previewing); manifesto (wipe on view); press kit (outlined lock-up, 8.4 MB zip). `proxy.ts` 404s bad `/drive/r`, `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15), compact HUD (board 16), thumb pads, BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.

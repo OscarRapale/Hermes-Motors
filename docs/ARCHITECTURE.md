@@ -205,6 +205,8 @@ Article template (`/news/[slug]`): use the manifesto's typography (Michroma head
 
 Lighthouse CI on `/`, `/drive`, `/news` in GitHub Actions; fail under 90 performance on desktop. Both JS budgets on `/` are checked in CI from M6 (first-party = the chunks that aren't React, React DOM or the Next runtime).
 
+As built (M6): `tests/e2e/budgets.spec.ts` loads `/` on desktop with Next's prefetch of other routes blocked (the header's visible links prefetch them at idle; that JavaScript belongs to those pages), gzips every script the page loads, and counts framework as `rootMainFiles` + `polyfillFiles` from `.next/build-manifest.json`. At M6: 154.3 KB total, 25.1 KB first-party. (The 182–191 KB figures from M1–M2 included that prefetch.) `npm run lighthouse` (`@lhci/cli`, `lighthouserc.cjs`) runs in CI after e2e; reports are a CI artifact, never uploaded to a public server. At M6: 100 in all four categories on all three pages.
+
 ## 11. Accessibility
 
 WCAG 2.2 AA. Keyboard path for every control; focus visible; reduced motion everywhere (§5, §6, §7); timers announce politely; the game has a text summary at finish and a no-WebGL state; all images of the car have alt text from the spec. Automated axe checks in Playwright on every page, both themes.
