@@ -113,6 +113,24 @@ await sharp(join(ASSETS, 'images', 'hero-day.png'))
   .toFile(cardCar)
 written.push(cardCar)
 
+// ── 8b. Link-preview stills (app/**/opengraph-image.tsx): PNG, since the renderer reads no WebP;
+// in assets/, read at build, not served ──────────────────────────────────────────────────────────────
+await rm(join(ROOT, 'assets', 'og'), { recursive: true, force: true })
+await mkdir(join(ROOT, 'assets', 'og'), { recursive: true })
+const ogStill = async (from, name, width, trim = true) => {
+  const out = join(ROOT, 'assets', 'og', name)
+  let img = sharp(from)
+  if (trim) img = img.trim()
+  await img.resize({ width, withoutEnlargement: true }).png({ compressionLevel: 9, palette: true, quality: 90 }).toFile(out)
+  written.push(out)
+}
+await ogStill(join(ASSETS, 'images', 'hero-day.png'), 'car-day.png', 1000)
+await ogStill(join(ASSETS, 'images', 'hero-night.png'), 'car-night.png', 1000)
+await ogStill(join(PKG, 'renders', 'hm27-exploded.png'), 'exploded.png', 1000, false)
+await ogStill(join(ASSETS, 'images', 'drive.webp'), 'drive.png', 1200, false)
+await ogStill(join(ASSETS, 'images', 'drivers', 'helmet-gallery-9.png'), 'helmet-9.png', 520, false)
+await ogStill(join(ASSETS, 'images', 'drivers', 'helmet-graphite-19.png'), 'helmet-19.png', 520, false)
+
 // ── 9. The press kit (09-press-kit): the wordmark and lock-up outlined from Michroma, PNGs of every
 // logo, light thumbnails of the renders for the page, and "Download everything" as one zip ──────────
 const michroma = await readFile(join(ROOT, 'assets', 'fonts', 'Michroma-Regular.ttf'))
@@ -215,7 +233,7 @@ if (specsTotal > 2.5 * 1024 * KB) problems.push(`specs frames total ${(specsTota
 
 const rel = (p) => p.slice(ROOT.length + 1).replaceAll('\\', '/')
 console.log(`Wrote ${written.length} files.`)
-for (const f of written.filter((p) => /hero-|drivers|brand|card-car|press-kit|images.press/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
+for (const f of written.filter((p) => /hero-|drivers|brand|card-car|press-kit|images.press|assets.og/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
 console.log(`  specs frames: ${(specsTotal / 1024 / KB).toFixed(2)} MB total`)
 if (problems.length) {
   console.warn(`\nOver budget:\n  ${problems.join('\n  ')}`)

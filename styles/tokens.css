@@ -93,6 +93,8 @@
   --card-top: #23252b;
   --card-grid: rgba(255, 255, 255, 0.045);
   --card-meta: rgba(255, 255, 255, 0.45);
+  --card-grid-light: rgba(14, 15, 17, 0.05);
+  --card-meta-light: rgba(14, 15, 17, 0.55);
   /* the thumb controls (board 16) */
   --touch-steer: 66px;
   --touch-bst: 46px;

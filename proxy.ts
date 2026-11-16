@@ -10,7 +10,9 @@ const NOT_FOUND = '/__not-found'
 
 export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
-  const ok = pathname === '/drive/r' ? parseShared(searchParams) !== null : storySlugs.includes(pathname.slice('/news/'.length))
+  const slug = pathname.slice('/news/'.length)
+  // /news/opengraph-image… is the news list's own link preview, not a story
+  const ok = pathname === '/drive/r' ? parseShared(searchParams) !== null : slug.startsWith('opengraph-image') || storySlugs.includes(slug)
   return ok ? NextResponse.next() : NextResponse.rewrite(new URL(NOT_FOUND, request.url))
 }
 

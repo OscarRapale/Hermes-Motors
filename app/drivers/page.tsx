@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { PageHero } from '@/components/pages/PageHero/PageHero'
 import { Drivers } from '@/components/pages/Drivers/Drivers'
 import { driversCopy } from '@/content/copy/pages/drivers'
-import { seo } from '@/content/seo'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = { title: { absolute: seo.drivers.title }, description: seo.drivers.description }
+export const metadata: Metadata = pageMetadata('drivers', '/drivers')
 
 export default function DriversPage() {
   return (

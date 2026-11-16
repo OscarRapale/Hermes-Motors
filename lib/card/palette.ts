@@ -10,6 +10,13 @@ export const CARD_TOKENS = {
   cardTop: '--card-top',
   cardGrid: '--card-grid',
   cardMeta: '--card-meta',
+  // the light previews (day pages)
+  galleryWhite: '--gallery-white',
+  studioGray: '--studio-gray',
+  ink2Light: '--ink-2-light',
+  redOnLight: '--red-on-light',
+  cardGridLight: '--card-grid-light',
+  cardMetaLight: '--card-meta-light',
 } as const
 
 export type Palette = Record<keyof typeof CARD_TOKENS, string>

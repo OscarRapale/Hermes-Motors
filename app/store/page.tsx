@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { PageHero } from '@/components/pages/PageHero/PageHero'
 import { Store } from '@/components/pages/Store/Store'
 import { storeCopy } from '@/content/copy/pages/store'
-import { seo } from '@/content/seo'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = { title: { absolute: seo.store.title }, description: seo.store.description }
+export const metadata: Metadata = pageMetadata('store', '/store')
 
 export default function StorePage() {
   return (
