@@ -5,9 +5,11 @@
 //
 // vendor/ stays pristine: this script only reads from it.
 
-import { copyFile, mkdir, readdir, rm, stat, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { zipSync } from 'fflate'
+import satori from 'satori'
 import sharp from 'sharp'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -82,8 +84,7 @@ await copy(join(ASSETS, 'film', 'first-light-1080p.mp4'), join(PUBLIC, 'press', 
 await copy(join(ASSETS, 'film', 'first-light-poster.jpg'), join(PUBLIC, 'press', 'first-light-poster.jpg'))
 
 // ── 7. The mark as SVG files (paths and colours from prototypes/Brand-Mark.dc.html) ─────
-// The wordmark and lock-up are set in Michroma text on the board; they need outlining and land
-// with the press kit (M5).
+// The wordmark and lock-up (Michroma, outlined) are drawn in step 9, with the press kit.
 const H = 'M50,72 L64,72 L80,8 L66,8 Z M78,72 L92,72 L108,8 L94,8 Z M70,46 L86,46 L88.5,36 L72.5,36 Z'
 const FEATHERS = 'M59,23 L57,32 L13,18 L6,10 Z M55.5,38 L53.5,46.5 L20,35.5 L14,27.5 Z M52,53 L50,61 L29,53.5 L24,45.5 Z'
 const svg = (title, body) =>
@@ -112,6 +113,93 @@ await sharp(join(ASSETS, 'images', 'hero-day.png'))
   .toFile(cardCar)
 written.push(cardCar)
 
+// ── 9. The press kit (09-press-kit): the wordmark and lock-up outlined from Michroma, PNGs of every
+// logo, light thumbnails of the renders for the page, and "Download everything" as one zip ──────────
+const michroma = await readFile(join(ROOT, 'assets', 'fonts', 'Michroma-Regular.ttf'))
+
+/** "HERMES" in Michroma as SVG paths (satori draws text as outlines), with its tight bounds */
+async function outline(text, size, trackingEm) {
+  const out = await satori(
+    { type: 'div', props: { style: { display: 'flex', fontFamily: 'Michroma', fontSize: size, letterSpacing: size * trackingEm }, children: text } },
+    { width: size * text.length * 2, height: Math.ceil(size * 1.6), fonts: [{ name: 'Michroma', data: michroma, weight: 400, style: 'normal' }] },
+  )
+  const d = [...out.matchAll(/<path[^>]*\sd="([^"]+)"/g)].map((m) => m[1]).join(' ')
+  const nums = d.match(/-?\d*\.?\d+(?:e-?\d+)?/g).map(Number)
+  const xs = nums.filter((_, i) => i % 2 === 0)
+  const ys = nums.filter((_, i) => i % 2 === 1)
+  return { d, x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }
+}
+
+const word = await outline('HERMES', 100, 0.32) // the header's wordmark tracking
+const r = (n) => Math.round(n * 100) / 100
+const pad = word.h * 0.25
+const wordmark = (title, ink) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${r(word.x - pad)} ${r(word.y - pad)} ${r(word.w + 2 * pad)} ${r(word.h + 2 * pad)}" role="img" aria-label="${title}"><title>${title}</title><path fill="${ink}" d="${word.d}"/></svg>\n`
+// the lock-up: the mark, then the wordmark; the mark's H stands twice the letters' height, centred on them
+const scale = (2 * word.h) / 64 // the H spans 64 of the mark's 80 units
+const markW = 120 * scale
+const markH = 80 * scale
+const gap = word.h * 1.1
+const lockW = markW + gap + word.w
+const lockH = markH
+const lockup = (title, ink) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${r(-pad)} ${r(-pad)} ${r(lockW + 2 * pad)} ${r(lockH + 2 * pad)}" role="img" aria-label="${title}"><title>${title}</title>` +
+  `<g transform="scale(${r(scale)})"><path fill="${ink}" d="${H}"/><path fill="#D5121E" d="${FEATHERS}"/></g>` +
+  `<g transform="translate(${r(markW + gap - word.x)} ${r(lockH / 2 - word.h / 2 - word.y)})"><path fill="${ink}" d="${word.d}"/></g></svg>\n`
+const outlined = {
+  'wordmark.svg': wordmark('Hermes Motors wordmark', '#0E0F11'),
+  'wordmark-reversed.svg': wordmark('Hermes Motors wordmark, reversed', '#FFFFFF'),
+  'lockup.svg': lockup('Hermes Motors lock-up: the mark and the wordmark', '#0E0F11'),
+  'lockup-reversed.svg': lockup('Hermes Motors lock-up, reversed', '#FFFFFF'),
+}
+for (const [name, body] of Object.entries(outlined)) {
+  await writeFile(join(PUBLIC, 'brand', name), body)
+  written.push(join(PUBLIC, 'brand', name))
+}
+// every logo as a PNG too, 1600 px wide, transparent
+for (const name of (await readdir(join(PUBLIC, 'brand'))).filter((n) => n.endsWith('.svg'))) {
+  const out = join(PUBLIC, 'brand', name.replace(/\.svg$/, '.png'))
+  await sharp(await readFile(join(PUBLIC, 'brand', name)), { density: 600 }).resize({ width: 1600 }).png().toFile(out)
+  written.push(out)
+}
+
+// the renders' thumbnails for the page (the PNGs stay the downloads)
+await rm(join(PUBLIC, 'images', 'press'), { recursive: true, force: true })
+for (const name of (await readdir(join(PUBLIC, 'press', 'renders'))).filter((n) => n.endsWith('.png'))) {
+  await encode(join(PUBLIC, 'press', 'renders', name), join(PUBLIC, 'images', 'press', name.replace(/\.png$/, '.webp')), 960, 'webp')
+}
+
+// "Download everything": renders, the mark, the film, and a README with the credit lines (credits.md)
+const credits = await readFile(join(ROOT, 'docs', 'legal', 'credits.md'), 'utf8')
+const quotes = [...credits.matchAll(/^> (.+)$/gm)].map((m) => m[1])
+const readme = [
+  'HERMES MOTORS · PRESS KIT · DAY ONE EDITION',
+  '',
+  quotes[0], // the fictional team
+  '',
+  'Credit for car images (run it with every render or film frame you publish):',
+  quotes[1],
+  '',
+  'renders/  the HM-27, PNG, 2400 × 1500',
+  'brand/    the mark, the wordmark and the lock-up, SVG and PNG. Keep the 14° lean and clear space of one feather around the mark. Never recolour the feathers.',
+  'film/     First Light, MP4 1080p, 24 s, silent, and its poster frame',
+  '',
+].join('\r\n')
+const kit = { 'hermes-motors-press-kit/README.txt': [new TextEncoder().encode(readme), { level: 6 }] }
+const add = async (dir, folder) => {
+  for (const name of await readdir(dir)) {
+    if ((await stat(join(dir, name))).isDirectory()) continue
+    kit[`hermes-motors-press-kit/${folder}/${name}`] = [new Uint8Array(await readFile(join(dir, name))), { level: 0 }] // already compressed
+  }
+}
+await add(join(PUBLIC, 'press', 'renders'), 'renders')
+await add(join(PUBLIC, 'brand'), 'brand')
+kit['hermes-motors-press-kit/film/first-light-1080p.mp4'] = [new Uint8Array(await readFile(join(PUBLIC, 'press', 'first-light-1080p.mp4'))), { level: 0 }]
+kit['hermes-motors-press-kit/film/first-light-poster.jpg'] = [new Uint8Array(await readFile(join(PUBLIC, 'press', 'first-light-poster.jpg'))), { level: 0 }]
+const zip = join(PUBLIC, 'press', 'hermes-motors-press-kit.zip')
+await writeFile(zip, zipSync(kit, { mtime: new Date('2026-11-16T00:00:00Z') }))
+written.push(zip)
+
 // ── Budgets (ARCHITECTURE §10) ──────────────────────────────────────────────────────────
 const problems = []
 for (const stem of helmets) {
@@ -127,7 +215,7 @@ if (specsTotal > 2.5 * 1024 * KB) problems.push(`specs frames total ${(specsTota
 
 const rel = (p) => p.slice(ROOT.length + 1).replaceAll('\\', '/')
 console.log(`Wrote ${written.length} files.`)
-for (const f of written.filter((p) => /hero-|drivers|brand|card-car/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
+for (const f of written.filter((p) => /hero-|drivers|brand|card-car|press-kit|images.press/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
 console.log(`  specs frames: ${(specsTotal / 1024 / KB).toFixed(2)} MB total`)
 if (problems.length) {
   console.warn(`\nOver budget:\n  ${problems.join('\n  ')}`)

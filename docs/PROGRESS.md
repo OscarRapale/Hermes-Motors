@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M5 PR 6 (Manifesto). **Next:** PR 7, Press kit.
+**Now:** M5 done (PR 7, press kit). **Next:** M6, launch readiness (plan first).
 ## Milestones
 
 ### M0 Foundation
@@ -34,8 +34,8 @@
 - [x] Web Share / download / copy link
 
 ### M5 Pages
-- [ ] Drivers (3D helmets: stills first, then live `DriverHelmet`), News (+ MDX article), Team, Season, Partners, Store
-- [ ] Manifesto, Press kit (+ downloads), Credits, Privacy, 404
+- [x] Drivers (3D helmets: stills first, then live `DriverHelmet`), News (+ MDX article), Team, Season, Partners, Store
+- [x] Manifesto, Press kit (+ downloads), Credits, Privacy, 404
 
 ### M6 Launch
 - [ ] Accessibility audit (axe + manual, both themes) · performance budgets (Lighthouse CI)
@@ -70,7 +70,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-13/14 · M5 PRs 1–5: `PageHero`, `Doc`; credits, privacy, 404; team, season (checked against facts.md); partners, store; drivers (stills, then live helmets); news (MDX; a story shows from its beat, all while previewing); manifesto (text wipe on view). `proxy.ts` 404s bad `/drive/r` and `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
+- 2026-11-13/16 · **M5 done** (PRs #28–#34): `PageHero`, `Doc`; credits, privacy, 404, team, season, partners, store; drivers (stills, then live helmets); news (MDX; shown from its beat, all while previewing); manifesto (wipe on view); press kit (outlined lock-up, 8.4 MB zip). `proxy.ts` 404s bad `/drive/r`, `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15), compact HUD (board 16), thumb pads, BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).

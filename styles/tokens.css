@@ -276,6 +276,15 @@
   --fs-manifesto-lap: 34px;
   --manifesto-car-w: 1080px;
   --manifesto-mark-w: 96px;
+  /* Press kit (board 30) */
+  --press-intro-w: 520px;
+  --press-cta-h: 52px;
+  --press-knob: 40px;
+  --press-thumb-h: 260px;
+  --press-mark-h: 150px;
+  --press-mark-w: 120px;
+  --press-lockup-w: 180px;
+  --press-fact-k: 110px;
   /* Partners and Store (board 27, pages 3 and 4) */
   --slot-h: 168px;
   --seal: 54px;

@@ -18,10 +18,11 @@ Everything arrives in `vendor/` and is copied into `public/` during M0 (convert 
 | Specs layout | `vendor/assets/images/specs/specs-layout.json` | `content/specs-layout.json` | frame size, callout anchors per frame |
 | Drive stills | `vendor/assets/images/drive.webp`, `drive-phone.webp` | `public/images/` | backgrounds for the rotate screen, finish screens, Team page, OG |
 | Helmet stills | `vendor/assets/images/drivers/helmet-*.{png,webp}` | `public/images/drivers/` | `gallery-9`, `graphite-19`, `before-dawn-right`, `before-dawn-left`, `messenger`; 1140 × 940 PNG sources (transparent), 800 × 660 WebP; poster stills under the live helmets and the Drivers OG |
-| Press renders | `vendor/hermes-hm27/renders/*.png` | `public/press/renders/` | 2400 × 1500; also zipped into the press kit |
+| Press renders | `vendor/hermes-hm27/renders/*.png` | `public/press/renders/`, thumbnails `public/images/press/*.webp` (960 px) | 2400 × 1500; also zipped into the press kit |
+| Press kit zip | `npm run assets` (fflate) | `public/press/hermes-motors-press-kit.zip` | renders, logos (SVG + PNG), the film and its poster, and a README with the credit lines from `docs/legal/credits.md`; about 8.4 MB |
 | First Light film | `vendor/assets/film/first-light-1080p.mp4` + `first-light-poster.jpg` | `public/press/` | 24 s, 1920 × 1080, 30 fps, H.264, silent |
 | Brand reference images | `vendor/assets/images/reference/*.webp` | — | used by boards 06–08 only |
-| Logos | draw from the SVG paths in `prototypes/Brand-Mark.dc.html` | `public/brand/*.svg` | mark, wordmark, lock-up, reversed, single-colour |
+| Logos | draw from the SVG paths in `prototypes/Brand-Mark.dc.html`; the wordmark and lock-up outlined from Michroma with satori (`assets/fonts`) | `public/brand/*.svg`, `*.png` (1600 px) | mark, wordmark, lock-up, reversed, single-colour; no text elements, so no font is needed to open them |
 
 ## How the images were made
 

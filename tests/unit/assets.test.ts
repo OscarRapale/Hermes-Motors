@@ -1,6 +1,9 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
+import { strFromU8, unzipSync } from 'fflate'
 import { describe, expect, it } from 'vitest'
+import { driveCopy } from '@/content/copy/drive'
+import { footerCopy } from '@/content/copy/shared'
 
 // docs/design/assets.md and ARCHITECTURE §10. `npm run assets` writes these from vendor/.
 
@@ -103,5 +106,40 @@ describe('press kit and brand files', () => {
       const svg = readFileSync(join(PUBLIC, 'brand', n), 'utf8')
       expect(svg, n).toMatch(/^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)
     }
+  })
+})
+
+describe('the press kit (09-press-kit)', () => {
+  const files = [
+    ...['mark', 'mark-reversed', 'mark-white', 'mark-black', 'wordmark', 'wordmark-reversed', 'lockup', 'lockup-reversed'].flatMap((n) => [
+      `brand/${n}.svg`,
+      `brand/${n}.png`,
+    ]),
+    ...['first-light', 'before-dawn', 'exploded', 'side', 'rear', 'game-lod'].flatMap((n) => [
+      `press/renders/hm27-${n}.png`,
+      `images/press/hm27-${n}.webp`,
+    ]),
+    'press/first-light-1080p.mp4',
+    'press/first-light-poster.jpg',
+    'press/hermes-motors-press-kit.zip',
+  ]
+
+  it.each(files)('%s is in public/', (path) => {
+    expect(existsSync(join(PUBLIC, path))).toBe(true)
+  })
+
+  it('outlines the wordmark (no text, so it needs no font) and keeps the thumbnails light', () => {
+    for (const n of ['wordmark', 'lockup']) expect(readFileSync(join(PUBLIC, 'brand', `${n}.svg`), 'utf8')).not.toMatch(/<text/)
+    for (const n of readdirSync(join(PUBLIC, 'images', 'press'))) expect(kb(join(PUBLIC, 'images', 'press', n)), n).toBeLessThan(40)
+  })
+
+  it('the zip carries everything, and its README the credit line', () => {
+    const zip = readFileSync(join(PUBLIC, 'press', 'hermes-motors-press-kit.zip'))
+    const text = zip.toString('latin1')
+    for (const name of ['README.txt', 'renders/hm27-first-light.png', 'brand/lockup.svg', 'film/first-light-1080p.mp4'])
+      expect(text, name).toContain(`hermes-motors-press-kit/${name}`)
+    const readme = strFromU8(unzipSync(new Uint8Array(zip), { filter: (f) => f.name.endsWith('README.txt') })['hermes-motors-press-kit/README.txt'])
+    expect(readme).toContain(driveCopy.card.credit)
+    expect(readme).toContain(footerCopy.fictional)
   })
 })
