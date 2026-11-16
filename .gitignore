@@ -51,3 +51,6 @@ next-env.d.ts
 /tools/render/node_modules/
 /tools/render/dist/
 .lighthouseci/
+
+# sound sources from Oscar (licences: no passing the files on by themselves); public/audio holds what the site plays
+/vendor/audio/

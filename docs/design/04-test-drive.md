@@ -37,7 +37,7 @@ The grid shot, five red lights lit one per second, lights out after a random 0.2
 ## Prototype only
 
 - Lap timing driven by `gap(p)`; the attempt counter starting at 4; "Play the start" (a canvas control to run the sequence).
-- "STEER · BUTTONS · TILT IN SETTINGS" (tilt is a stretch goal); "Works best with sound on" (no audio planned). See copy.md.
+- "STEER · BUTTONS · TILT IN SETTINGS" (tilt is a stretch goal); "Works best with sound on" (sound added in M7, ARCHITECTURE §7.7). See copy.md.
 
 ## Accessibility and states
 

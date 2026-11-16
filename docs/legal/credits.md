@@ -40,6 +40,15 @@ Michroma (Vernon Adams), Geist and Geist Mono (Vercel) — all under the SIL Ope
 
 The share cards (`/api/card`) draw with static copies in `assets/fonts/`, since `next/font` gives no files and the card renderer reads TTF only: Michroma Regular (from google/fonts) and Geist Mono Regular and Medium (from the `geist` npm package 1.9.2, which licenses them as Copyright 2023 Vercel, in collaboration with basement.studio, SIL OFL 1.1). Each licence file sits beside its font. Added in M4 (13 Nov 2026).
 
+## Sound
+
+Sound effects from Pixabay, under the Pixabay Content License (https://pixabay.com/service/license-summary/): free to use and modify, no attribution required; credited anyway. Delivered by Oscar in `vendor/audio/` (16 Nov 2026; kept out of git, the repo is public):
+
+- `car-engine.mp3`: an engine starting. The dashboard's ignition, as delivered (`public/audio/ignition.mp3`).
+- `race-car.mp3`: a race car driving. Cut to 2.6 s of steady engine note (26.0–28.6 s), crossfaded into a loop, mono WAV (`public/audio/engine-loop.wav`, `npm run assets`); in the test drive its pitch follows the car's RPM.
+
+The licence doesn't allow redistributing the files on their own: they're served for the site to play, and aren't in the press kit.
+
 ## Facts and data
 
 Rule figures and the 2027 calendar come from the public sources listed in `docs/content/facts.md`; the Credits page links them.
