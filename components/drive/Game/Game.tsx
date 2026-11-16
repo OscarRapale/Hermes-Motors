@@ -6,7 +6,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { messenger } from '@/content/facts'
 import { driveCopy } from '@/content/copy/drive'
 import { hudView } from '@/lib/drive/hud'
-import { GAME_KEYS, PAUSE_KEY, inputFromKeys } from '@/lib/drive/keys'
+import { setSoundOn, soundOn } from '@/lib/audio'
+import { GAME_KEYS, PAUSE_KEY, SOUND_KEY_CODE, inputFromKeys } from '@/lib/drive/keys'
 import { COMPACT_QUERY, ROTATE_QUERY, TOUCH_QUERY, useMedia } from '@/lib/drive/media'
 import { frameAt, type Frame } from '@/lib/drive/pose'
 import { boostTap, withTouch, type Pad } from '@/lib/drive/touch'
@@ -22,6 +23,8 @@ import { Hud, type HudHandle } from '../Hud/Hud'
 import { Result } from '../Result/Result'
 import { Rotate } from '../Rotate/Rotate'
 import { TouchControls, type TouchHandle } from '../TouchControls/TouchControls'
+import { SoundToggle } from '@/components/site/SoundToggle/SoundToggle'
+import { useDriveSound } from './useDriveSound'
 import styles from './Game.module.css'
 
 const DriveScene = dynamic(() => import('../DriveScene/DriveScene'), { ssr: false })
@@ -54,7 +57,8 @@ type Ui = { lit: number; phase: Phase; go: boolean; jump: boolean; result: LapRe
 
 /**
  * The test drive (ARCHITECTURE §7, board 13): the full-screen stage, the fixed-step loop, the keys, the
- * start, the HUD, pause and the result. Your best lap and attempt count stay on this device.
+ * start, the HUD, pause and the result, and the sound (useDriveSound). Your best lap and attempt count
+ * stay on this device.
  */
 export function Game({ preview }: { preview: boolean }) {
   const c = circuit()
@@ -95,6 +99,7 @@ export function Game({ preview }: { preview: boolean }) {
   const pauseDialog = useRef<HTMLDialogElement>(null)
   const controlsDialog = useRef<HTMLDialogElement>(null)
   const runItBack = useRef<HTMLButtonElement>(null)
+  const sound = useDriveSound()
 
   // device checks after hydration
   useEffect(() => {
@@ -140,6 +145,7 @@ export function Game({ preview }: { preview: boolean }) {
         const view = hudView(c, s, input)
         hud.current?.update(view)
         touchPads.current?.update(view)
+        sound.update(s, input)
       }
       pushUi({
         lit: lightsLit(s),
@@ -149,7 +155,7 @@ export function Game({ preview }: { preview: boolean }) {
         result: s.result,
       })
     },
-    [c, pushUi],
+    [c, pushUi, sound],
   )
 
   const pause = useCallback(() => {
@@ -160,13 +166,15 @@ export function Game({ preview }: { preview: boolean }) {
     pads.current.clear()
     padTaps.current.clear()
     boostUntil.current = 0
+    sound.pause()
     setPaused(true)
-  }, [])
+  }, [sound])
 
   const resume = useCallback(() => {
     setPaused(false)
+    sound.resume()
     running.current = true
-  }, [])
+  }, [sound])
 
   const restart = useCallback(() => {
     loop.current = startLoop(createRace(newSeed()))
@@ -182,13 +190,18 @@ export function Game({ preview }: { preview: boolean }) {
     hud.current?.update(hudView(c, loop.current.state, inputFromKeys(held.current)))
     setRecord(countAttempt())
     setPaused(false)
+    sound.restart()
     running.current = true
-  }, [c])
+  }, [c, sound])
 
   // keys: the game's own (no page scroll), Esc pauses; leaving the tab or the window pauses
   useEffect(() => {
     if (status !== 'ready') return
     const down = (e: KeyboardEvent) => {
+      if (e.code === SOUND_KEY_CODE && !e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        setSoundOn(!soundOn()) // M: sound on or off, any time (ARCHITECTURE §7.7)
+        return
+      }
       if (e.code === PAUSE_KEY) {
         // the same Escape would cancel the sheet it just opened
         if (!pauseDialog.current?.open && !controlsDialog.current?.open) {
@@ -334,6 +347,8 @@ export function Game({ preview }: { preview: boolean }) {
           />
         )}
 
+        {status === 'ready' && <SoundToggle className={styles.sound} waveOnly />}
+
         <button type="button" className={styles.pauseButton} onClick={pause} aria-label={driveCopy.pause.button}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M7 5h4v14H7zM13 5h4v14h-4z" />
@@ -420,6 +435,7 @@ export function Game({ preview }: { preview: boolean }) {
               {driveCopy.pause.exit}
             </Link>
           </div>
+          <SoundToggle className={styles.sheetSound} />
         </dialog>
 
         {result && <Result lap={sharedFromResult(result, record.attempts)} mode="finish" onRunItBack={restart} firstRef={runItBack} />}

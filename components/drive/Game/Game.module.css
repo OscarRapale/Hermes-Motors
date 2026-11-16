@@ -73,6 +73,30 @@
   fill: currentColor;
 }
 
+/* SOUND (M7): a round glass button with the wave, under the pause button */
+.stage .sound {
+  position: absolute;
+  top: calc(var(--drive-inset) + var(--hud-pause) + var(--space-2));
+  right: var(--drive-inset);
+  width: var(--hud-pause);
+  height: var(--hud-pause);
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--hud-glass-bg);
+  -webkit-backdrop-filter: var(--hud-glass-blur);
+  backdrop-filter: var(--hud-glass-blur);
+  border: 1px solid var(--hud-glass-border);
+  box-shadow: var(--hud-glass-shadow);
+  color: var(--gallery-white);
+}
+
+/* and on the pause sheet, under its buttons */
+.sheetSound {
+  margin-top: var(--space-3);
+  margin-left: calc(-1 * var(--space-3)); /* the label lines up with the buttons' edge */
+}
+
 /* The start (prototype): five 44 px lamps in a glass panel under the delta, then all out */
 .lights {
   position: absolute;
@@ -207,6 +231,13 @@
 @media (max-width: 999.98px), (max-height: 499.98px), (hover: none) and (pointer: coarse) {
   .pauseButton {
     top: var(--hudc-inset);
+    right: max(var(--space-4), env(safe-area-inset-right));
+    width: var(--tap);
+    height: var(--tap);
+  }
+
+  .stage .sound {
+    top: calc(var(--hudc-inset) + var(--tap) + var(--space-2));
     right: max(var(--space-4), env(safe-area-inset-right));
     width: var(--tap);
     height: var(--tap);

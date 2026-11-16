@@ -25,9 +25,10 @@ export function audioAllowed(): boolean {
   return activation ? activation.hasBeenActive : graph?.ctx.state === 'running'
 }
 
-function ramp(param: AudioParam, to: number, ctx: AudioContext) {
+/** Move a gain or rate to `to`, reaching ~95% in `overS` seconds */
+function ramp(param: AudioParam, to: number, ctx: AudioContext, overS = 3 * RAMP_S) {
   param.cancelScheduledValues(ctx.currentTime)
-  param.setTargetAtTime(to, ctx.currentTime, RAMP_S)
+  param.setTargetAtTime(to, ctx.currentTime, overS / 3)
 }
 
 function onVisibility() {
@@ -129,6 +130,64 @@ export async function play(src: string, { bus = 'sfx', gain = 1, rate = 1, loop 
       level.gain.cancelScheduledValues(ctx.currentTime)
       level.gain.setTargetAtTime(0, ctx.currentTime, fadeS / 4)
       source.stop(ctx.currentTime + fadeS)
+    },
+  }
+}
+
+export type Track = {
+  /** Play (or carry on), fading in over `fadeS` */
+  play(fadeS?: number): void
+  /** Fade out over `fadeS`, then pause where it is */
+  pause(fadeS?: number): void
+  /** Stop for good and let the file go */
+  stop(): void
+}
+
+const NO_TRACK: Track = { play() {}, pause() {}, stop() {} }
+
+/**
+ * A long file (the soundtrack), streamed through an <audio> element into a bus, looped. While sound is
+ * off it is paused (so nothing downloads), and it comes back where it was when sound comes back on.
+ */
+export function track(src: string, { bus = 'music', gain = 1 }: { bus?: Bus; gain?: number } = {}): Track {
+  const g = context()
+  if (!g) return NO_TRACK
+  const { ctx } = g
+  const el = new Audio()
+  el.preload = 'none'
+  el.loop = true
+  el.src = src
+  const level = ctx.createGain()
+  level.gain.value = 0
+  ctx.createMediaElementSource(el).connect(level).connect(g.buses[bus])
+  let wanted = false
+  let pausing = 0
+  const start = () => void el.play().catch(() => {})
+  const unsubscribe = subscribeSound(() => {
+    if (!soundOn()) el.pause()
+    else if (wanted) start()
+  })
+  return {
+    play(fadeS = 1) {
+      wanted = true
+      clearTimeout(pausing)
+      if (soundOn()) start()
+      ramp(level.gain, gain, ctx, fadeS)
+    },
+    pause(fadeS = 0.6) {
+      wanted = false
+      ramp(level.gain, 0, ctx, fadeS)
+      clearTimeout(pausing)
+      pausing = window.setTimeout(() => !wanted && el.pause(), fadeS * 1000)
+    },
+    stop() {
+      wanted = false
+      clearTimeout(pausing)
+      unsubscribe()
+      el.pause()
+      el.removeAttribute('src')
+      el.load()
+      level.disconnect()
     },
   }
 }

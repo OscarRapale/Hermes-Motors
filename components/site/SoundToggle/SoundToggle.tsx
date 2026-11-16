@@ -12,9 +12,10 @@ const WAVE = 'M0 6 Q4 1.5 8 6 T16 6 T24 6 T32 6 T40 6 T48 6'
 /**
  * "SOUND:" and a live wave (ARCHITECTURE §7.7, Oscar's reference): the wave runs while sound is on and
  * flattens to a line when it's off. One preference for the whole site; used by the dashboard and the
- * test drive. Reduced motion: the wave stands still.
+ * test drive. Reduced motion: the wave stands still. `waveOnly`: just the wave, for the drive's HUD, where
+ * the button sits under the round pause button (the name stays "Sound").
  */
-export function SoundToggle({ className = '' }: { className?: string }) {
+export function SoundToggle({ className = '', waveOnly = false }: { className?: string; waveOnly?: boolean }) {
   const on = useSoundOn()
   return (
     <button
@@ -24,9 +25,11 @@ export function SoundToggle({ className = '' }: { className?: string }) {
       aria-pressed={on}
       onClick={() => setSoundOn(!on)}
     >
-      <span className={styles.label} aria-hidden="true">
-        {soundCopy.label}
-      </span>
+      {!waveOnly && (
+        <span className={styles.label} aria-hidden="true">
+          {soundCopy.label}
+        </span>
+      )}
       <svg className={styles.wave} viewBox="0 0 24 12" aria-hidden="true" focusable="false">
         <g className={styles.height}>
           <path className={styles.line} d={WAVE} />

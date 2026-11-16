@@ -4,6 +4,9 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { encodeWav, normalise, seamlessLoop, toMono } from '@/lib/audio/loop'
 import { resetSoundForTests, setSoundOn, SOUND_KEY, soundOn, subscribeSound } from '@/lib/audio/prefs'
 import { SOUNDS } from '@/lib/audio/sounds'
+import { BOOST_LIFT, ENGINE_REF_RPM, GRID_REV_RPM, IDLE_RPM, engineNote } from '@/lib/drive/sound'
+import { rpmFor } from '@/lib/game/car'
+import { IDLE, createRace, type Input, type RaceState } from '@/lib/game/race'
 
 describe('seamlessLoop', () => {
   // a ramp: every sample differs from its neighbour by exactly 1/1000
@@ -112,10 +115,48 @@ describe('the sound preference', () => {
 
 describe('the sound files', () => {
   it('are in public/, small, and the engine loop is the mono WAV the assets script writes', () => {
-    for (const src of Object.values(SOUNDS)) expect(statSync(join(process.cwd(), 'public', src)).size).toBeLessThan(200 * 1024)
+    const size = (src: string) => statSync(join(process.cwd(), 'public', src)).size
+    expect(size(SOUNDS.ignition)).toBeLessThan(200 * 1024)
+    expect(size(SOUNDS.engine)).toBeLessThan(200 * 1024)
+    expect(size(SOUNDS.music)).toBeLessThan(7 * 1024 * 1024) // streamed, never fetched whole up front
     const wav = readFileSync(join(process.cwd(), 'public', SOUNDS.engine))
     expect(wav.toString('latin1', 0, 4)).toBe('RIFF')
     expect(wav.readUInt16LE(22)).toBe(1)
     expect(wav.readUInt32LE(40) / 2 / wav.readUInt32LE(24)).toBeCloseTo(2.6, 2) // 2.6 s
+  })
+})
+
+describe('the engine note', () => {
+  const grid = createRace(1)
+  const at = (kmh: number, over: Partial<RaceState['car']> = {}): RaceState => ({
+    ...grid,
+    phase: 'running',
+    car: { ...grid.car, v: kmh / 3.6, throttle: 1, ...over },
+  })
+  const flatOut: Input = { ...IDLE, throttle: 1 }
+
+  it('idles on the grid and revs with the throttle', () => {
+    expect(engineNote(grid, IDLE).rate).toBeCloseTo(IDLE_RPM / ENGINE_REF_RPM, 6)
+    expect(engineNote(grid, flatOut).rate).toBeCloseTo(GRID_REV_RPM / ENGINE_REF_RPM, 6)
+    expect(engineNote(grid, flatOut).gain).toBeGreaterThan(engineNote(grid, IDLE).gain)
+  })
+
+  it('follows the revs: climbs through a gear, drops on the upshift', () => {
+    const r = (kmh: number) => engineNote(at(kmh), flatOut).rate
+    expect(r(90)).toBeGreaterThan(r(60))
+    expect(r(96)).toBeLessThan(r(94)) // 95 km/h: second gear
+    expect(r(150)).toBeCloseTo(rpmFor(150) / ENGINE_REF_RPM, 6)
+    for (let kmh = 0; kmh <= 350; kmh += 5) {
+      expect(r(kmh)).toBeGreaterThan(0.7)
+      expect(r(kmh)).toBeLessThan(1.3)
+    }
+  })
+
+  it('lifts a touch with Boost, quietens off the throttle and off the track, and goes silent at the finish', () => {
+    expect(engineNote(at(200, { boosting: true }), flatOut).rate).toBeCloseTo((rpmFor(200) / ENGINE_REF_RPM) * BOOST_LIFT, 6)
+    expect(engineNote(at(200, { throttle: 0 }), IDLE).gain).toBeLessThan(engineNote(at(200), flatOut).gain)
+    expect(engineNote(at(200, { offTrack: true }), flatOut).gain).toBeLessThan(engineNote(at(200), flatOut).gain)
+    const done = { ...at(200), phase: 'finished', result: {} } as RaceState
+    expect(engineNote(done, flatOut).gain).toBe(0)
   })
 })

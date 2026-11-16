@@ -54,3 +54,6 @@ next-env.d.ts
 
 # sound sources from Oscar (licences: no passing the files on by themselves); public/audio holds what the site plays
 /vendor/audio/
+
+# written by `next dev` on every start (Next 16); not ours to keep
+/AGENTS.md

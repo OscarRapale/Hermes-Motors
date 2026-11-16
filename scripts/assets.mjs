@@ -231,6 +231,7 @@ if (!(await stat(AUDIO).catch(() => null))) console.warn('vendor/audio/ not foun
 else {
   await rm(join(PUBLIC, 'audio'), { recursive: true, force: true })
   await copy(join(AUDIO, 'car-engine.mp3'), join(PUBLIC, 'audio', 'ignition.mp3'))
+  await copy(join(AUDIO, 'ES_Hagion - DJ Seduce.mp3'), join(PUBLIC, 'audio', 'soundtrack.mp3'))
   const { chromium } = await import('playwright-core')
   const { encodeWav, normalise, seamlessLoop, toMono } = await import('../lib/audio/loop.ts')
   const RATE = 32_000

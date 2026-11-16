@@ -57,7 +57,9 @@
 }
 
 .keyboard [data-control='pause'] rect,
-.item[data-control='pause'] i {
+.keyboard [data-control='sound'] rect,
+.item[data-control='pause'] i,
+.item[data-control='sound'] i {
   stroke: var(--hud-tick);
   border: 1px solid var(--hud-tick);
   background: var(--hud-keycap-bg);
