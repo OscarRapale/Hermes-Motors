@@ -170,6 +170,16 @@ Desktop: keyboard (rules file). Phone: landscape, thumb controls; portrait → r
 
 As built (M3): touch screens get board 16's compact HUD and thumb pads, read by pointer so both thumbs work and one can slide between ‹ and ›. A thumb on THROTTLE can't hold BST, so a BST tap deploys Boost for 2 s, another tap adds 2 s, and braking cancels it (Decision D29). The compact HUD is also used in windows under 1000 × 500. `lib/drive/media.ts` holds the media queries; the CSS repeats them.
 
+### 7.7 Sound (M7, Oscar 2026-11-16)
+
+Three sounds: the dashboard's ignition (landing, First Light), and in the test drive the engine and a soundtrack. Files: `vendor/audio/` → `public/audio/` by `npm run assets`; credits in `docs/legal/credits.md` and on `/credits`.
+
+- `lib/audio`: one `AudioContext`, made the first time something plays; a master gain that follows the sound preference, a music bus and an effects bus. Files are fetched the first time they're needed, so `/` loads no sound until the ignition plays. The context suspends while the tab is hidden.
+- **Browsers allow sound only after the visitor has clicked, tapped or pressed a key on the page** (`navigator.userActivation`). Nothing tries before that, and the page never waits for it: the first ignition on a page opened straight into First Light plays silent. The ignite button always has sound, and so does the ignition after the sun/moon preview (a click).
+- **Sound on by default**, one preference for the whole site: `localStorage['hermes.sound'] = 'off'` when the visitor turns it off, nothing stored otherwise. The control sits where sound plays: next to the ignite button, and in the test drive (HUD button, the M key, the pause sheet). WCAG 1.4.2: anything longer than 3 s can be stopped there.
+- The engine is a 2.6 s seamless loop cut from a steady stretch of the recording (`lib/audio/loop.ts`); its playback rate follows `rpmFor(speed)`, so the note climbs through each gear and drops on the upshift.
+- iPhones on silent play nothing (Safari's rule for Web Audio); that's left as it is.
+
 ## 8. Pages
 
 | Page | Board | Data |
@@ -217,7 +227,7 @@ WCAG 2.2 AA. Keyboard path for every control; focus visible; reduced motion ever
 
 ## 13. Privacy, legal, analytics
 
-- No cookies, no accounts, no third-party requests at runtime. `localStorage`/`sessionStorage` only for the preview toggle and best lap.
+- No cookies, no accounts, no third-party requests at runtime. `localStorage`/`sessionStorage` only for the preview toggle, best lap, and sound off (§7.7).
 - Analytics: none (Decision D6, 2026-11-16).
 - Credits and the fictional-team line: `docs/legal/credits.md`, rendered on `/credits` and in every footer.
 

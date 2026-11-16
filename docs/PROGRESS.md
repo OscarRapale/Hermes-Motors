@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M6 PR 5 (cross-browser run, `docs/launch.md`). **Next:** Oscar closes the open decisions (`docs/launch.md` §1), then the real-device pass.
+**Now:** M7 PR 1 (sound core). **Next:** PR 2, dashboard sound + the SOUND toggle. Open decisions: `docs/launch.md` §1.
 ## Milestones
 
 ### M0 Foundation
@@ -42,6 +42,11 @@
 - [x] SEO/OG per route · analytics decision (none) · cross-browser e2e (`npm run e2e:engines`) — real devices: Oscar, `docs/launch.md` §5
 - [ ] Set DAY_ONE, domain (Oscar: `docs/launch.md` §1–2) · [x] launch checklist
 
+### M7 Sound (Oscar 2026-11-16, ARCH §7.7)
+- [x] `lib/audio` (context, buses, loops, sound preference), `public/audio`, credits, privacy
+- [ ] Dashboard: ignition sound, SOUND toggle (label + live wave)
+- [ ] Test drive: engine by RPM, soundtrack, mute (HUD, M, pause) — music licence to confirm (D31)
+
 ## Decisions waiting on Oscar
 
 Placeholders are in the code until he answers. Never present them as final.
@@ -59,25 +64,23 @@ Placeholders are in the code until he answers. Never present them as final.
 | D9 | Jump start | **Decided 2026-11-13:** +5 s, said at once (red lights caption), explained before the start | |
 | D10 | Hashtag, opener beat | #BeatTheMessenger, D+28 | |
 | D11 | E2E target in CI (ARCH §14 says preview URL) | local `next start` build | recommended to keep (preview URL needs a bypass secret) |
-| D12–14 | Token gaps; Preview/Play labels flip; header 900–1199 px mark only | as flagged | PRs #3–#5 |
-| D15–18 | JS, hero stills, countdown, LCP | **Decided:** JS < 40 KB gz first-party; `<picture>` + preload; "96 DAYS"; LCP throttled | PRs #8–#12 |
-| D19–23 | Specs | **Decided:** sealed at night; night frames; ch 5 night headline; JS on `/` < 206 KB gz; no effects in the specs scene | PRs #13–#14, ARCH §6, §10 |
-| D24–25 | Specs text that scrolls | **Decided:** on phones and screens under 830 px tall the text scrolls under/beside the pinned car | PRs #15–#16 |
-| D26–27 | Start; three.js before scroll | **Decided:** grid 65 m behind the line, lap and ghost start at it, car on the centre line until then; specs load their car only after the first scroll | `gridBehindM`; ARCH §10, rules/three.md |
+| D12–27 | Tokens, labels, JS budgets, hero stills, countdown, LCP, specs, the grid, three.js before scroll | **Decided** (M0–M3) | PRs #3–#16; ARCH §6, §10, rules/three.md |
 | D28 | Test drive difficulty | careful lap just behind him (+0.15), clean racing line −3.5 s; grip ×0.7, friction circle, pedal ramps, brakes 34/22 | after Oscar's playtests; ARCH §7.3. Confirm after driving it |
 | D29 | Phone drive | **Decided 2026-11-13:** compact HUD as board 16, no sector bars; BST tap = 2 s of Boost (again extends, brake cancels) | PR 5a/5b |
+| D31 | Soundtrack | "Hagion", DJ Seduce (`ES_` file: Epidemic Sound) | does the plan cover a website + web game? credit wording? Not served until confirmed |
 | D30 | Finish and share | **Decided 2026-11-13:** jump start = `j=1` (lap as driven + 5 s); summary with figures; finish works in landscape; `/drive/r` CTA "Beat the messenger"; never mention sign-up or databases | M4 |
 
 ## Log
 
+- 2026-11-16 · M7 PR 1: `lib/audio` (one AudioContext after the first interaction, master/music/sfx, cached files, loops), engine loop cut by `npm run assets` (2.6 s, 163 KB WAV), ignition MP3 96 KB; sound credit, privacy line.
 - 2026-11-16 · M6 PR 5: Firefox + WebKit e2e (`npm run e2e:engines`), `docs/launch.md`, `madeByHref`, D6 in docs.
 - 2026-11-16 · M6 PRs 1–3: canonical + a preview per route (`content/og.ts`), sitemap, robots; JS budget on `/` (154.3 KB, 25.1 ours), Lighthouse CI (100 ×4); `a11y.spec.ts` (axe every route × theme × device, focus rings, reflow 320, reduced motion, targets ≥ 24, one h1), `docs/audit/accessibility.md`.
 - 2026-11-13/16 · **M5 done** (PRs #28–#34): `PageHero`, `Doc`; credits, privacy, 404, team, season, partners, store; drivers (stills, then live helmets); news (MDX; shown from its beat, all while previewing); manifesto (wipe on view); press kit (outlined lock-up, 8.4 MB zip). `proxy.ts` 404s bad `/drive/r`, `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen, compact HUD, thumb pads, BST = 2 s Boost (D29), haptics.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, grip ×0.7, braking boards; R Shift/R Ctrl, Boost E; controls sheet on first visit and from pause; laps re-recorded (D28).
-- 2026-11-11/12 · M3 core (PRs #17–#20): circuit (3,119 m), ghost, arcade car, fixed step, reference laps in CI; `/drive`, keys, lights, pause, board 13 HUD, best + attempts on device.
-- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters, rail, Play, sealed at night; live `SpecsScene`, night frames; **SITE PATCH** `HermesStudio` `near={-0.01}`; phones and short screens (D24, D25). JS before scroll 190.9 KB gz.
+- 2026-11-11/12 · M3 core (PRs #17–#20): circuit (3,119 m), ghost, arcade car, reference laps in CI; `/drive`, keys, lights, pause, HUD.
+- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters, rail, Play; live `SpecsScene`, night frames; **SITE PATCH** `HermesStudio` `near={-0.01}`; D24, D25.
 - 2026-11-10 · **M1 done** (PRs #8–#11): night hero, `/day-one.ics`, day dashboard, wipe + live flip, phone boards 22/23. `experimental.inlineCss` on. `/`: LCP 2.2 s mobile, CLS 0.002, Lighthouse 100 ×4.
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell, tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel, car package in `components/hermes`, `npm run assets`, `tools/render`.
 - 2026-11-09 · Driver helmets (Miopass, CC BY 4.0, Hermes livery): `HermesHelmet`, `DriverHelmet` (package v2.2); stills in `vendor/assets/images/drivers`.

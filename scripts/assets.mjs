@@ -64,7 +64,9 @@ for (const look of ['day', 'night']) {
 // ── 3. Specs fallback frames (WebP as delivered) and their layout (callout anchors) ─────
 await rm(join(PUBLIC, 'images', 'specs'), { recursive: true, force: true })
 await copyDir(join(ASSETS, 'images', 'specs'), join(PUBLIC, 'images', 'specs'), (n) => n.endsWith('.webp'))
-await copy(join(ASSETS, 'images', 'specs', 'specs-layout.json'), join(ROOT, 'content', 'specs-layout.json'))
+// copied once: content/specs-layout.json was edited in M2 (live scene anchors), so never overwrite it
+const layout = join(ROOT, 'content', 'specs-layout.json')
+if (!(await stat(layout).catch(() => null))) await copy(join(ASSETS, 'images', 'specs', 'specs-layout.json'), layout)
 
 // ── 4. Helmet stills: the delivered 800 px WebP, plus AVIF from the PNG sources ─────────
 await rm(join(PUBLIC, 'images', 'drivers'), { recursive: true, force: true })
@@ -218,6 +220,49 @@ const zip = join(PUBLIC, 'press', 'hermes-motors-press-kit.zip')
 await writeFile(zip, zipSync(kit, { mtime: new Date('2026-11-16T00:00:00Z') }))
 written.push(zip)
 
+// ── 10. Sound (ARCHITECTURE §7.7, credits.md): vendor/audio → public/audio ──────────────────────
+// The ignition plays as delivered. The test drive's engine is one steady stretch of the race-car
+// recording (its pitch holds near 94 Hz from 26.0 to 28.6 s; the rest has gear changes in it), made into
+// a seamless loop and written as a small mono WAV, since its pitch then follows the car's RPM.
+// The sources aren't in git (the repo is public, and the licences don't allow passing the files on by
+// themselves): without vendor/audio/, the committed public/audio/ is left as it is.
+const AUDIO = join(ROOT, 'vendor', 'audio')
+if (!(await stat(AUDIO).catch(() => null))) console.warn('vendor/audio/ not found: public/audio/ left as committed.')
+else {
+  await rm(join(PUBLIC, 'audio'), { recursive: true, force: true })
+  await copy(join(AUDIO, 'car-engine.mp3'), join(PUBLIC, 'audio', 'ignition.mp3'))
+  const { chromium } = await import('playwright-core')
+  const { encodeWav, normalise, seamlessLoop, toMono } = await import('../lib/audio/loop.ts')
+  const RATE = 32_000
+  const browser = await chromium.launch()
+  const page = await browser.newPage()
+  // decode in the browser (Web Audio), resampled to RATE, every channel back as base64 floats
+  const channels = await page.evaluate(
+    async ({ b64, rate }) => {
+      const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))
+      const buf = await new OfflineAudioContext(1, 1, rate).decodeAudioData(bytes.buffer)
+      const out = []
+      for (let c = 0; c < buf.numberOfChannels; c++) {
+        const u8 = new Uint8Array(buf.getChannelData(c).buffer)
+        let s = ''
+        for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode(...u8.subarray(i, i + 0x8000))
+        out.push(btoa(s))
+      }
+      return out
+    },
+    { b64: (await readFile(join(AUDIO, 'race-car.mp3'))).toString('base64'), rate: RATE },
+  )
+  await browser.close()
+  const floats = channels.map((b) => {
+    const buf = Buffer.from(b, 'base64')
+    return new Float32Array(buf.buffer, buf.byteOffset, buf.length / 4)
+  })
+  const loop = normalise(seamlessLoop(toMono(floats), 26.0 * RATE, 28.6 * RATE, 0.2 * RATE), 0.9)
+  const out = join(PUBLIC, 'audio', 'engine-loop.wav')
+  await writeFile(out, encodeWav(loop, RATE))
+  written.push(out)
+}
+
 // ── Budgets (ARCHITECTURE §10) ──────────────────────────────────────────────────────────
 const problems = []
 for (const stem of helmets) {
@@ -233,7 +278,7 @@ if (specsTotal > 2.5 * 1024 * KB) problems.push(`specs frames total ${(specsTota
 
 const rel = (p) => p.slice(ROOT.length + 1).replaceAll('\\', '/')
 console.log(`Wrote ${written.length} files.`)
-for (const f of written.filter((p) => /hero-|drivers|brand|card-car|press-kit|images.press|assets.og/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
+for (const f of written.filter((p) => /hero-|drivers|brand|card-car|press-kit|images.press|assets.og|audio/.test(p))) console.log(`  ${rel(f)}  ${Math.round((await size(f)) / KB)} KB`)
 console.log(`  specs frames: ${(specsTotal / 1024 / KB).toFixed(2)} MB total`)
 if (problems.length) {
   console.warn(`\nOver budget:\n  ${problems.join('\n  ')}`)

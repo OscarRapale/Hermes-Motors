@@ -23,6 +23,7 @@ export type DocCopy = {
 }
 
 const OFL = 'https://openfontlicense.org'
+const PIXABAY_LICENSE = 'https://pixabay.com/service/license-summary/'
 
 export const creditsCopy: DocCopy = {
   eyebrow: 'CREDITS · HERMES MOTORS',
@@ -93,6 +94,16 @@ export const creditsCopy: DocCopy = {
       paragraphs: [[{ text: 'Three typefaces, all under the ' }, { text: 'SIL Open Font License 1.1', href: OFL }, { text: ':' }]],
     },
     {
+      heading: 'SOUND',
+      paragraphs: [
+        [
+          { text: 'Sound effects from Pixabay, under the ' },
+          { text: 'Pixabay Content License', href: PIXABAY_LICENSE },
+          { text: ': an engine starting (the dashboard) and a race car (the test drive’s engine, cut to a loop and tuned to the car’s revs).' },
+        ],
+      ],
+    },
+    {
       heading: 'FACTS AND DATA',
       paragraphs: [[{ text: 'The 2026 rule figures and the 2027 calendar come from public sources:' }]],
       items: factSources.map((s) => [{ text: s.name, href: s.href }]),
@@ -117,7 +128,7 @@ export const privacyCopy: DocCopy = {
         [{ text: 'No accounts and no cookies. There is nothing to log in to.' }],
         [
           {
-            text: 'Your browser keeps two small things, only on your device: whether you are previewing the other side of the clock (cleared when you close the tab), and your best lap and attempt count in the test drive. Clear your site data to remove them.',
+            text: 'Your browser keeps three small things, only on your device: whether you are previewing the other side of the clock (cleared when you close the tab), whether you turned the sound off, and your best lap and attempt count in the test drive. Clear your site data to remove them.',
           },
         ],
         [
@@ -139,7 +150,7 @@ export const privacyCopy: DocCopy = {
     },
   ],
   // PLACEHOLDER — Decision D8: the questions/contact line waits for a contact address.
-  updated: 'Last updated 13 November 2026.',
+  updated: 'Last updated 16 November 2026.',
 }
 
 /** The 404 (copy.md → Pages) */
