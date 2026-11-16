@@ -16,7 +16,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const story = find((await params).slug)
   if (!story) return {}
   // seo.md: "<title> · Hermes Motors", and the dek
-  return { title: { absolute: `${story.title} · ${SITE_NAME}` }, description: story.dek }
+  const title = `${story.title} · ${SITE_NAME}`
+  const url = `/news/${story.slug}`
+  return {
+    title: { absolute: title },
+    description: story.dek,
+    alternates: { canonical: url },
+    openGraph: { title, description: story.dek, url, siteName: SITE_NAME, type: 'article', locale: 'en' },
+    twitter: { card: 'summary_large_image', title, description: story.dek },
+  }
 }
 
 export default async function StoryPage({ params }: Props) {

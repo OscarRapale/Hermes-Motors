@@ -211,7 +211,7 @@ WCAG 2.2 AA. Keyboard path for every control; focus visible; reduced motion ever
 
 ## 12. SEO and metadata
 
-`content/seo.ts` holds title, description and OG image per route (`docs/content/seo.md`). Static OG images in `public/og/`; dynamic only for `/drive/r`. `sitemap.ts`, `robots.ts`, canonical URLs from `NEXT_PUBLIC_SITE_URL`. No JSON-LD for the fictional organisation (it shouldn't look like a real company in search); `WebSite` only.
+`content/seo.ts` holds title, description and OG image per route (`docs/content/seo.md`). As built (M6): each route draws its 1200 × 630 preview at build in `opengraph-image.tsx` (the share cards' renderer, fonts and colours; words and art in `content/og.ts`; credit lines whenever the car or a helmet shows); the home preview is drawn per request, night before Day One and day after. The home page and `/drive` live in route groups, so `/drive/r` keeps its card. `lib/seo.ts` `pageMetadata()` sets the canonical and the preview words; `metadataBase` comes from `siteUrl()` (D5). Static OG images in `public/og/`; dynamic only for `/drive/r`. `sitemap.ts`, `robots.ts`, canonical URLs from `NEXT_PUBLIC_SITE_URL`. No JSON-LD for the fictional organisation (it shouldn't look like a real company in search); `WebSite` only.
 
 ## 13. Privacy, legal, analytics
 

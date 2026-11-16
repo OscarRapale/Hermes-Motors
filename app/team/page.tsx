@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { PageHero } from '@/components/pages/PageHero/PageHero'
 import { Team } from '@/components/pages/Team/Team'
 import { teamCopy } from '@/content/copy/pages/team'
-import { seo } from '@/content/seo'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = { title: { absolute: seo.team.title }, description: seo.team.description }
+export const metadata: Metadata = pageMetadata('team', '/team')
 
 export default function TeamPage() {
   return (

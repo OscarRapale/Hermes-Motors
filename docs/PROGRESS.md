@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M5 done (PR 7, press kit). **Next:** M6, launch readiness (plan first).
+**Now:** M6 PR 1 (SEO, link previews). **Next:** PR 2, budgets + Lighthouse CI.
 ## Milestones
 
 ### M0 Foundation
@@ -53,7 +53,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D3 | Preview unlocks the drive before Day One | Yes, with a "Preview" banner | Otherwise recruiters can't play until Day One |
 | D4 | Drivers | Lena Brandt #9 (GER), Mateo Ríos #19 (PUR) | Fictional; helmets only, no faces. Numbers are drawn at runtime, but the helmet stills show 9 and 19: re-render them if the numbers change |
 | D5 | Domain; "Made by Oscar" link | no domain: the `*.vercel.app` production URL | Site URL = `NEXT_PUBLIC_SITE_URL` ?? `VERCEL_PROJECT_PRODUCTION_URL` ?? localhost |
-| D6 | Analytics | none | Option: Vercel Web Analytics (cookieless) |
+| D6 | Analytics | **Decided 2026-11-16:** none | |
 | D7 | Store | Lookbook, no cart | |
 | D8 | Press office / partners contact | buttons, no target | mailto address or a form |
 | D9 | Jump start | **Decided 2026-11-13:** +5 s, said at once (red lights caption), explained before the start | |
@@ -70,13 +70,14 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
+- 2026-11-16 · M6 PR 1: canonical + OG/Twitter per route (`opengraph-image.tsx` from `content/og.ts`, home night/day per request), sitemap, robots, WebSite data; home and drive in route groups so `/drive/r` keeps its card.
 - 2026-11-13/16 · **M5 done** (PRs #28–#34): `PageHero`, `Doc`; credits, privacy, 404, team, season, partners, store; drivers (stills, then live helmets); news (MDX; shown from its beat, all while previewing); manifesto (wipe on view); press kit (outlined lock-up, 8.4 MB zip). `proxy.ts` 404s bad `/drive/r`, `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15), compact HUD (board 16), thumb pads, BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, quicker steering, softer brakes, grip ×0.7, 3-2-1 braking boards at six corners; right-hand pedals (R Shift/R Ctrl, Boost E; mid-lap exit asks first); two-row key bar under 1480 px; controls sheet on first visit, and from pause; laps re-recorded (D28).
 - 2026-11-11/12 · M3 core (PRs #17–#20): circuit (3,119 m), ghost, arcade car, fixed step, reference laps in CI; `/drive`, keys, lights, pause, board 13 HUD, best + attempts on device.
-- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters (frame stack + zoom, callouts, rail, Play; sealed at night, D19/D21); live `SpecsScene` placed from the recovered crop, night frames (D20), **SITE PATCH** `HermesStudio` `near={-0.01}` (contact shadow); phones (board 24) and short screens: text scrolls under/beside the pinned car (D24, D25). JS before scroll 190.9 KB gz.
-- 2026-11-10 · **M1 done** (PRs #8–#11): night hero (countdown D17, LEDs, sealed rows, `/day-one.ics`), day dashboard (5 dials, ignition, HP/kW, hotspots), Slipstream wipe + live flip (≤ 24-day timer steps), phone boards 22/23 (`display: contents` grid), D16 stills. `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
+- 2026-11-11 · **M2 done** (PRs #13–#16): pinned chapters, rail, Play, sealed at night; live `SpecsScene`, night frames; **SITE PATCH** `HermesStudio` `near={-0.01}`; phones and short screens (D24, D25). JS before scroll 190.9 KB gz.
+- 2026-11-10 · **M1 done** (PRs #8–#11): night hero, `/day-one.ics`, day dashboard, wipe + live flip, phone boards 22/23. `experimental.inlineCss` on. Measured `/`: LCP 2.2 s mobile (real throttling), CLS 0.002, desktop Lighthouse 100 ×4; JS 182.4 KB gz (first-party ≈ 16).
 - 2026-11-10 · **M0 done** (PRs #1–#7). Pins: next + eslint-config-next 16.4.5, react/react-dom 19.3.1, typescript 5.9.3, eslint 9.39.5, @types/react(-dom) 19.3.0, @types/node 22.20.5, vitest 5.1.0, @playwright/test + playwright-core 1.63.0, @axe-core/playwright 4.14.0, three + @types/three 0.187.0, fiber 9.8.2, drei 10.7.9, postprocessing 3.2.2 / 6.39.6, sharp 0.35.5 (stats-gl overridden to our three). Shell, tokens + fonts, launch clock + `/api/now` + preview, CI + Vercel, car package in `components/hermes`, `npm run assets`, `tools/render`.
 - 2026-11-09 · Driver helmets (Miopass, CC BY 4.0, Hermes livery): `HermesHelmet`, `DriverHelmet` (package v2.2); stills in `vendor/assets/images/drivers`.
 - 2026-11-07 · Handoff: boards 01–30, car package v2, film, docs.
