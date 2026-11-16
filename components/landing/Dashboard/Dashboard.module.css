@@ -74,6 +74,12 @@
   box-shadow: var(--dot-glow) var(--led-white);
 }
 
+/* SOUND (M7): beside HP/kW, pushed right with it */
+.sound {
+  margin-left: auto;
+  color: var(--ink-2-dark);
+}
+
 .units {
   display: flex;
   gap: var(--space-1);
@@ -125,7 +131,7 @@
     grid-template-areas:
       'status status'
       'power power'
-      'units units'
+      'units sound'
       'rule rule'
       'd1 d2'
       'd4 d5';
@@ -155,6 +161,11 @@
   .units {
     grid-area: units;
     margin-top: calc(-1 * var(--space-1));
+  }
+
+  .sound {
+    grid-area: sound;
+    margin: calc(-1 * var(--space-1)) 0 0;
   }
 
   .d1 {

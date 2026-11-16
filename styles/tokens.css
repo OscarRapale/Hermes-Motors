@@ -459,6 +459,8 @@
   --dur-count-delay: 150ms;
   --dur-hover: 150ms;
   --dur-reduced-fade: 150ms; /* reduced-motion swaps */
+  --dur-sound-wave: 1.1s; /* one period of the SOUND wave scrolling by (constant speed: a loop, not an ease) */
+  --dur-sound-flat: 300ms; /* the wave flattening when sound goes off */
 
   /* ── The 14° rule ────────────────────────────────────────── */
   --angle: 14deg;
@@ -558,6 +560,14 @@
   --fs-units: 12px;
   --space-hairline: 2px;
   --hotspot-dot: 12px;
+
+  /* SOUND toggle (M7, ARCHITECTURE §7.7): "SOUND:" and a small wave, flat when off */
+  --sound-wave-w: 24px;
+  --sound-wave-h: 12px;
+  --sound-wave-stroke: 1.5px;
+  --sound-wave-off: 0.06; /* the wave's height when off: a line */
+  --sound-gap: 8px;
+  --sound-pad: 0 12px;
 
   /* Specs section (board 11 at 1440 × 1000; prototype Specs-Apart) */
   --bg-specs-night: radial-gradient(70% 55% at 62% 40%, #1c1d22 0%, #121317 42%, #08090b 78%, #040405 100%);
