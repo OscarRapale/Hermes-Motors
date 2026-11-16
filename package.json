@@ -15,6 +15,7 @@
     "test:watch": "vitest",
     "laps:record": "vitest run --mode record",
     "e2e": "playwright test",
+    "e2e:engines": "playwright test",
     "assets": "node scripts/assets.mjs",
     "lighthouse": "lhci autorun --config=lighthouserc.cjs"
   },

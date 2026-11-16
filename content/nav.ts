@@ -28,6 +28,8 @@ export const driveHref = '/drive'
 // PLACEHOLDER — Decision D8 (press office / partners contact): no target yet. Footer Contact, Partner with us,
 // Write to us all point here until Oscar gives an address or asks for a form.
 export const contactHref = '#'
+// PLACEHOLDER — Decision D5: where "Made by Oscar ↗" in the footer goes (a portfolio or profile URL). Text until set.
+export const madeByHref: string | null = null
 
 export type NavColumn = { heading: string; links: readonly NavLink[] }
 
