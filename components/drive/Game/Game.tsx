@@ -287,15 +287,26 @@ export function Game({ preview }: { preview: boolean }) {
   }, [])
 
 
+  // the page's heading while the drive is open (the locked page, which has its own, is hidden then)
+  const heading = <h1 className="visually-hidden">{driveCopy.headline.join(' ')}</h1>
+
   if (status === 'nowebgl') {
-    return <p className={styles.noWebgl}>{driveCopy.noWebgl(formatLap(messenger.lapMs))}</p>
+    return (
+      <>
+        {heading}
+        <p className={styles.noWebgl}>{driveCopy.noWebgl(formatLap(messenger.lapMs))}</p>
+      </>
+    )
   }
 
   const result = ui.result
+  // a phone held upright: the rotate screen, with its own h1 (after the finish it stays away)
+  const showRotate = rotate && !result && status !== 'checking'
 
   return (
     <>
       <div className={styles.stage} data-status={status} data-phase={ui.phase} data-compact={compact ? '' : undefined} inert={rotate && !result}>
+        {!showRotate && heading}
         <div className={styles.sky} aria-hidden="true" />
         {status !== 'checking' && (
           <DriveScene
@@ -414,7 +425,7 @@ export function Game({ preview }: { preview: boolean }) {
         {result && <Result lap={sharedFromResult(result, record.attempts)} mode="finish" onRunItBack={restart} firstRef={runItBack} />}
       </div>
       {/* after the finish the rotate screen stays away: the result works either way up */}
-      {rotate && !result && status !== 'checking' && <Rotate />}
+      {showRotate && <Rotate />}
     </>
   )
 }

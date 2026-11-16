@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M6 PR 2 (budgets, Lighthouse CI). **Next:** PR 3, accessibility audit.
+**Now:** M6 PR 3 (accessibility audit). **Next:** PR 5, cross-device QA + launch checklist.
 ## Milestones
 
 ### M0 Foundation
@@ -38,7 +38,7 @@
 - [x] Manifesto, Press kit (+ downloads), Credits, Privacy, 404
 
 ### M6 Launch
-- [ ] Accessibility audit (axe + manual, both themes) · performance budgets (Lighthouse CI)
+- [x] Accessibility audit (axe + manual, both themes) · performance budgets (Lighthouse CI) — screen-reader pass: Oscar, `docs/audit/accessibility.md`
 - [ ] SEO/OG per route · analytics decision · cross-device QA
 - [ ] Set DAY_ONE, domain, launch checklist
 
@@ -48,10 +48,10 @@ Placeholders are in the code until he answers. Never present them as final.
 
 | # | Decision | Placeholder | Notes |
 | --- | --- | --- | --- |
-| D1 | Day One date | Sun 14 Feb 2027 | Opener in Bahrain is 12–14 Mar 2027, so race day = D+28. Feb 14 is Valentine's Day; alt. Fri 12 Feb or the go-live day |
+| D1 | Day One date | Sun 14 Feb 2027 | Bahrain opener 12–14 Mar 2027 = D+28; alt. Fri 12 Feb or the go-live day |
 | D2 | Proving Ground time zone | America/Puerto_Rico | UTC−4, no daylight saving |
 | D3 | Preview unlocks the drive before Day One | Yes, with a "Preview" banner | Otherwise recruiters can't play until Day One |
-| D4 | Drivers | Lena Brandt #9 (GER), Mateo Ríos #19 (PUR) | Fictional; helmets only, no faces. Numbers are drawn at runtime, but the helmet stills show 9 and 19: re-render them if the numbers change |
+| D4 | Drivers | Lena Brandt #9 (GER), Mateo Ríos #19 (PUR) | Fictional, helmets only; the stills show 9 and 19: re-render if the numbers change |
 | D5 | Domain; "Made by Oscar" link | no domain: the `*.vercel.app` production URL | Site URL = `NEXT_PUBLIC_SITE_URL` ?? `VERCEL_PROJECT_PRODUCTION_URL` ?? localhost |
 | D6 | Analytics | **Decided 2026-11-16:** none | |
 | D7 | Store | Lookbook, no cart | |
@@ -70,7 +70,7 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
-- 2026-11-16 · M6 PRs 1–2: canonical + a preview per route (`content/og.ts`; home night/day), sitemap, robots, WebSite data (home and drive in route groups: `/drive/r` keeps its card); JS budget test on `/` (154.3 KB, 25.1 first-party; prefetch excluded), Lighthouse CI (100 ×4).
+- 2026-11-16 · M6 PRs 1–3: canonical + a preview per route (`content/og.ts`), sitemap, robots; JS budget on `/` (154.3 KB, 25.1 ours), Lighthouse CI (100 ×4); `a11y.spec.ts` (axe every route × theme × device, focus rings, reflow 320, reduced motion, targets ≥ 24, one h1), `docs/audit/accessibility.md`.
 - 2026-11-13/16 · **M5 done** (PRs #28–#34): `PageHero`, `Doc`; credits, privacy, 404, team, season, partners, store; drivers (stills, then live helmets); news (MDX; shown from its beat, all while previewing); manifesto (wipe on view); press kit (outlined lock-up, 8.4 MB zip). `proxy.ts` 404s bad `/drive/r`, `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen (board 15), compact HUD (board 16), thumb pads, BST tap = 2 s Boost (D29), haptics; WebGL e2e one at a time.
