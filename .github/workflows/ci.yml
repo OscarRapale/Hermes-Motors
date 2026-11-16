@@ -17,7 +17,9 @@ env:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04 (Nov 2026), where the WebKit build of our pinned Playwright
+    # (1.63) can't start (it links libicu 74). Move up together with Playwright.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
@@ -50,7 +52,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+          key: playwright-ubuntu-24.04-${{ steps.pw.outputs.version }}
 
       # The runner image's apt lists go stale: without a refresh, apt asks the mirror for package
       # versions that have been replaced (404). Time limits keep a slow mirror from eating the job.
