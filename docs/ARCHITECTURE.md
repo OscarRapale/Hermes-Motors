@@ -218,7 +218,7 @@ WCAG 2.2 AA. Keyboard path for every control; focus visible; reduced motion ever
 ## 13. Privacy, legal, analytics
 
 - No cookies, no accounts, no third-party requests at runtime. `localStorage`/`sessionStorage` only for the preview toggle and best lap.
-- Analytics: none by default; Vercel Web Analytics (cookieless) if Oscar opts in (Decision D6). `docs/legal/privacy.md` covers both.
+- Analytics: none (Decision D6, 2026-11-16).
 - Credits and the fictional-team line: `docs/legal/credits.md`, rendered on `/credits` and in every footer.
 
 ## 14. Testing and CI
@@ -230,7 +230,7 @@ WCAG 2.2 AA. Keyboard path for every control; focus visible; reduced motion ever
 ## 15. Environments and git
 
 - `main` is the only long-lived branch, protected; work on short branches, merge by PR with CI green.
-- Vercel: Production = `main`; Preview per PR. Env: `NEXT_PUBLIC_SITE_URL`, optional `NEXT_PUBLIC_ANALYTICS`.
+- Vercel: Production = `main`; Preview per PR. Env: `NEXT_PUBLIC_SITE_URL` (no analytics, Decision D6). Launch steps: `docs/launch.md`.
 - Domain: Decision D5.
 
 ## 16. Later (not in the milestones)

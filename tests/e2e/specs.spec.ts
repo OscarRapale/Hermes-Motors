@@ -203,6 +203,8 @@ test.describe('specs section on desktop and laptops (board 11, Decision D25)', (
     await page.setViewportSize({ width: 1280, height: 650 })
     await open(page, 'day')
     await jumpTo(page, 1)
+    // let the section measure chapter 1 before moving on (WebKit can fold two instant scrolls into one frame)
+    await expect(page.locator('[data-chapter="0"]')).toHaveAttribute('data-seen', '')
     await jumpTo(page, 2)
     await expect(current(page)).toHaveAttribute('aria-label', chapters[1].rail)
     const text = page.locator('[data-chapter="1"]')

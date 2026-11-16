@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { footerCopy, WORDMARK } from '@/content/copy/shared'
-import { footerColumns, legalLinks, prefetchFor, socialLinks } from '@/content/nav'
+import { footerColumns, legalLinks, madeByHref, prefetchFor, socialLinks } from '@/content/nav'
 import { HomeLink } from '../HomeLink/HomeLink'
 import { RichText } from '../RichText/RichText'
 import { TestDriveLink } from '../TestDriveLink/TestDriveLink'
@@ -92,7 +92,15 @@ export function Footer() {
                 </Link>
               </span>
             ))}
-            <span className={styles.legalItem}>{footerCopy.madeBy}</span>
+            <span className={styles.legalItem}>
+              {madeByHref ? (
+                <a href={madeByHref} className={styles.fineLink}>
+                  {footerCopy.madeBy}
+                </a>
+              ) : (
+                footerCopy.madeBy
+              )}
+            </span>
           </p>
         </div>
       </div>

@@ -54,6 +54,6 @@ export const footerCopy = {
   ] satisfies RichText,
   fictional:
     'Hermes Motors is a fictional team, made as a portfolio project. Not affiliated with Formula 1, the FIA, Porsche or Hermès.',
-  // PLACEHOLDER — Decision D5: no link target yet, so it renders as text.
+  // PLACEHOLDER — Decision D5: a link once `madeByHref` (content/nav.ts) is set; text until then.
   madeBy: 'Made by Oscar ↗',
 } as const
