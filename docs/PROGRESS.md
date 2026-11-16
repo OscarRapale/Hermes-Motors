@@ -45,7 +45,7 @@
 ### M7 Sound (Oscar 2026-11-16, ARCH §7.7)
 - [x] `lib/audio` (context, buses, loops, sound preference), `public/audio`, credits, privacy
 - [ ] Dashboard: ignition sound, SOUND toggle (label + live wave)
-- [ ] Test drive: engine by RPM, soundtrack, mute (HUD, M, pause) — music licence to confirm (D31)
+- [ ] Test drive: engine by RPM, soundtrack, mute (HUD, M, pause)
 
 ## Decisions waiting on Oscar
 
@@ -67,7 +67,7 @@ Placeholders are in the code until he answers. Never present them as final.
 | D12–27 | Tokens, labels, JS budgets, hero stills, countdown, LCP, specs, the grid, three.js before scroll | **Decided** (M0–M3) | PRs #3–#16; ARCH §6, §10, rules/three.md |
 | D28 | Test drive difficulty | careful lap just behind him (+0.15), clean racing line −3.5 s; grip ×0.7, friction circle, pedal ramps, brakes 34/22 | after Oscar's playtests; ARCH §7.3. Confirm after driving it |
 | D29 | Phone drive | **Decided 2026-11-13:** compact HUD as board 16, no sector bars; BST tap = 2 s of Boost (again extends, brake cancels) | PR 5a/5b |
-| D31 | Soundtrack | "Hagion", DJ Seduce (`ES_` file: Epidemic Sound) | does the plan cover a website + web game? credit wording? Not served until confirmed |
+| D31 | Soundtrack | **Decided 2026-11-16:** "Hagion", DJ Seduce, Epidemic Sound; Oscar's plan covers websites | credited on /credits; source kept out of git |
 | D30 | Finish and share | **Decided 2026-11-13:** jump start = `j=1` (lap as driven + 5 s); summary with figures; finish works in landscape; `/drive/r` CTA "Beat the messenger"; never mention sign-up or databases | M4 |
 
 ## Log
