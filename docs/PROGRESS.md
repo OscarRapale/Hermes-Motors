@@ -1,6 +1,6 @@
 # Progress
 
-**Now:** M7 PR 1 (sound core). **Next:** PR 2, dashboard sound + the SOUND toggle. Open decisions: `docs/launch.md` §1.
+**Now:** M7 PR 2 (dashboard sound, SOUND toggle). **Next:** PR 3, the test drive's engine and soundtrack. Open decisions: `docs/launch.md` §1.
 ## Milestones
 
 ### M0 Foundation
@@ -44,7 +44,7 @@
 
 ### M7 Sound (Oscar 2026-11-16, ARCH §7.7)
 - [x] `lib/audio` (context, buses, loops, sound preference), `public/audio`, credits, privacy
-- [ ] Dashboard: ignition sound, SOUND toggle (label + live wave)
+- [x] Dashboard: ignition sound, SOUND toggle (label + live wave)
 - [ ] Test drive: engine by RPM, soundtrack, mute (HUD, M, pause)
 
 ## Decisions waiting on Oscar
@@ -72,10 +72,11 @@ Placeholders are in the code until he answers. Never present them as final.
 
 ## Log
 
+- 2026-11-16 · M7 PR 2: ignition plays on the button (and the first ignition once the page has had a click); `SoundToggle` beside HP/kW (phones: under the big dial); `sound.spec.ts` (Playwright's DOM calls and trace count as a click in Chromium).
 - 2026-11-16 · M7 PR 1: `lib/audio` (one AudioContext after the first interaction, master/music/sfx, cached files, loops), engine loop cut by `npm run assets` (2.6 s, 163 KB WAV), ignition MP3 96 KB; sound credit, privacy line.
 - 2026-11-16 · M6 PR 5: Firefox + WebKit e2e (`npm run e2e:engines`), `docs/launch.md`, `madeByHref`, D6 in docs.
 - 2026-11-16 · M6 PRs 1–3: canonical + a preview per route (`content/og.ts`), sitemap, robots; JS budget on `/` (154.3 KB, 25.1 ours), Lighthouse CI (100 ×4); `a11y.spec.ts` (axe every route × theme × device, focus rings, reflow 320, reduced motion, targets ≥ 24, one h1), `docs/audit/accessibility.md`.
-- 2026-11-13/16 · **M5 done** (PRs #28–#34): `PageHero`, `Doc`; credits, privacy, 404, team, season, partners, store; drivers (stills, then live helmets); news (MDX; shown from its beat, all while previewing); manifesto (wipe on view); press kit (outlined lock-up, 8.4 MB zip). `proxy.ts` 404s bad `/drive/r`, `/news/*`. Day dims 50%. Copy guard: no sign-up/database.
+- 2026-11-13/16 · **M5 done** (PRs #28–#34): drivers, news (MDX, shown from its beat), team, season, partners, store, manifesto, press kit (8.4 MB zip), credits, privacy, 404 (`proxy.ts`).
 - 2026-11-13 · **M4 done** (PRs #25–#26): `lib/game/share.ts`; `/api/card` link + story (OFL fonts in `assets/`); `Result` (boards 14, 17) at the finish and on `/drive/r` (card as OG, noindex, `proxy.ts` 404s); Share = share sheet on touch, else both PNGs + link.
 - 2026-11-13 · **M3 done** (PRs #23–#24): rotate screen, compact HUD, thumb pads, BST = 2 s Boost (D29), haptics.
 - 2026-11-12 · Handling (PR #22): friction circle, pedal ramps, grip ×0.7, braking boards; R Shift/R Ctrl, Boost E; controls sheet on first visit and from pause; laps re-recorded (D28).

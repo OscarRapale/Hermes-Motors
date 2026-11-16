@@ -25,6 +25,12 @@ export const previewCopy = {
   chip: 'Preview', // new
 } as const
 
+/** The SOUND toggle (M7): the visible label, and the button's name (with aria-pressed for on/off) */
+export const soundCopy = {
+  label: 'SOUND:',
+  name: 'Sound',
+} as const
+
 export const testDriveCopy = {
   open: 'Test drive',
   locked: 'Test drive opens 06:00',

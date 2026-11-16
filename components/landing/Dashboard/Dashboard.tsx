@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dashboard } from '@/content/copy/landing'
 import { PowerIcon } from '@/components/site/icons/icons'
+import { SoundToggle } from '@/components/site/SoundToggle/SoundToggle'
+import { play, preload, soundOn, SOUNDS, type Voice } from '@/lib/audio'
 import {
   DAY_LEDS,
   DIAL_SWEEP_DEG,
@@ -22,13 +24,20 @@ import styles from './Dashboard.module.css'
 
 const copy = dashboard.dials
 const DIALS: DialId[] = ['zeroToHundred', 'topSpeed', 'power', 'minMass', 'mguk']
+const IGNITION_GAIN = 0.8
+/** Fetch the ignition sound on intent (hover, focus or touch of the button), so the press starts it at once */
+const warm = () => {
+  if (soundOn()) preload(SOUNDS.ignition).catch(() => {})
+}
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
  * First Light dashboard (board 10): ignite, 15 LEDs, HP/kW, five dials. The ignition runs once per
  * session when the panel is first seen, and again on the ignite button; frames update the SVG
- * through refs (no React render per frame). Reduced motion: everything settled.
+ * through refs (no React render per frame). Reduced motion: everything settled. The engine starts with
+ * it (ARCHITECTURE §7.7): always on the button, and on the first ignition only if the browser already
+ * allows sound (the visitor has clicked on the page, e.g. the preview button).
  */
 export function Dashboard({ className = '' }: { className?: string }) {
   const root = useRef<HTMLDivElement>(null)
@@ -36,6 +45,7 @@ export function Dashboard({ className = '' }: { className?: string }) {
   const progress = useRef(1)
   const [unit, setUnit] = useState<PowerUnit>('hp')
   const unitRef = useRef(unit)
+  const voice = useRef<Voice | null>(null)
 
   // Draw every dial and LED at ignition progress t (0…1).
   const draw = useCallback((t: number) => {
@@ -61,6 +71,8 @@ export function Dashboard({ className = '' }: { className?: string }) {
     if (!el) return
     cancelAnimationFrame(frame.current)
     el.removeAttribute('data-ignite')
+    voice.current?.stop()
+    void play(SOUNDS.ignition, { gain: IGNITION_GAIN }).then((v) => (voice.current = v))
     if (reducedMotion()) {
       draw(1)
       return
@@ -105,6 +117,9 @@ export function Dashboard({ className = '' }: { className?: string }) {
     }
   }, [ignite])
 
+  // leaving the page stops the engine
+  useEffect(() => () => voice.current?.stop(), [])
+
   // HP/kW: redraw the power dial at the current progress.
   useEffect(() => {
     unitRef.current = unit
@@ -118,7 +133,14 @@ export function Dashboard({ className = '' }: { className?: string }) {
     <div ref={root} className={`${styles.panel} ${className}`} data-dashboard suppressHydrationWarning>
       <div className={styles.top}>
         <div className={styles.status}>
-          <button type="button" className={styles.ignite} onClick={ignite} aria-label={dashboard.ignite}>
+          <button
+            type="button"
+            className={styles.ignite}
+            onClick={ignite}
+            onPointerEnter={warm}
+            onFocus={warm}
+            aria-label={dashboard.ignite}
+          >
             <PowerIcon />
           </button>
           <span className={styles.leds} data-day-leds aria-hidden="true">
@@ -127,6 +149,7 @@ export function Dashboard({ className = '' }: { className?: string }) {
             ))}
           </span>
         </div>
+        <SoundToggle className={styles.sound} />
         <div role="group" aria-label={dashboard.unitsLabel} className={styles.units}>
           <button type="button" aria-pressed={unit === 'hp'} onClick={() => setUnit('hp')} className={styles.unit}>
             {dashboard.hp}

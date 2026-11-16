@@ -1,0 +1,68 @@
+/* The SOUND toggle (M7). Colour comes from the parent (currentColor), so it sits on the dark dashboard
+   and the test drive's HUD alike. */
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sound-gap);
+  min-height: var(--tap);
+  padding: var(--sound-pad);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--fs-units);
+  letter-spacing: var(--tracking-social);
+  cursor: pointer;
+}
+
+.label {
+  line-height: 1;
+}
+
+.wave {
+  width: var(--sound-wave-w);
+  height: var(--sound-wave-h);
+  overflow: hidden;
+  flex: none;
+}
+
+.height {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--dur-sound-flat) var(--ease-out);
+}
+
+.toggle[aria-pressed='false'] .height {
+  transform: scaleY(var(--sound-wave-off));
+}
+
+.line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--sound-wave-stroke);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  animation: scroll var(--dur-sound-wave) linear infinite;
+}
+
+.toggle[aria-pressed='false'] .line {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-16px); /* one period of the path, in the SVG's units (WAVE in the component) */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .height {
+    transition: none;
+  }
+
+  .line {
+    animation: none;
+  }
+}
